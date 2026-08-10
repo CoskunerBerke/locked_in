@@ -6,7 +6,7 @@ import * as THREE from 'three';
 function ModuleBox({ position, rotationSpeed }: { position: [number, number, number]; rotationSpeed: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (meshRef.current) {
       meshRef.current.rotation.x += delta * rotationSpeed;
       meshRef.current.rotation.y += delta * (rotationSpeed * 1.2);
