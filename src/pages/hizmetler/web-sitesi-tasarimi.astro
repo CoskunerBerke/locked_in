@@ -1,0 +1,113 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { getServiceSchema } from '../../utils/jsonLd';
+import brandConfig from '../../config/brand';
+
+const pageTitle = `Kurumsal Web Sitesi Tasarımı ve Geliştirme | ${brandConfig.brandName}`;
+const pageDescription = 'İşletmenize özel, mobil uyumlu, yüksek hızlı ve arama motoru dostu kurumsal web siteleri ile landing page çözümleri geliştiriyoruz.';
+
+const serviceSchema = getServiceSchema(
+  'Kurumsal Web Sitesi Tasarımı ve Geliştirme',
+  pageDescription,
+  `${brandConfig.siteUrl}/hizmetler/web-sitesi-tasarimi/`
+);
+---
+
+<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Web Sitesi Tasarımı', url: '/hizmetler/web-sitesi-tasarimi/' }]} />
+
+      <div class="max-w-3xl">
+        <span class="badge-primary mb-3">Tasarım &amp; Geliştirme</span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          Kurumsal Web Sitesi Tasarımı ve Geliştirme
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed mb-8">
+          Dijital dünyadaki kartvizitiniz olan web sitenizi modern tasarım ilkeleri, yüksek yüklenme hızı ve dönüşüm odaklı mimariyle inşa ediyoruz.
+        </p>
+        <a href="#teklif-formu" class="btn-primary">
+          Web Siteniz İçin Teklif Alın
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Service Content -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Main Details -->
+        <div class="lg:col-span-8 space-y-12">
+          <!-- Kimler İçin Uygun -->
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Kimler İçin Uygun?</h2>
+            <ul class="space-y-3 text-slate-600">
+              <li class="flex items-start gap-3">
+                <span class="text-sky-500 font-bold">✓</span>
+                <span>Dijitalde profesyonel bir kurumsal kimlik oluşturmak isteyen işletmeler</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-sky-500 font-bold">✓</span>
+                <span>Eski ve yavaş web sitesini modern standartlara taşımak isteyen markalar</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-sky-500 font-bold">✓</span>
+                <span>Reklam kampanyaları için yüksek dönüşümlü landing page ihtiyacı olan firmalar</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Süreç -->
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Geliştirme Sürecimiz</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="text-xs font-bold text-sky-600 uppercase tracking-wider block mb-1">1. Adım</span>
+                <h3 class="font-bold text-slate-900 text-base mb-1">Wireframe &amp; UI Tasarımı</h3>
+                <p class="text-xs text-slate-600">Marka kimliğinize uygun modern arayüz ve sayfa düzeni mimarisi.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="text-xs font-bold text-sky-600 uppercase tracking-wider block mb-1">2. Adım</span>
+                <h3 class="font-bold text-slate-900 text-base mb-1">Kodlama &amp; Optimizasyon</h3>
+                <p class="text-xs text-slate-600">Astro/React altyapısıyla ışık hızında statik HTML kodlaması.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Teslim Edilenler -->
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Teslim Edilen Nitelikler</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700">
+              <div class="p-4 rounded-xl bg-sky-50/50 border border-sky-100 font-medium">✓ %100 Mobil ve Tablet Uyumlu Responsive Tasarım</div>
+              <div class="p-4 rounded-xl bg-sky-50/50 border border-sky-100 font-medium">✓ SSL Güvenlik ve Temel SEO Altyapısı</div>
+              <div class="p-4 rounded-xl bg-sky-50/50 border border-sky-100 font-medium">✓ İletişim &amp; WhatsApp Entegrasyonu</div>
+              <div class="p-4 rounded-xl bg-sky-50/50 border border-sky-100 font-medium">✓ Yüksek Lighthouse Performans Skoru</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Related Services -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="/hizmetler/seo/" class="text-sky-600 hover:underline font-semibold block">→ Teknik ve Site İçi SEO</a>
+                <span class="text-xs text-slate-500">Sitenizin arama motoru görünürlüğünü yükseltin.</span>
+              </li>
+              <li class="pt-2 border-t border-slate-200">
+                <a href="/hizmetler/google-maps/" class="text-sky-600 hover:underline font-semibold block">→ Google Maps Optimizasyonu</a>
+                <span class="text-xs text-slate-500">Yerel müşterileriniz konumunuzu kolayca bulsun.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

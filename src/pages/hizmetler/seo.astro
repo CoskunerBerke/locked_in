@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { getServiceSchema } from '../../utils/jsonLd';
+import brandConfig from '../../config/brand';
+
+const pageTitle = `Teknik, Site İçi ve Yerel SEO Hizmeti | ${brandConfig.brandName}`;
+const pageDescription = 'Arama motorlarında daha görünür olun. Teknik SEO, site içi içerik optimizasyonu ve yerel arama stratejileri ile organik trafiğinizi artırıyoruz.';
+
+const serviceSchema = getServiceSchema(
+  'Teknik ve Site İçi SEO Hizmetleri',
+  pageDescription,
+  `${brandConfig.siteUrl}/hizmetler/seo/`
+);
+---
+
+<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'SEO Hizmetleri', url: '/hizmetler/seo/' }]} />
+
+      <div class="max-w-3xl">
+        <span class="badge-primary mb-3">Organik Büyüme &amp; Arama Motoru</span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          Teknik, Site İçi ve Yerel SEO Hizmetleri
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed mb-8">
+          Arama motorlarında üst sıralara tırmanmak için web sitenizin kod yapısını, hızını, içerik mimarisini ve yerel harita verilerini eksiksiz optimize ediyoruz.
+        </p>
+        <a href="#teklif-formu" class="btn-primary">
+          SEO Analizi ve Teklif İsteyin
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8 space-y-12">
+          <!-- Hizmet Kapsamı -->
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">SEO Çalışması Neleri Kapsar?</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">1. Teknik SEO</h3>
+                <p class="text-xs text-slate-600">Site hızı, Core Web Vitals, sitemap.xml, robots.txt ve taranabilirlik optimizasyonu.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">2. Site İçi SEO</h3>
+                <p class="text-xs text-slate-600">Başlık (H1-H6) yapısı, meta açıklamaları, görsel alt metinleri ve semantik linkleme.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">3. Yerel SEO</h3>
+                <p class="text-xs text-slate-600">Bölgesel aramalarda öne çıkmak için konum ve harita optimizasyon stratejileri.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kimler İçin Uygun -->
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Kimler İçin Uygun?</h2>
+            <ul class="space-y-3 text-slate-600">
+              <li class="flex items-start gap-3">
+                <span class="text-sky-500 font-bold">✓</span>
+                <span>Arama sonuçlarında geride kalan ve potansiyel müşterilerine ulaşamayan işletmeler</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-sky-500 font-bold">✓</span>
+                <span>Reklam bütçelerine bağımlı kalmadan organik trafik kazanmak isteyen markalar</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Etik Sorumluluk Reddi Beyanı -->
+          <div class="p-5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 leading-relaxed">
+            <strong>Önemli Bilgilendirme:</strong> Arama motorlarının algoritmaları sürekli güncellenmektedir. Şirketimiz %100 birinci sıra veya kesin organik trafik garantisi gibi kanıtlanamayacak vaatlerde bulunmaz; uluslararası kabul görmüş beyaz şapka (White Hat) SEO yöntemlerini uygular.
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="/hizmetler/google-maps/" class="text-sky-600 hover:underline font-semibold block">→ Google Maps Optimizasyonu</a>
+              </li>
+              <li class="pt-2 border-t border-slate-200">
+                <a href="/hizmetler/web-sitesi-tasarimi/" class="text-sky-600 hover:underline font-semibold block">→ Kurumsal Web Sitesi Tasarımı</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/common/Breadcrumb.astro';
+import brandConfig from '../config/brand';
+
+const pageTitle = `KVKK Aydınlatma Metni | ${brandConfig.brandName}`;
+const pageDescription = `${brandConfig.brandName} 6698 Sayılı Kişisel Verilerin Korunması Kanunu (KVKK) Aydınlatma Metni.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'KVKK Aydınlatma Metni', url: '/kvkk-aydinlatma-metni/' }]} />
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">KVKK Aydınlatma Metni</h1>
+      <p class="text-sm text-slate-600">6698 Sayılı Kişisel Verilerin Korunması Kanunu Kapsamında</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-slate-700 text-sm leading-relaxed">
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">1. Veri Sorumlusu</h2>
+        <p>
+          6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, kişisel verileriniz veri sorumlusu sıfatıyla {brandConfig.legalCompanyName} tarafından aşağıda açıklanan kapsamda işlenebilecektir.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">2. Kişisel Verilerin İşlenme Amacı</h2>
+        <p>
+          Teklif ve ön görüşme formları aracılığıyla kendi rızanızla sağladığınız ad-soyad, telefon, e-posta ve proje detayları; yalnızca sizinle iletişim kurmak, teklif hazırlamak ve danışmanlık hizmet süreçlerini yürütmek amacıyla işlenmektedir.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">3. Kişisel Verilerin Aktarılması</h2>
+        <p>
+          Kişisel verileriniz onayınız olmaksızın üçüncü şahıslara veya kurumlara satılmaz veya pazarlama amacıyla aktarılmaz. Form verileri doğrudan WhatsApp API’sine yönlendirilir.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">4. Haklarınız</h2>
+        <p>
+          KVKK’nın 11. maddesi uyarınca veri sahibi olarak; verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini talep etme hakkına sahipsiniz. İletişim: <strong>{brandConfig.email}</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

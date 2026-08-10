@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/common/Breadcrumb.astro';
+import brandConfig from '../config/brand';
+
+const pageTitle = `Kullanım Koşulları | ${brandConfig.brandName}`;
+const pageDescription = `${brandConfig.brandName} web sitesi kullanım koşulları ve yasal şartlar.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Kullanım Koşulları', url: '/kullanim-kosullari/' }]} />
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Kullanım Koşulları</h1>
+      <p class="text-sm text-slate-600">Yasal Kullanım Şartları</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-slate-700 text-sm leading-relaxed">
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">1. Fikri Mülkiyet</h2>
+        <p>
+          Bu web sitesindeki özgün metinler, kod yapıları ve görsel düzenlemeler {brandConfig.legalCompanyName} telif hakkı koruması altındadır.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">2. Hizmet Sınırları ve Garanti Reddi</h2>
+        <p>
+          Sitede sunulan bilgiler bilgilendirme amaçlıdır. Şirketimiz arama motorlarında kesin 1. sıra veya garantili gelir artışı gibi taahhütlerde bulunmaz. Tüm hizmetler karşılıklı sözleşme ve analiz kapsamına tabidir.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

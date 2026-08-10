@@ -1,0 +1,68 @@
+---
+import HeroVideoPlayer from './HeroVideoPlayer.react';
+---
+
+<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-50 border-b border-slate-200/80">
+  <!-- Looping Background Video & Controls -->
+  <HeroVideoPlayer client:load />
+
+  <!-- Hero Content Container -->
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+    <div class="max-w-3xl">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/90 border border-sky-200 text-sky-800 text-xs font-semibold mb-6 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
+        <span>Dijital Sistemler & Danışmanlık</span>
+      </div>
+
+      <!-- Main Headline H1 -->
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6">
+        Dijitalde görünür,<br class="hidden sm:inline" />
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600">
+          işinizde güçlü olun.
+        </span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-lg sm:text-xl text-slate-700 leading-relaxed mb-8 max-w-2xl font-normal">
+        Web ve mobil ürünlerden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin dijital büyümesini tek merkezden yönetiyoruz.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+        <a href="#teklif-formu" class="btn-primary text-center">
+          <span>Ücretsiz Ön Görüşme</span>
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+
+        <a href="#hizmetler" class="btn-secondary text-center">
+          <span>Hizmetleri İncele</span>
+        </a>
+      </div>
+
+      <!-- Quick Trust Indicators -->
+      <div class="mt-12 pt-8 border-t border-slate-200/60 grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs text-slate-600 font-medium">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Uçtan Uça Dijital Çözüm</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Mobil Öncelikli Altyapı</span>
+        </div>
+        <div class="flex items-center gap-2 col-span-2 sm:col-span-1">
+          <svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Şeffaf &amp; Güvenli Süreç</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+{
+  "name": "MARKA ADI - Dijital Ajans",
+  "short_name": "MARKA ADI",
+  "icons": [
+    {
+      "src": "/brand/logo.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#0EA5E9",
+  "background_color": "#F8FAFC",
+  "display": "standalone",
+  "start_url": "/",
+  "orientation": "portrait"
+}

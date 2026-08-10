@@ -1,0 +1,40 @@
+---
+import SEO from '../components/common/SEO.astro';
+import SchemaOrg from '../components/common/SchemaOrg.astro';
+import Header from '../components/common/Header.astro';
+import Footer from '../components/common/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  customSchema?: Record<string, unknown>;
+  activePage?: string;
+}
+
+const { title, description, image, customSchema, activePage } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="tr" class="h-full">
+  <head>
+    <SEO title={title} description={description} image={image} />
+    <SchemaOrg customSchema={customSchema} />
+
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+
+  <body class="min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+    <Header activePage={activePage} />
+
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

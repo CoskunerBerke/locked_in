@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { getServiceSchema } from '../../utils/jsonLd';
+import brandConfig from '../../config/brand';
+
+const pageTitle = `Google Maps ve Google Business Profile Optimizasyonu | ${brandConfig.brandName}`;
+const pageDescription = 'İşletmenizin Google Haritalar üzerindeki görünürlüğünü artırın. Profil doğrulama, kategori optimizasyonu ve yerel arama yönetimi.';
+
+const serviceSchema = getServiceSchema(
+  'Google Maps ve Yerel Harita Optimizasyonu',
+  pageDescription,
+  `${brandConfig.siteUrl}/hizmetler/google-maps/`
+);
+---
+
+<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
+  <section class="py-12 bg-emerald-50/50 border-b border-emerald-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Google Maps', url: '/hizmetler/google-maps/' }]} />
+
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold mb-3">
+          Yerel Görünürlük
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          Google Maps ve Yerel Harita Optimizasyonu
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed mb-8">
+          Fiziksel konumunuzu arayan yerel müşterilerinize doğrudan ulaşın. Google İşletme Profilinizi eksiksiz yapılandırarak konum görünürlüğünüzü artırıyoruz.
+        </p>
+        <a href="#teklif-formu" class="btn-primary bg-emerald-600 hover:bg-emerald-700">
+          Harita Optimizasyon Teklifi Alın
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8 space-y-12">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Harita Optimizasyonu Çalışmaları</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Profil Doğrulama &amp; Düzenleme</h3>
+                <p class="text-xs text-slate-600">İşletme adı, adres, telefon, web sitesi ve çalışma saatlerinin doğrulanıp eksiksiz girilmesi.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Doğru Kategori Seçimi</h3>
+                <p class="text-xs text-slate-600">İşletmenizi en doğru temsil eden ana ve alt kategorilerin belirlenmesi.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-500">
+            <strong>Yasal Not:</strong> <em>Google</em> ve <em>Google Maps</em> markaları Google LLC şirketine aittir. {brandConfig.brandName}, işletmelere bağımsız harita profil optimizasyon hizmeti sunmaktadır.
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="/hizmetler/seo/" class="text-sky-600 hover:underline font-semibold block">→ Teknik ve Site İçi SEO</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

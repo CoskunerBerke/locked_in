@@ -1,0 +1,19 @@
+---
+import { getOrganizationSchema, getWebSiteSchema } from '../../utils/jsonLd';
+
+interface Props {
+  customSchema?: Record<string, unknown>;
+}
+
+const { customSchema } = Astro.props;
+
+const orgSchema = getOrganizationSchema();
+const siteSchema = getWebSiteSchema();
+
+const schemas = [orgSchema, siteSchema];
+if (customSchema) {
+  schemas.push(customSchema as unknown as ReturnType<typeof getOrganizationSchema>);
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schemas)} />

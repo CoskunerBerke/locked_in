@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/common/Breadcrumb.astro';
+import brandConfig from '../config/brand';
+
+const pageTitle = `Gizlilik Politikası | ${brandConfig.brandName}`;
+const pageDescription = `${brandConfig.brandName} gizlilik politikası ve veri güvenliği esasları.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Gizlilik Politikası', url: '/gizlilik-politikasi/' }]} />
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Gizlilik Politikası</h1>
+      <p class="text-sm text-slate-600">Son güncelleme tarihi: 10 Ağustos 2026</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-slate-700 text-sm leading-relaxed">
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">1. Genel Bilgilendirme</h2>
+        <p>
+          {brandConfig.legalCompanyName} ("{brandConfig.brandName}"), web sitemizi ziyaret eden kullanıcıların gizliliğini korumayı taahhüt eder. Bu politika, sitemiz üzerinden toplanan verilerin nasıl kullanıldığını ve korunduğunu açıklar.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">2. Toplanan Bilgiler ve WhatsApp Entegrasyonu</h2>
+        <p>
+          Web sitemizde bulunan iletişim ve teklif formları backend veritabanına veri kaydetmez. Form doldurulduğunda kullanıcının girdiği ad, iletişim bilgisi ve proje mesajı doğrudan WhatsApp mesajına dönüştürülerek kullanıcı rızası ile iletilir. Sitemizde çerez (cookie) ve kullanıcı takip mekanizmaları minimize edilmiştir.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">3. Üçüncü Taraf Bağlantıları ve Bağımsızlık</h2>
+        <p>
+          Sitemizde adı geçen Yemeksepeti, Trendyol, Google ve Meta gibi markalar kendi hak sahiplerine ait tescilli markalardır. {brandConfig.brandName} bu kuruluşlardan bağımsız bir danışmanlık hizmeti sunar.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">4. İletişim</h2>
+        <p>
+          Gizlilik politikamızla ilgili tüm soru ve talepleriniz için <strong>{brandConfig.email}</strong> adresi üzerinden bizimle iletişime geçebilirsiniz.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

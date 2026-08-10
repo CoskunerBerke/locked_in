@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { getServiceSchema } from '../../utils/jsonLd';
+import brandConfig from '../../config/brand';
+
+const pageTitle = `Instagram ve Meta Reklam Yönetimi | ${brandConfig.brandName}`;
+const pageDescription = 'Hedef kitlenize doğrudan ulaşın. Instagram ve Facebook reklam kampanya stratejileri, içerik kurguları ve bütçe performans takibi.';
+
+const serviceSchema = getServiceSchema(
+  'Instagram ve Meta Reklam Yönetimi',
+  pageDescription,
+  `${brandConfig.siteUrl}/hizmetler/instagram-reklamlari/`
+);
+---
+
+<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
+  <section class="py-12 bg-purple-50/50 border-b border-purple-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Instagram Reklamları', url: '/hizmetler/instagram-reklamlari/' }]} />
+
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 border border-purple-300 text-purple-800 text-xs font-bold mb-3">
+          Sosyal Medya Reklamları
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          Instagram ve Meta Reklam Yönetimi
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed mb-8">
+          Doğru hedef kitleye doğru mesajla ulaşın. Reklam kurgularından görsel yönlendirmelere ve bütçe optimizasyonuna kadar sosyal medya reklamlarınızı yönetiyoruz.
+        </p>
+        <a href="#teklif-formu" class="btn-primary bg-purple-600 hover:bg-purple-700">
+          Reklam Danışmanlığı İsteyin
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8 space-y-12">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Reklam Stratejimiz</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Hedef Kitle Analizi</h3>
+                <p class="text-xs text-slate-600">Demografik, konum, ilgi alanı ve davranış odaklı hassas hedefleme.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Performans &amp; Raporlama</h3>
+                <p class="text-xs text-slate-600">Tıklama başı maliyet, dönüşüm oranı ve bütçe veriminin şeffaf raporlanması.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-500">
+            <strong>Yasal Not:</strong> <em>Instagram</em> ve <em>Meta</em> markaları Meta Platforms Inc. şirketine aittir. Reklam bütçeleri doğrudan Meta hesabınıza tanımlanır, ajansımız bağımsız strateji ve kampanya yönetim hizmeti sunar.
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="/hizmetler/web-sitesi-tasarimi/" class="text-sky-600 hover:underline font-semibold block">→ Landing Page Tasarımı</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

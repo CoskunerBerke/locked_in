@@ -1,0 +1,48 @@
+---
+import { getBreadcrumbSchema } from '../../utils/jsonLd';
+
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const allItems = [{ name: 'Ana Sayfa', url: '/' }, ...items];
+const schemaJson = JSON.stringify(getBreadcrumbSchema(allItems));
+---
+
+<nav aria-label="Erişilebilir Yol Haritası" class="py-3 px-4 bg-slate-100/70 rounded-xl mb-6 inline-block">
+  <ol class="flex items-center flex-wrap gap-2 text-xs text-slate-600">
+    {
+      allItems.map((item, index) => {
+        const isLast = index === allItems.length - 1;
+        return (
+          <li class="flex items-center gap-2">
+            {index > 0 && (
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+            {isLast ? (
+              <span class="font-semibold text-slate-900" aria-current="page">
+                {item.name}
+              </span>
+            ) : (
+              <a href={item.url} class="hover:text-sky-600 transition-colors">
+                {item.name}
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+
+<!-- JSON-LD Breadcrumb Schema -->
+<script type="application/ld+json" set:html={schemaJson} />

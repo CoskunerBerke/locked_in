@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { getServiceSchema } from '../../utils/jsonLd';
+import brandConfig from '../../config/brand';
+
+const pageTitle = `Mobil Uygulama Tasarımı ve Geliştirme (iOS & Android) | ${brandConfig.brandName}`;
+const pageDescription = 'İşletmeniz için modern, hızlı ve kullanıcı dostu iOS ve Android mobil uygulamaları geliştiriyoruz.';
+
+const serviceSchema = getServiceSchema(
+  'Mobil Uygulama Tasarımı ve Geliştirme',
+  pageDescription,
+  `${brandConfig.siteUrl}/hizmetler/mobil-uygulama/`
+);
+---
+
+<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Mobil Uygulama', url: '/hizmetler/mobil-uygulama/' }]} />
+
+      <div class="max-w-3xl">
+        <span class="badge-primary mb-3">iOS &amp; Android Çözümleri</span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          Mobil Uygulama Tasarımı ve Geliştirme
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed mb-8">
+          Müşterilerinizin cebinde yer alın. Hem App Store hem de Google Play platformlarında sorunsuz çalışan yüksek performanslı mobil uygulamalar üretiyoruz.
+        </p>
+        <a href="#teklif-formu" class="btn-primary">
+          Mobil Projenizi Konuşalım
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8 space-y-12">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Neler Sunuyoruz?</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Çapraz Platform Mimari</h3>
+                <p class="text-xs text-slate-600">iOS ve Android cihazlarda tek bir yüksek nitelikli kod altyapısı ile maliyet ve zaman tasarrufu.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Kullanıcı Dostu UX/UI</h3>
+                <p class="text-xs text-slate-600">Dokunma hassasiyeti yüksek, sezgisel ve modern arayüz tasarımı.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="/hizmetler/web-sitesi-tasarimi/" class="text-sky-600 hover:underline font-semibold block">→ Web Sitesi Tasarımı</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

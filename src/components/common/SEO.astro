@@ -1,0 +1,57 @@
+---
+import brandConfig from '../../config/brand';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalUrl?: string;
+  type?: string;
+}
+
+const {
+  title = `${brandConfig.brandName} - Dijital Hizmetler ve Danışmanlık Ajansı`,
+  description = brandConfig.description,
+  image = `${brandConfig.siteUrl}/brand/logo.svg`,
+  canonicalUrl = Astro.url.href,
+  type = 'website',
+} = Astro.props;
+
+const isIndexingAllowed = brandConfig.indexingEnabled;
+const robotsContent = isIndexingAllowed ? 'index, follow' : 'noindex, nofollow';
+---
+
+<!-- Global Metadata -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="robots" content={robotsContent} />
+<meta name="googlebot" content={robotsContent} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:site_name" content={brandConfig.brandName} />
+
+<!-- Twitter Cards -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalUrl} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={image} />
+
+<!-- Favicon & PWA -->
+<link rel="icon" type="image/svg+xml" href="/brand/logo.svg" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0EA5E9" />

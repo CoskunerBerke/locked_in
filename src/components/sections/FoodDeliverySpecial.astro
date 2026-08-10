@@ -1,0 +1,63 @@
+---
+import brandConfig from '../../config/brand';
+
+const foodServices = [
+  { title: 'Mağaza & Panel Kurulum Desteği', desc: 'Sisteme giriş, evrak kontrolü ve panel yapılandırma adımlarında teknik destek.' },
+  { title: 'Menü & Ürün Düzenleme', desc: 'Ürün isimleri, iştah açıcı açıklamalar, fiyat güncellemeleri ve porsiyon seçenekleri.' },
+  { title: 'Kategori Operasyonları', desc: 'Müşterinin kolay sipariş vermesini sağlayan doğru kategori ve alt kategori yerleşimi.' },
+  { title: 'Çalışma Saatleri & Tatil Ayarları', desc: 'Açılış/kapanış saatleri ve özel günlerde kurye/sipariş duraklatma ayarları.' },
+  { title: 'Kampanya & İndirim Düzenlemeleri', desc: 'Platform içi promosyonlar ve müşteri sadakat kampanyalarının takibi.' },
+  { title: 'Panel Kullanım & Performans Desteği', desc: 'Sipariş iptalleri, kurye süreleri ve mağaza puanı iyileştirme danışmanlığı.' },
+];
+---
+
+<section class="py-20 bg-white border-y border-slate-200/80">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Left Content -->
+      <div class="lg:col-span-6 space-y-6">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-800 text-xs font-semibold">
+          <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          Restoran &amp; Yemek İşletmeleri Özel
+        </span>
+
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+          Yemek platformlarınızı yalnızca kurmayın, <span class="text-amber-600">doğru yönetin.</span>
+        </h2>
+
+        <p class="text-base text-slate-600 leading-relaxed">
+          Yemeksepeti ve Trendyol Yemek gibi platformlarda mağaza açmak tek başına yeterli değildir. Menü güncelliği, doğru fiyatlandırma, çalışma saatlerinin takibi ve kampanya yönetimi sipariş hacminizi doğrudan etkiler.
+        </p>
+
+        <!-- Independent Disclaimer Box -->
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500 leading-relaxed">
+          <strong class="text-slate-700 block mb-1">Bağımsız Hizmet Beyanı:</strong>
+          {brandConfig.brandName}, restoran işletmelerine panel operasyonu, menü güncelleme ve dijital danışmanlık hizmeti sunan bağımsız bir kuruluştur. Yemeksepeti veya Trendyol ile resmî ortaklığı ya da yetkili temsilciliği bulunmamaktadır.
+        </div>
+
+        <div class="pt-2">
+          <a href="/hizmetler/yemeksepeti-trendyol-yemek/" class="btn-primary bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-amber-500/20">
+            <span>Yemek Platformu Hizmetini İnceleyin</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Service Cards Grid -->
+      <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {
+          foodServices.map((item) => (
+            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-amber-300 hover:bg-amber-50/30 transition-all">
+              <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm mb-3">
+                ✓
+              </div>
+              <h3 class="font-bold text-slate-900 text-sm mb-1">{item.title}</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

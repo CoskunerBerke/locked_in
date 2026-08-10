@@ -1,0 +1,88 @@
+---
+import { getFaqSchema } from '../../utils/jsonLd';
+
+const faqs = [
+  {
+    question: 'Web sitesi ne kadar sürede hazırlanır?',
+    answer:
+      'Projenin kapsamına bağlı olarak kurumsal web siteleri ortalama 7 ila 14 iş günü, özelleştirilmiş landing page tasarımları ise 3 ila 5 iş günü içerisinde tamamlanarak teslim edilir.',
+  },
+  {
+    question: 'Fiyatlar nasıl belirlenir?',
+    answer:
+      'Fiyatlandırma; istenen hizmetin kapsamı, dil desteği, içerik miktarı, ek entegrasyonlar ve yönetim süresine göre şeffaf bir şekilde proje bazlı belirlenir. Gizli maliyet uygulanmaz.',
+  },
+  {
+    question: 'SEO ne zaman sonuç verir?',
+    answer:
+      'SEO çalışmaları arama motorlarının dizine ekleme ve algoritma güncelleme süreçlerine bağlı olarak genellikle 3 ila 6 ay içerisinde kalıcı sonuçlar vermeye başlar.',
+  },
+  {
+    question: 'Google Maps’te üst sıra garanti edilir mi?',
+    answer:
+      'Hiçbir etik ve gerçekçi ajans arama motorlarında veya haritalarda %100 sıra garantisi veremez. Biz, Google İşletme Profili optimizasyonu ve yerel SEO teknikleri ile sıralamanızı en üst seviyeye çıkarmak için kanıtlanmış yöntemler uygularız.',
+  },
+  {
+    question: 'Yemeksepeti ve Trendyol Yemek panelini yönetiyor musunuz?',
+    answer:
+      'Evet. Restoranınızın panel kurulumu, menü güncellemesi, ürün fiyatlandırmaları, çalışma saatleri düzenlemesi ve kampanya takibini bağımsız danışmanlık kapsamında biz üstleniyoruz.',
+  },
+  {
+    question: 'Instagram reklam bütçesi hizmet ücretine dahil mi?',
+    answer:
+      'Hayır. Reklam bütçesi doğrudan ilgili platforma (Meta) sizin tarafınızdan ödenir. Bizim hizmet ücretimiz reklam stratejisi, görsel tasarımı, hedef kitle ayarları ve performans takibini kapsar.',
+  },
+  {
+    question: 'Mobil uygulama hem iOS hem Android için hazırlanabilir mi?',
+    answer:
+      'Evet. Çapraz platform (cross-platform) teknolojilerimiz sayesinde tek bir kod tabanı üzerinden hem iOS (App Store) hem de Android (Google Play) uyumlu uygulamalar geliştiriyoruz.',
+  },
+  {
+    question: 'Yayınlandıktan sonra destek veriyor musunuz?',
+    answer:
+      'Kesinlikle. Projeniz yayına alındıktan sonra teknik bakım, güvenlik güncellemeleri ve kullanım eğitimleri ile sürdürülebilir destek sağlıyoruz.',
+  },
+];
+
+const faqSchemaJson = JSON.stringify(getFaqSchema(faqs));
+---
+
+<section id="faq" class="py-24 bg-white border-b border-slate-200/80">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="badge-primary mb-3">Merak Edilenler</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        Sık Sorulan Sorular
+      </h2>
+      <p class="mt-4 text-base text-slate-600">
+        Hizmetlerimiz ve çalışma süreçlerimiz hakkında en sık sorulan soruların yanıtları.
+      </p>
+    </div>
+
+    <!-- Accordion List -->
+    <div class="space-y-4">
+      {
+        faqs.map((faq) => (
+          <details class="group p-6 rounded-2xl bg-slate-50 border border-slate-200/80 [&_summary::-webkit-details-marker]:hidden transition-all duration-200">
+            <summary class="flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-lg">
+              <span class="text-base font-bold text-slate-900 pr-4">
+                {faq.question}
+              </span>
+              <span class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 shrink-0 group-open:rotate-180 transition-transform">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-4">
+              {faq.answer}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Inject FAQPage JSON-LD -->
+<script type="application/ld+json" set:html={faqSchemaJson} />

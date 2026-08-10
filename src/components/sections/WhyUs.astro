@@ -1,0 +1,64 @@
+---
+const advantages = [
+  {
+    title: 'Tek Ekipten Uçtan Uca Çözüm',
+    desc: 'Web sitesi, SEO, harita kaydı ve reklamları ayrı ajanslar arasında bölünmeden tek merkezden yönetin.',
+    icon: 'layers',
+  },
+  {
+    title: 'Mobil Öncelikli Tasarım',
+    desc: 'Tüm projelerimizi akıllı telefon kullanıcılarının hız ve kullanım kolaylığı standartlarına göre tasarlıyoruz.',
+    icon: 'smartphone',
+  },
+  {
+    title: 'Şeffaf & Raporlanabilir Süreç',
+    desc: 'Performans metriklerini, harcamalarınızı ve süreç takvimini gizli maliyetler olmadan takip edin.',
+    icon: 'bar-chart-2',
+  },
+  {
+    title: 'Güvenli ve Sürdürülebilir Altyapı',
+    desc: 'Açık kaynak bağımlılığı düşük, statik derlenen ve yüksek güvenlik standartlarına sahip yazılımlar.',
+    icon: 'shield-check',
+  },
+  {
+    title: 'İşletmeye Özel Strateji',
+    desc: 'Kalıp şablonlar değil; sektörünüze, müşteri kitlenize ve bölgenize özel özelleştirilmiş çözümler.',
+    icon: 'target',
+  },
+  {
+    title: 'Yayın Sonrası Sürdürülebilir Destek',
+    desc: 'Projeniz yayına alındıktan sonra da teknik destek, güncelleme ve rehberlik ile yanınızdayız.',
+    icon: 'headphones',
+  },
+];
+---
+
+<section id="neden-biz" class="py-24 bg-slate-50 border-b border-slate-200/80">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="badge-primary mb-3">Farkımız &amp; Değerlerimiz</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        Neden Bizimle Çalışmalısınız?
+      </h2>
+      <p class="mt-4 text-base sm:text-lg text-slate-600">
+        Karmaşık dijital süreçleri sadeleştiriyor, işletmeniz için somut ve sürdürülebilir çözümler üretiyoruz.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        advantages.map((item) => (
+          <div class="p-8 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-sky-300 hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold mb-6 border border-sky-100">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

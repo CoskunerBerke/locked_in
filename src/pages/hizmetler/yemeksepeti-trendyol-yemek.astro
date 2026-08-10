@@ -1,0 +1,95 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import { getServiceSchema } from '../../utils/jsonLd';
+import brandConfig from '../../config/brand';
+
+const pageTitle = `Yemeksepeti ve Trendyol Yemek Mağaza ve Panel Yönetimi | ${brandConfig.brandName}`;
+const pageDescription = 'Restoranınızın Yemeksepeti ve Trendyol Yemek platformlarındaki panel kurulumu, menü, ürün, kategori ve çalışma saatleri düzenlemelerini bağımsız olarak yönetiyoruz.';
+
+const serviceSchema = getServiceSchema(
+  'Yemeksepeti ve Trendyol Yemek Mağaza ve Panel Yönetimi',
+  pageDescription,
+  `${brandConfig.siteUrl}/hizmetler/yemeksepeti-trendyol-yemek/`
+);
+---
+
+<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
+  <section class="py-12 bg-amber-50/60 border-b border-amber-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Yemeksepeti & Trendyol Yemek', url: '/hizmetler/yemeksepeti-trendyol-yemek/' }]} />
+
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold mb-3">
+          Restoran Danışmanlığı
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+          Yemeksepeti ve Trendyol Yemek Panel Yönetimi
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed mb-8">
+          Restoranınızın yemek platformlarındaki operasyonel yükünü hafifletin. Menü güncellemeleri, ürün açıklamaları, fiyat düzenlemeleri ve çalışma saatlerini sizin yerinize eksiksiz takip ediyoruz.
+        </p>
+        <a href="#teklif-formu" class="btn-primary bg-amber-600 hover:bg-amber-700">
+          Panel Yönetimi Teklifi Alın
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-8 space-y-12">
+          <!-- Sunulan Destek Kalemleri -->
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Panel Yönetimi Kapsamında Sunduğumuz Çalışmalar</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Mağaza &amp; Panel Kurulum Desteği</h3>
+                <p class="text-sm text-slate-600">Sisteme başvuru, evrak tamamlama ve restoran profilinizin doğru bilgilerle açılması adımlarında rehberlik.</p>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Menü, Ürün &amp; Kategori Düzenleme</h3>
+                <p class="text-sm text-slate-600">Yemek isimleri, içerik açıklamaları, porsiyon seçenekleri, fiyat değişiklikleri ve doğru kategori dizilimi.</p>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Çalışma Saatleri &amp; Tatil Modu</h3>
+                <p class="text-sm text-slate-600">Açılış/kapanış saatlerinin güncellenmesi, özel günlerde sipariş duraklatma ve kurye bölgesi ayarları.</p>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Kampanya &amp; Performans Takibi</h3>
+                <p class="text-sm text-slate-600">Platform içi promosyon katılım düzenlemeleri ve mağaza sipariş performansının takibi.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Yasal Bağımsızlık Açıklaması -->
+          <div class="p-6 rounded-2xl bg-slate-100 border border-slate-300 text-xs text-slate-600 leading-relaxed">
+            <strong class="text-slate-800 block mb-1">Marka Sahipliği ve Yasal Beyan:</strong>
+            <em>Yemeksepeti</em> ve <em>Trendyol Yemek</em> markaları kendi hak sahiplerine aittir. {brandConfig.brandName}, restoran işletmelerine bağımsız panel operasyon desteği, menü yönetimi ve dijital danışmanlık hizmeti sağlamaktadır. Bu şirketlerle herhangi bir resmî ortaklık, yetkili acentelik veya temsilcilik bağımız bulunmamaktadır.
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a href="/hizmetler/google-maps/" class="text-sky-600 hover:underline font-semibold block">→ Google Maps ve Yerel SEO</a>
+              </li>
+              <li class="pt-2 border-t border-slate-200">
+                <a href="/hizmetler/instagram-reklamlari/" class="text-sky-600 hover:underline font-semibold block">→ Instagram ve Meta Reklamları</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>
