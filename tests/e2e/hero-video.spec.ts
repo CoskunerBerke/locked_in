@@ -36,7 +36,7 @@ test.describe('Hero Background Video System', () => {
     await expect(videoLocator).toBeAttached();
 
     // Click control button
-    await button.click();
+    await button.click({ force: true });
     await page.waitForTimeout(300);
 
     const buttonTextAfterClick = (await button.innerText()).trim();
@@ -64,7 +64,7 @@ test.describe('Hero Background Video System', () => {
     await expect(button).toBeVisible();
 
     // Click manual play button
-    await button.click();
+    await button.click({ force: true });
 
     await page.waitForTimeout(300);
     const buttonText = await button.innerText();

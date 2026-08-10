@@ -126,7 +126,7 @@ export const HeroVideoPlayer: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-20">
+    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-30">
       {/* Light Overlay for Text Readability - Translucent so Video is Clearly Visible */}
       <div
         className="absolute inset-0 bg-gradient-to-r from-slate-50/75 via-slate-50/30 to-slate-50/5 z-10 pointer-events-none"
@@ -136,7 +136,7 @@ export const HeroVideoPlayer: React.FC = () => {
       {/* Video Element - ALWAYS in DOM */}
       <video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover object-center z-0"
+        className="absolute inset-0 h-full w-full object-cover object-center z-0 pointer-events-none"
         autoPlay
         muted
         loop
@@ -159,7 +159,7 @@ export const HeroVideoPlayer: React.FC = () => {
         type="button"
         onClick={togglePlayPause}
         disabled={hasError}
-        className="pointer-events-auto absolute bottom-6 right-6 z-30 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md text-xs font-semibold text-slate-800 border border-slate-300 shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="pointer-events-auto absolute bottom-6 right-6 z-50 inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md text-xs font-semibold text-slate-800 border border-slate-300 shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label={
           hasError
             ? 'Video kullanılamıyor'

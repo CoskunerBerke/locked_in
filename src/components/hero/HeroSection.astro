@@ -1,83 +1,91 @@
 ---
 import HeroVideoPlayer from './HeroVideoPlayer.react';
-import FloatingShapesCanvas from '../common/FloatingShapesCanvas.react';
+import ServicesSolarSystemCanvas from '../common/ServicesSolarSystemCanvas.react';
 import { ArrowRight, ShieldCheck, Smartphone, Search, Server, Sparkles } from 'lucide-react';
 ---
 
-<section class="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-slate-950 border-b border-slate-800">
+<section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-sky-50/30 to-slate-100 border-b border-slate-200">
   <!-- Looping Background Video Player -->
   <HeroVideoPlayer client:load />
 
-  <!-- Universal Moving Shapes Particle Canvas -->
-  <FloatingShapesCanvas client:load />
+  <!-- Light Theme Grid Background Overlay -->
+  <div class="absolute inset-0 bg-slate-950/20 z-0 pointer-events-none" aria-hidden="true"></div>
 
-  <!-- High-Contrast Dark Gradient Backdrop Overlay (Fixes faded text issue from Image 2) -->
-  <div
-    class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/50 z-10 pointer-events-none"
-    aria-hidden="true"
-  />
-
-  <!-- Floating CSS Graphic Orbs & Shapes -->
-  <div class="absolute top-1/4 right-10 w-72 h-72 rounded-full bg-sky-500/20 blur-3xl pointer-events-none animate-float-slow z-10"></div>
-  <div class="absolute bottom-10 left-10 w-64 h-64 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none animate-float-fast z-10"></div>
-
-  <!-- Hero Content Container -->
-  <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full pointer-events-none">
-    <div class="max-w-3xl pointer-events-auto space-y-6">
-      <!-- Badge Label -->
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/25 border border-sky-400/50 text-sky-300 text-xs sm:text-sm font-extrabold shadow-lg backdrop-blur-md">
-        <Sparkles className="w-4 h-4 text-sky-400 animate-pulse" />
-        <span>Web Tasarım • Yazılım • Dijital Büyüme</span>
-      </div>
-
-      <!-- Main Headline H1 - High-Contrast Sharp Text -->
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] drop-shadow-md">
-        İşletmenizi dijitalde<br class="hidden sm:inline" />
-        <span class="text-sky-400 font-black underline decoration-sky-500/50 decoration-wavy">
-          güçlü bir sisteme
-        </span> dönüştürüyoruz.
-      </h1>
-
-      <p class="text-sm sm:text-base font-extrabold text-sky-300 uppercase tracking-widest">
-        TASARIM, YAZILIM VE BÜYÜME TEK EKİPTE.
-      </p>
-
-      <!-- Subtitle Description - Sharp High Contrast -->
-      <p class="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl font-medium drop-shadow-sm">
-        Web sitesi ve mobil uygulama geliştirmeden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin ihtiyaç duyduğu dijital hizmetleri tek merkezden sunuyoruz.
-      </p>
-
-      <!-- High-Contrast Action CTAs -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-        <a href="/iletisim/" class="btn-cta text-center shadow-xl font-black text-base py-3.5 px-7 bg-rose-600 hover:bg-rose-700 text-white border border-rose-400">
-          <span>Ücretsiz Teklif Al</span>
-          <ArrowRight className="w-5 h-5 ml-1" />
-        </a>
-
-        <a href="#hizmetlerimiz" class="bg-slate-900/90 hover:bg-slate-800 text-white border-2 border-slate-400/80 px-6 py-3.5 rounded-lg text-center font-extrabold text-sm transition-all backdrop-blur-md shadow-md">
-          <span>Hizmetlerimizi İncele</span>
-        </a>
-      </div>
-
-      <!-- Verified Trust Badges - Sharp High Contrast -->
-      <div class="mt-12 pt-8 border-t border-slate-800/90 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs sm:text-sm text-slate-200 font-extrabold">
-        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-          <Smartphone className="w-4 h-4 text-sky-400 shrink-0" />
-          <span>Mobil Uyumlu Tasarım</span>
+  <!-- Hero Content & Solar System Grid -->
+  <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full pointer-events-none">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pointer-events-none">
+      
+      <!-- Left Column: High-Contrast Sharp Text (Fixes faded text issue from user screenshots) -->
+      <div class="lg:col-span-6 space-y-6 pointer-events-auto">
+        <!-- Badge Label -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-600 text-white text-xs sm:text-sm font-extrabold shadow-md">
+          <Sparkles className="w-4 h-4 text-sky-200 animate-pulse" />
+          <span>Web Tasarım • Yazılım • Dijital Büyüme</span>
         </div>
-        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-          <Search className="w-4 h-4 text-sky-400 shrink-0" />
-          <span>SEO Odaklı Altyapı</span>
+
+        <!-- Main Headline H1 - High-Contrast Deep Dark Navy & Sky Blue -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15] drop-shadow-xs">
+          İşletmenizi dijitalde<br class="hidden sm:inline" />
+          <span class="text-sky-600 font-black underline decoration-sky-400 decoration-wavy">
+            güçlü bir sisteme
+          </span> dönüştürüyoruz.
+        </h1>
+
+        <!-- Subheading -->
+        <p class="text-sm sm:text-base font-black text-sky-700 uppercase tracking-widest">
+          TASARIM, YAZILIM VE BÜYÜME TEK EKİPTE.
+        </p>
+
+        <!-- Subtitle Description - Sharp High Contrast Dark Slate -->
+        <p class="text-base sm:text-lg text-slate-800 leading-relaxed font-bold max-w-xl">
+          Web sitesi ve mobil uygulama geliştirmeden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin ihtiyaç duyduğu dijital hizmetleri tek merkezden sunuyoruz.
+        </p>
+
+        <!-- Action CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+          <a href="/iletisim/" class="btn-cta text-center shadow-xl font-black text-base py-3.5 px-7 bg-rose-600 hover:bg-rose-700 text-white border border-rose-500">
+            <span>Ücretsiz Teklif Al</span>
+            <ArrowRight className="w-5 h-5 ml-1" />
+          </a>
+
+          <a href="#hizmetlerimiz" class="bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300 px-6 py-3.5 rounded-lg text-center font-extrabold text-sm transition-all shadow-md">
+            <span>Hizmetlerimizi İncele</span>
+          </a>
         </div>
-        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-          <Server className="w-4 h-4 text-sky-400 shrink-0" />
-          <span>Güvenli Statik Mimari</span>
-        </div>
-        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-          <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
-          <span>Yayın Sonrası Destek</span>
+
+        <!-- Verified Trust Badges - High-Contrast White Cards -->
+        <div class="mt-8 pt-6 border-t border-slate-300 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-900 font-black">
+          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
+            <Smartphone className="w-4 h-4 text-sky-600 shrink-0" />
+            <span>Mobil Uyumlu</span>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
+            <Search className="w-4 h-4 text-sky-600 shrink-0" />
+            <span>SEO Odaklı</span>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
+            <Server className="w-4 h-4 text-sky-600 shrink-0" />
+            <span>Güvenli Statik</span>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
+            <ShieldCheck className="w-4 h-4 text-sky-600 shrink-0" />
+            <span>Yayın Destek</span>
+          </div>
         </div>
       </div>
+
+      <!-- Right Column: Interactive 8-Planet Animated Solar System Canvas -->
+      <div class="lg:col-span-6 relative pointer-events-auto">
+        <div class="p-4 rounded-3xl bg-white/80 backdrop-blur-md border border-slate-200 shadow-2xl relative overflow-hidden">
+          <div class="text-center mb-2">
+            <span class="text-[11px] font-black uppercase tracking-widest text-sky-700 bg-sky-100 px-3 py-1 rounded-full border border-sky-200">
+              Solar Sistem • 8 Ana Dijital Hizmetimiz
+            </span>
+          </div>
+          <ServicesSolarSystemCanvas client:load />
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
