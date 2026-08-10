@@ -29,20 +29,65 @@ export const HeroVideoPlayer: React.FC = () => {
     video.loop = true;
     video.playsInline = true;
 
-    // Attempt autoplay if reduced motion is not preferred
-    if (!prefersReducedMotion) {
+    const playVideo = () => {
+      if (prefersReducedMotion) {
+        video.pause();
+        setIsPlaying(false);
+        return;
+      }
+
+      video.muted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn('Hero video autoplay was prevented by browser or environment:', err);
-          setIsPlaying(false);
-        });
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            setHasError(false);
+          })
+          .catch((err) => {
+            console.warn('Hero video autoplay waiting for user interaction or ready state:', err);
+            setIsPlaying(false);
+          });
       }
+    };
+
+    // Attempt playback if reduced motion is disabled
+    if (!prefersReducedMotion) {
+      playVideo();
     } else {
       video.pause();
       setIsPlaying(false);
     }
-  }, [prefersReducedMotion]);
+
+    // Re-attempt playback once media data is buffered
+    const handleLoaded = () => {
+      if (!prefersReducedMotion) {
+        playVideo();
+      }
+    };
+
+    video.addEventListener('loadeddata', handleLoaded);
+    video.addEventListener('canplay', handleLoaded);
+
+    // Fallback: start playback on first user interaction if browser policy blocked initial autoplay
+    const handleUserInteraction = () => {
+      if (video.paused && !prefersReducedMotion) {
+        playVideo();
+      }
+    };
+
+    window.addEventListener('pointerdown', handleUserInteraction, { once: true });
+    window.addEventListener('scroll', handleUserInteraction, { once: true, passive: true });
+    window.addEventListener('keydown', handleUserInteraction, { once: true });
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoaded);
+      video.removeEventListener('canplay', handleLoaded);
+      window.removeEventListener('pointerdown', handleUserInteraction);
+      window.removeEventListener('scroll', handleUserInteraction);
+      window.removeEventListener('keydown', handleUserInteraction);
+    };
+  }, [prefersReducedMotion]); // Only depend on prefersReducedMotion!
 
   const handleCanPlay = () => {
     setHasError(false);
@@ -61,16 +106,17 @@ export const HeroVideoPlayer: React.FC = () => {
       return;
     }
 
-    const currentlyPlaying = !video.paused || isPlaying;
-
-    if (currentlyPlaying) {
+    if (!video.paused) {
       video.pause();
       setIsPlaying(false);
     } else {
+      video.muted = true;
+      setIsPlaying(true);
       video
         .play()
         .then(() => {
           setIsPlaying(true);
+          setHasError(false);
         })
         .catch((err) => {
           console.error('Hero video manual play failed:', err);
@@ -91,11 +137,11 @@ export const HeroVideoPlayer: React.FC = () => {
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover object-center z-0"
-        autoPlay={!prefersReducedMotion ? true : undefined}
+        autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         poster="/videos/hero-poster.svg"
         aria-hidden="true"
         tabIndex={-1}
