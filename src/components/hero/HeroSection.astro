@@ -1,71 +1,79 @@
 ---
 import HeroVideoPlayer from './HeroVideoPlayer.react';
+import FloatingShapesCanvas from '../common/FloatingShapesCanvas.react';
 import { ArrowRight, ShieldCheck, Smartphone, Search, Server, Sparkles } from 'lucide-react';
 ---
 
-<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900 border-b border-slate-800">
-  <!-- Background Video Player -->
+<section class="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-slate-950 border-b border-slate-800">
+  <!-- Looping Background Video Player -->
   <HeroVideoPlayer client:load />
 
-  <!-- Gradient Overlay (Dark Navy / Translucent on right side) -->
+  <!-- Universal Moving Shapes Particle Canvas -->
+  <FloatingShapesCanvas client:load />
+
+  <!-- High-Contrast Dark Gradient Backdrop Overlay (Fixes faded text issue from Image 2) -->
   <div
-    class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-950/40 z-10 pointer-events-none"
+    class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/50 z-10 pointer-events-none"
     aria-hidden="true"
   />
 
+  <!-- Floating CSS Graphic Orbs & Shapes -->
+  <div class="absolute top-1/4 right-10 w-72 h-72 rounded-full bg-sky-500/20 blur-3xl pointer-events-none animate-float-slow z-10"></div>
+  <div class="absolute bottom-10 left-10 w-64 h-64 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none animate-float-fast z-10"></div>
+
   <!-- Hero Content Container -->
   <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full pointer-events-none">
-    <div class="max-w-3xl pointer-events-auto">
-      <!-- Badge -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-semibold mb-6 shadow-sm backdrop-blur-md">
-        <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+    <div class="max-w-3xl pointer-events-auto space-y-6">
+      <!-- Badge Label -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/25 border border-sky-400/50 text-sky-300 text-xs sm:text-sm font-extrabold shadow-lg backdrop-blur-md">
+        <Sparkles className="w-4 h-4 text-sky-400 animate-pulse" />
         <span>Web Tasarım • Yazılım • Dijital Büyüme</span>
       </div>
 
-      <!-- Main Headline H1 -->
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-6">
+      <!-- Main Headline H1 - High-Contrast Sharp Text -->
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] drop-shadow-md">
         İşletmenizi dijitalde<br class="hidden sm:inline" />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-300 to-indigo-300">
+        <span class="text-sky-400 font-black underline decoration-sky-500/50 decoration-wavy">
           güçlü bir sisteme
         </span> dönüştürüyoruz.
       </h1>
 
-      <p class="text-sm font-bold text-sky-300 uppercase tracking-widest mb-4">
-        Tasarım, yazılım ve büyüme tek ekipte.
+      <p class="text-sm sm:text-base font-extrabold text-sky-300 uppercase tracking-widest">
+        TASARIM, YAZILIM VE BÜYÜME TEK EKİPTE.
       </p>
 
-      <!-- Subtitle -->
-      <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl font-normal">
+      <!-- Subtitle Description - Sharp High Contrast -->
+      <p class="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl font-medium drop-shadow-sm">
         Web sitesi ve mobil uygulama geliştirmeden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin ihtiyaç duyduğu dijital hizmetleri tek merkezden sunuyoruz.
       </p>
 
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-        <a href="/iletisim/" class="btn-cta text-center shadow-lg">
+      <!-- High-Contrast Action CTAs -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+        <a href="/iletisim/" class="btn-cta text-center shadow-xl font-black text-base py-3.5 px-7 bg-rose-600 hover:bg-rose-700 text-white border border-rose-400">
           <span>Ücretsiz Teklif Al</span>
-          <ArrowRight className="w-4 h-4 ml-1" />
+          <ArrowRight className="w-5 h-5 ml-1" />
         </a>
 
-        <a href="#hizmetler-listesi" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-lg text-center font-semibold text-sm transition-all backdrop-blur-md">
+        <a href="#hizmetlerimiz" class="bg-slate-900/90 hover:bg-slate-800 text-white border-2 border-slate-400/80 px-6 py-3.5 rounded-lg text-center font-extrabold text-sm transition-all backdrop-blur-md shadow-md">
           <span>Hizmetlerimizi İncele</span>
         </a>
       </div>
 
-      <!-- Quick Verifiable Trust Indicators -->
-      <div class="mt-12 pt-8 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-300 font-medium">
-        <div class="flex items-center gap-2">
+      <!-- Verified Trust Badges - Sharp High Contrast -->
+      <div class="mt-12 pt-8 border-t border-slate-800/90 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs sm:text-sm text-slate-200 font-extrabold">
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
           <Smartphone className="w-4 h-4 text-sky-400 shrink-0" />
           <span>Mobil Uyumlu Tasarım</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
           <Search className="w-4 h-4 text-sky-400 shrink-0" />
           <span>SEO Odaklı Altyapı</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
           <Server className="w-4 h-4 text-sky-400 shrink-0" />
           <span>Güvenli Statik Mimari</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800">
           <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
           <span>Yayın Sonrası Destek</span>
         </div>
