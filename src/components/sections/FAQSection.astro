@@ -1,81 +1,88 @@
 ---
-import { getFaqSchema } from '../../utils/jsonLd';
+import { HelpCircle, ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'Web sitesi ne kadar sürede hazırlanır?',
-    answer:
-      'Projenin kapsamına bağlı olarak kurumsal web siteleri ortalama 7 ila 14 iş günü, özelleştirilmiş landing page tasarımları ise 3 ila 5 iş günü içerisinde tamamlanarak teslim edilir.',
+    q: 'Web sitesi ne kadar sürede hazırlanır?',
+    a: 'Projenin kapsamına bağlı olarak standart kurumsal web siteleri ortalama 7-14 iş günü içinde teslim edilir. Kapsamlı özel yazılımlar ve entegrasyonlu projelerde süre ihtiyaç analizine göre belirlenir.',
   },
   {
-    question: 'Fiyatlar nasıl belirlenir?',
-    answer:
-      'Fiyatlandırma; istenen hizmetin kapsamı, dil desteği, içerik miktarı, ek entegrasyonlar ve yönetim süresine göre şeffaf bir şekilde proje bazlı belirlenir. Gizli maliyet uygulanmaz.',
+    q: 'Web sitesi fiyatları neye göre belirlenir?',
+    a: 'Fiyatlar sayfa sayısı, özel tasarım gereksinimleri, içerik hazırlığı, mobil uyumluluk ve ekstra entegrasyon (WhatsApp teklif formu, çoklu dil, SEO yapılandırması) detaylarına göre şeffaf şekilde hesaplanır.',
   },
   {
-    question: 'SEO ne zaman sonuç verir?',
-    answer:
-      'SEO çalışmaları arama motorlarının dizine ekleme ve algoritma güncelleme süreçlerine bağlı olarak genellikle 3 ila 6 ay içerisinde kalıcı sonuçlar vermeye başlar.',
+    q: 'Domain ve hosting hizmete dahil mi?',
+    a: 'Domain (alan adı) ve hosting (sunucu) alanlarında müşterilerimizin kendi hesaplarını kullanmalarını veya tarafımızdan kurulum desteği almalarını sağlıyoruz. Vercel gibi ücretsiz statik barındırma çözümlerinde hosting maliyeti oluşmaz.',
   },
   {
-    question: 'Google Maps’te üst sıra garanti edilir mi?',
-    answer:
-      'Hiçbir etik ve gerçekçi ajans arama motorlarında veya haritalarda %100 sıra garantisi veremez. Biz, Google İşletme Profili optimizasyonu ve yerel SEO teknikleri ile sıralamanızı en üst seviyeye çıkarmak için kanıtlanmış yöntemler uygularız.',
+    q: 'Vercel’den normal hostinge (cPanel/FileZilla) geçilebilir mi?',
+    a: 'Evet. Geliştirdiğimiz statik ve modern web siteleri tamamen taşınabilir yapıdadır. İstediğiniz an klasik cPanel, Plesk veya FTP/FileZilla ile standart bir Linux/Windows sunucuya aktarılabilir.',
   },
   {
-    question: 'Yemeksepeti ve Trendyol Yemek panelini yönetiyor musunuz?',
-    answer:
-      'Evet. Restoranınızın panel kurulumu, menü güncellemesi, ürün fiyatlandırmaları, çalışma saatleri düzenlemesi ve kampanya takibini bağımsız danışmanlık kapsamında biz üstleniyoruz.',
+    q: 'SEO çalışmaları ne zaman sonuç verir?',
+    a: 'SEO uzun soluklu bir süreçtir. Teknik alt yapı düzeltmeleri ve site içi SEO çalışmaları yayına alındıktan sonra 1-3 ay içerisinde arama motoru indekslerinde belirgin artışlar gözlemlenmeye başlar.',
   },
   {
-    question: 'Instagram reklam bütçesi hizmet ücretine dahil mi?',
-    answer:
-      'Hayır. Reklam bütçesi doğrudan ilgili platforma (Meta) sizin tarafınızdan ödenir. Bizim hizmet ücretimiz reklam stratejisi, görsel tasarımı, hedef kitle ayarları ve performans takibini kapsar.',
+    q: 'Google Maps’te kesin üst sıra garantisi veriliyor mu?',
+    a: 'Arama motorlarının ve harita algoritmalarının resmî yayıncısı hariç kimse %100 sıra garantisi veremez. Biz Google İşletme Profilinizi tüm yerel SEO ve kategori standartlarına eksiksiz uyarlayarak görünürlüğünüzü en üst seviyeye çıkarıyoruz.',
   },
   {
-    question: 'Mobil uygulama hem iOS hem Android için hazırlanabilir mi?',
-    answer:
-      'Evet. Çapraz platform (cross-platform) teknolojilerimiz sayesinde tek bir kod tabanı üzerinden hem iOS (App Store) hem de Android (Google Play) uyumlu uygulamalar geliştiriyoruz.',
+    q: 'Yemeksepeti ve Trendyol Yemek panellerini siz mi yönetiyorsunuz?',
+    a: 'Süreç başında panel başvurularınızı, mağaza kurulumunuzu, menü yapılandırmanızı ve kampanya ayarlarınızı eksiksiz yapıyoruz. Ardından panel kullanım eğitimi sunarak operasyonu kolayca yönetmenizi sağlıyoruz.',
   },
   {
-    question: 'Yayınlandıktan sonra destek veriyor musunuz?',
-    answer:
-      'Kesinlikle. Projeniz yayına alındıktan sonra teknik bakım, güvenlik güncellemeleri ve kullanım eğitimleri ile sürdürülebilir destek sağlıyoruz.',
+    q: 'Instagram reklam bütçesi hizmet ücretine dahil mi?',
+    a: 'Hayır. Reklam yayınlama bütçeniz doğrudan Meta (Instagram/Facebook) hesabınıza yüklenir ve doğrudan platforma ödenir. Ajansımız hedef kitle, görsel kurgu ve kampanya yönetimi hizmeti sunar.',
+  },
+  {
+    q: 'Mobil uygulama hem iOS hem Android için hazırlanabilir mi?',
+    a: 'Evet. Cross-platform teknolojiler sayesinde tek bir kod tabanı üzerinden hem Apple App Store hem de Google Play Store ile tam uyumlu performanslı mobil uygulamalar geliştiriyoruz.',
+  },
+  {
+    q: 'Yayınlama sonrasında teknik destek veriliyor mu?',
+    a: 'Evet. Tüm projelerimizde yayına alma sonrasında 30 gün boyunca ücretsiz teknik destek ve soru-cevap danışmanlığı sağlıyoruz. Arzu eden müşterilerimizle yıllık bakım anlaşmaları da yapmaktayız.',
   },
 ];
 
-const faqSchemaJson = JSON.stringify(getFaqSchema(faqs));
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.a,
+    },
+  })),
+};
 ---
 
-<section id="faq" class="py-24 bg-white border-b border-slate-200/80">
+<section class="py-20 bg-slate-50 border-b border-slate-200" id="faq">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <span class="badge-primary mb-3">Merak Edilenler</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-        Sık Sorulan Sorular
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100/80 text-sky-700 text-xs font-bold uppercase tracking-wider mb-3">
+        <HelpCircle className="w-4 h-4 text-sky-600" />
+        <span>Sık Sorulan Sorular</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+        Aklınıza takılan soruların yanıtları
       </h2>
-      <p class="mt-4 text-base text-slate-600">
-        Hizmetlerimiz ve çalışma süreçlerimiz hakkında en sık sorulan soruların yanıtları.
+      <p class="text-slate-600 text-sm sm:text-base mt-2">
+        Hizmetlerimiz ve çalışma yöntemimiz hakkında en çok merak edilen konular.
       </p>
     </div>
 
-    <!-- Accordion List -->
     <div class="space-y-4">
       {
         faqs.map((faq) => (
-          <details class="group p-6 rounded-2xl bg-slate-50 border border-slate-200/80 [&_summary::-webkit-details-marker]:hidden transition-all duration-200">
-            <summary class="flex items-center justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-lg">
-              <span class="text-base font-bold text-slate-900 pr-4">
-                {faq.question}
-              </span>
-              <span class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 shrink-0 group-open:rotate-180 transition-transform">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </span>
+          <details class="group p-5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-sky-300 transition-all [&_summary::-webkit-details-marker]:hidden">
+            <summary class="flex items-center justify-between cursor-pointer font-bold text-slate-900 text-base sm:text-lg focus:outline-none">
+              <span class="pr-4">{faq.q}</span>
+              <ChevronDown className="w-5 h-5 text-sky-500 shrink-0 group-open:rotate-180 transition-transform duration-200" />
             </summary>
-            <p class="mt-4 text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-4">
-              {faq.answer}
+            <p class="mt-4 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-4">
+              {faq.a}
             </p>
           </details>
         ))
@@ -84,5 +91,5 @@ const faqSchemaJson = JSON.stringify(getFaqSchema(faqs));
   </div>
 </section>
 
-<!-- Inject FAQPage JSON-LD -->
-<script type="application/ld+json" set:html={faqSchemaJson} />
+<!-- FAQPage Schema.org JSON-LD -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />

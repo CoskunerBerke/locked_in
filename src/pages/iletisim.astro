@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/common/Breadcrumb.astro';
+import WhatsAppForm from '../components/form/WhatsAppForm.react';
+import brandConfig from '../config/brand';
+import { Phone, Mail, MessageCircle, MapPin, Clock } from 'lucide-react';
+
+const breadcrumbItems = [{ name: 'İletişim', href: '/iletisim/' }];
+const formattedPhone = brandConfig.phone.replace(/[^0-9+]/g, '');
+const isPhoneValid = brandConfig.phone && !brandConfig.phone.includes('Geçici');
+const isEmailValid = brandConfig.email && !brandConfig.email.includes('Geçici');
+---
+
+<Layout
+  title={`İletişim — ${brandConfig.brandName}`}
+  description={`${brandConfig.brandName} ile iletişime geçin. Telefon, WhatsApp, e-posta veya hızlı teklif formu ile projelerinizi hemen başlatın.`}
+  activePage="/iletisim/"
+>
+  <Breadcrumb items={breadcrumbItems} title="Bizimle İletişime Geçin" />
+
+  <section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Left Contact Info -->
+        <div class="lg:col-span-5 space-y-8">
+          <div class="space-y-3">
+            <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3 py-1 rounded-full border border-sky-200">
+              İletişim Kanalları
+            </span>
+            <h1 class="text-3xl font-extrabold text-slate-900 leading-tight">
+              Sorularınız ve projeniz için her zaman buradayız.
+            </h1>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Formu doldurarak, telefon ederek veya WhatsApp üzerinden doğrudan mesaj göndererek ekibimizle anında görüşebilirsiniz.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
+              <div class="p-2.5 rounded-lg bg-sky-500 text-white shrink-0">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 class="font-bold text-slate-900 text-sm">Hizmet Bölgemiz</h2>
+                <p class="text-xs text-slate-600">{brandConfig.serviceArea}</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">{brandConfig.address}</p>
+              </div>
+            </div>
+
+            {isPhoneValid && (
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
+                <div class="p-2.5 rounded-lg bg-sky-500 text-white shrink-0">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 class="font-bold text-slate-900 text-sm">Telefon İletişim</h2>
+                  <a href={`tel:${formattedPhone}`} class="text-xs text-sky-600 font-semibold hover:underline">
+                    {brandConfig.phone}
+                  </a>
+                </div>
+              </div>
+            )}
+
+            {isEmailValid && (
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
+                <div class="p-2.5 rounded-lg bg-sky-500 text-white shrink-0">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 class="font-bold text-slate-900 text-sm">E-posta Adresi</h2>
+                  <a href={`mailto:${brandConfig.email}`} class="text-xs text-sky-600 font-semibold hover:underline">
+                    {brandConfig.email}
+                  </a>
+                </div>
+              </div>
+            )}
+
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3.5">
+              <div class="p-2.5 rounded-lg bg-emerald-600 text-white shrink-0">
+                <MessageCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 class="font-bold text-slate-900 text-sm">WhatsApp Hızlı Destek</h2>
+                <a
+                  href={`https://wa.me/${brandConfig.whatsappNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-xs text-emerald-700 font-semibold hover:underline"
+                >
+                  +{brandConfig.whatsappNumber}
+                </a>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3.5">
+              <div class="p-2.5 rounded-lg bg-slate-700 text-white shrink-0">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 class="font-bold text-slate-900 text-sm">Çalışma Saatleri</h2>
+                <p class="text-xs text-slate-600">Pazartesi - Cumartesi: 09:00 - 18:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Form Component -->
+        <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+          <h2 class="text-xl font-bold text-slate-900 mb-2">Proje &amp; Ön Görüşme Formu</h2>
+          <p class="text-xs text-slate-600 mb-6">
+            Bilgilerinizi eksiksiz girerek anında WhatsApp üzerinden teklif talebinizi oluşturabilirsiniz.
+          </p>
+
+          <WhatsAppForm client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

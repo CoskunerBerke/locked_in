@@ -1,11 +1,14 @@
 ---
 import brandConfig from '../../config/brand';
 import WhatsAppForm from '../form/WhatsAppForm.react';
+import { Phone, MessageCircle } from 'lucide-react';
+
+const formattedPhone = brandConfig.phone.replace(/[^0-9+]/g, '');
 ---
 
-<section id="teklif-formu" class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
-  <!-- Subtle Background Grid & Glow -->
-  <div class="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:32px_32px] opacity-10 pointer-events-none"></div>
+<section id="teklif-formu" class="py-24 bg-slate-900 text-white relative overflow-hidden">
+  <!-- Subtle Background Grid -->
+  <div class="absolute inset-0 bg-[radial-gradient(#078fea_1px,transparent_1px)] [background-size:32px_32px] opacity-10 pointer-events-none"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -13,49 +16,44 @@ import WhatsAppForm from '../form/WhatsAppForm.react';
       <div class="lg:col-span-6 space-y-6">
         <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-semibold">
           <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
-          Birlikte Büyüyelim
+          Birlikte Başaralım
         </span>
 
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-          İşletmeniz için doğru dijital sistemi <span class="text-sky-400">birlikte kuralım.</span>
+          Projenizi anlatın, size uygun <span class="text-sky-400">dijital yol haritasını</span> birlikte oluşturalım.
         </h2>
 
         <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
-          Web tasarımı, SEO, mobil uygulama, sosyal medya reklamları veya yemek platformu yönetimi için hemen ücretsiz ön görüşme randevusu alın.
+          Web tasarımı, SEO, mobil uygulama, sosyal medya reklamları veya yemek platformu yönetimi için hemen iletişim kurun, işletmenize özel stratejiyi belirleyelim.
         </p>
 
-        <!-- Direct Contact Quick Badges -->
-        <div class="pt-4 space-y-3">
-          <div class="flex items-center gap-3 text-sm text-slate-300">
-            <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold">
-              📞
-            </div>
-            <span>Doğrudan İletişim: <strong class="text-white">{brandConfig.phone}</strong></span>
-          </div>
-
-          <div class="flex items-center gap-3 text-sm text-slate-300">
-            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
-              💬
-            </div>
-            <span>Hızlı WhatsApp Hattı: <strong class="text-white">+{brandConfig.whatsappNumber}</strong></span>
-          </div>
-        </div>
-
+        <!-- Direct Action Buttons -->
         <div class="pt-4 flex flex-wrap gap-4">
           <a
             href={`https://wa.me/${brandConfig.whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-primary bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/30"
+            class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-emerald-900/30"
           >
-            WhatsApp'tan Görüşelim
+            <MessageCircle className="w-5 h-5" />
+            <span>WhatsApp'tan Görüş</span>
           </a>
+
+          {brandConfig.phone && !brandConfig.phone.includes('Geçici') && (
+            <a
+              href={`tel:${formattedPhone}`}
+              class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3.5 rounded-lg font-bold text-sm transition-all"
+            >
+              <Phone className="w-5 h-5 text-sky-400" />
+              <span>Telefonla Ara</span>
+            </a>
+          )}
         </div>
       </div>
 
-      <!-- Right Glass Form Container -->
-      <div class="lg:col-span-6 bg-white text-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-200">
-        <h3 class="text-xl font-bold text-slate-900 mb-2">Hızlı Teklif Formu</h3>
+      <!-- Right Form Container -->
+      <div class="lg:col-span-6 bg-white text-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-200">
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Ücretsiz Ön Görüşme Formu</h3>
         <p class="text-xs text-slate-600 mb-6">
           Aşağıdaki formu doldurarak projeniz hakkında bilgi verin, size hemen dönelim.
         </p>

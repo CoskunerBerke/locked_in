@@ -1,0 +1,60 @@
+---
+import brandConfig from '../../config/brand';
+import { Phone, Mail, Instagram, MessageCircle, Clock, MapPin, ArrowRight } from 'lucide-react';
+
+const isPhoneValid = brandConfig.phone && !brandConfig.phone.includes('Geçici');
+const isEmailValid = brandConfig.email && !brandConfig.email.includes('Geçici');
+const isInstagramValid = brandConfig.instagramUrl && !brandConfig.instagramUrl.includes('gecici');
+
+const formattedWhatsappUrl = `https://wa.me/${brandConfig.whatsappNumber}?text=${encodeURIComponent('Merhaba, web siteniz üzerinden hızlı teklif almak istiyorum.')}`;
+---
+
+<div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Left Section: Location & Hours -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5 text-slate-300">
+        <MapPin className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+        <span>{brandConfig.serviceArea}</span>
+      </div>
+      <span class="hidden md:inline text-slate-700">|</span>
+      <div class="hidden md:flex items-center gap-1.5 text-slate-400">
+        <Clock className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+        <span>Pzt - Cmt: 09:00 - 18:00</span>
+      </div>
+    </div>
+
+    <!-- Right Section: Contact Links & CTA -->
+    <div class="flex items-center gap-4">
+      {isPhoneValid && (
+        <a href={`tel:${brandConfig.phone.replace(/[^0-9+]/g, '')}`} class="hidden sm:flex items-center gap-1 hover:text-white transition-colors">
+          <Phone className="w-3.5 h-3.5 text-sky-400" />
+          <span>{brandConfig.phone}</span>
+        </a>
+      )}
+
+      {isEmailValid && (
+        <a href={`mailto:${brandConfig.email}`} class="hidden lg:flex items-center gap-1 hover:text-white transition-colors">
+          <Mail className="w-3.5 h-3.5 text-sky-400" />
+          <span>{brandConfig.email}</span>
+        </a>
+      )}
+
+      {isInstagramValid && (
+        <a href={brandConfig.instagramUrl} target="_blank" rel="noopener noreferrer" class="hidden lg:flex items-center gap-1 hover:text-white transition-colors" aria-label="Instagram">
+          <Instagram className="w-3.5 h-3.5 text-sky-400" />
+        </a>
+      )}
+
+      <a href={formattedWhatsappUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors font-medium">
+        <MessageCircle className="w-3.5 h-3.5" />
+        <span>WhatsApp</span>
+      </a>
+
+      <a href="/iletisim/" class="inline-flex items-center gap-1 bg-sky-500 hover:bg-sky-400 text-white px-2.5 py-0.5 rounded font-semibold text-[11px] transition-colors ml-1">
+        <span>Hızlı Teklif Al</span>
+        <ArrowRight className="w-3 h-3" />
+      </a>
+    </div>
+  </div>
+</div>

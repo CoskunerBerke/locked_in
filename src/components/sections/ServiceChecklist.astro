@@ -1,0 +1,50 @@
+---
+import { CheckCircle2, ShieldCheck } from 'lucide-react';
+
+const checklistItems = [
+  'Mobil Öncelikli & Fully Responsive Tasarım',
+  'Özgün & Kurumsal Arayüz Tasarımı',
+  'Semantik & SEO Uyumlu HTML5 Kodlama',
+  'Core Web Vitals Hız Optimizasyonu',
+  'Güvenlik Başlıkları (CSP, HSTS, X-Frame)',
+  'Tam HTTPS & SSL Sertifika Uyumluluğu',
+  'WCAG 2.2 AA Erişilebilirlik Standartları',
+  'Mobil Öncelikli (Mobile-First) Geliştirme',
+  'Vercel Cloud Deployment Altyapısı',
+  'FileZilla / Klasik Statik Hosting Desteği',
+  'Sosyal Medya & OpenGraph Paylaşım Kartları',
+  'Google Analytics & Search Console Kurulumu',
+  'Teknik Dokümantasyon ve Proje Teslimi',
+  'Yayın Sonrası 30 Gün Ücretsiz Teknik Destek',
+  'Otomatik Versiyon Kontrolü & Git Yedekleme',
+  'GitHub Kaynak Kod Temiz Repo Yönetimi',
+];
+---
+
+<section class="py-20 bg-white border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 text-sky-700 text-xs font-bold uppercase tracking-wider mb-3">
+        <ShieldCheck className="w-4 h-4 text-sky-600" />
+        <span>Kalite Standartlarımız</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+        Projelerimizin standart olarak içerdiği <span class="text-sky-600">16 teknik özellik</span>
+      </h2>
+      <p class="text-slate-600 text-sm sm:text-base mt-3">
+        Geliştirdiğimiz her dijital projede ek ücret talep etmeden sunduğumuz temel kalite ve altyapı kriterleri.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {
+        checklistItems.map((item) => (
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+            <CheckCircle2 className="w-5 h-5 text-sky-500 shrink-0 mt-0.5" />
+            <span class="text-xs sm:text-sm font-semibold text-slate-800 leading-snug">{item}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/common/Breadcrumb.astro';
+import WhyUs from '../components/sections/WhyUs.astro';
+import WorkProcess from '../components/sections/WorkProcess.astro';
+import FinalCTA from '../components/sections/FinalCTA.astro';
+import brandConfig from '../config/brand';
+import { Target, Eye } from 'lucide-react';
+
+const breadcrumbItems = [{ name: 'Kurumsal / Hakkımızda', href: '/hakkimizda/' }];
+---
+
+<Layout
+  title={`Hakkımızda — ${brandConfig.brandName}`}
+  description={`${brandConfig.brandName} hakkında detaylı bilgi, dijital vizyonumuz, çalışma prensiplerimiz ve kurumsal standartlarımız.`}
+  activePage="/hakkimizda/"
+>
+  <Breadcrumb items={breadcrumbItems} title="Hakkımızda & Kurumsal Vizyonumuz" />
+
+  <section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="max-w-3xl">
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3 py-1 rounded-full border border-sky-200">
+          Kurumsal Profil
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 leading-tight">
+          Dijitalde güçlü ve sürdürülebilir başarı sistemleri inşa ediyoruz.
+        </h1>
+        <p class="text-slate-600 text-base sm:text-lg mt-4 leading-relaxed">
+          {brandConfig.brandName}, işletmelerin dijital dünyadaki tüm ihtiyaçlarını tek merkezden yönetmek, karmaşık teknik süreçleri şeffaf çözümlere dönüştürmek amacıyla kurulmuş modern bir dijital hizmet ajansıdır.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="p-8 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+          <div class="p-3 rounded-xl bg-sky-500 text-white w-fit">
+            <Target className="w-6 h-6" />
+          </div>
+          <h2 class="text-xl font-bold text-slate-900">Misyonumuz</h2>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            İşletmelerin dijital varlıklarını en yüksek güvenlik, hız ve dönüşüm standartlarında inşa ederek markalarını hedef kitleleriyle etkili ve güvenilir bir şekilde buluşturmaktır.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+          <div class="p-3 rounded-xl bg-sky-500 text-white w-fit">
+            <Eye className="w-6 h-6" />
+          </div>
+          <h2 class="text-xl font-bold text-slate-900">Vizyonumuz</h2>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Gelişen web teknolojilerini, arama motoru standartlarını ve dijital reklam araçlarını en entegre biçimde kullanan lider ve güvenilir dijital çözüm ortağı olmaktır.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <WhyUs />
+  <WorkProcess />
+  <FinalCTA />
+</Layout>

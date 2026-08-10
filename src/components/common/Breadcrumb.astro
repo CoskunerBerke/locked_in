@@ -3,16 +3,23 @@ import { getBreadcrumbSchema } from '../../utils/jsonLd';
 
 interface BreadcrumbItem {
   name: string;
-  url: string;
+  url?: string;
+  href?: string;
 }
 
 interface Props {
   items: BreadcrumbItem[];
+  title?: string;
 }
 
-const { items } = Astro.props;
+const { items, title } = Astro.props;
 
-const allItems = [{ name: 'Ana Sayfa', url: '/' }, ...items];
+const normalizedItems = items.map((item) => ({
+  name: item.name,
+  url: item.url || item.href || '/',
+}));
+
+const allItems = [{ name: 'Ana Sayfa', url: '/' }, ...normalizedItems];
 const schemaJson = JSON.stringify(getBreadcrumbSchema(allItems));
 ---
 
@@ -30,7 +37,7 @@ const schemaJson = JSON.stringify(getBreadcrumbSchema(allItems));
             )}
             {isLast ? (
               <span class="font-semibold text-slate-900" aria-current="page">
-                {item.name}
+                {title || item.name}
               </span>
             ) : (
               <a href={item.url} class="hover:text-sky-600 transition-colors">
@@ -45,4 +52,4 @@ const schemaJson = JSON.stringify(getBreadcrumbSchema(allItems));
 </nav>
 
 <!-- JSON-LD Breadcrumb Schema -->
-<script type="application/ld+json" set:html={schemaJson} />
+<script type="application/ld+json" is:inline set:html={schemaJson} />

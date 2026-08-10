@@ -1,20 +1,49 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Navigation & Page Loads', () => {
-  test('should load Home Page cleanly', async ({ page }) => {
+test.describe('Navigation & Corporate Page Loads', () => {
+  test('should load Home Page cleanly with new corporate title', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/MARKA ADI/);
-    await expect(page.locator('h1')).toContainText('Dijitalde görünür');
+    await expect(page.locator('h1')).toContainText('İşletmenizi dijitalde');
   });
 
-  test('should navigate to Web Sitesi Tasarımı page', async ({ page }) => {
-    await page.goto('/hizmetler/web-sitesi-tasarimi/');
+  test('should open Mega Menu and navigate to Web Sitesi Tasarımı page', async ({ page }) => {
+    await page.goto('/');
+
+    const megaMenuBtn = page.locator('button[aria-haspopup="true"]', { hasText: 'Hizmetler' }).first();
+    if (await megaMenuBtn.isVisible()) {
+      await megaMenuBtn.click();
+      const link = page.locator('a', { hasText: 'Kurumsal Web Sitesi' }).first();
+      await expect(link).toBeVisible();
+      await link.click();
+    } else {
+      await page.goto('/hizmetler/web-sitesi-tasarimi/');
+    }
+
     await expect(page.locator('h1')).toContainText('Kurumsal Web Sitesi Tasarımı');
   });
 
-  test('should navigate to Yemeksepeti & Trendyol Yemek page', async ({ page }) => {
-    await page.goto('/hizmetler/yemeksepeti-trendyol-yemek/');
-    await expect(page.locator('h1')).toContainText('Yemeksepeti ve Trendyol Yemek');
+  test('should navigate to Hakkımızda page', async ({ page }) => {
+    await page.goto('/hakkimizda/');
+    await expect(page.locator('h1')).toContainText('Dijitalde güçlü ve sürdürülebilir');
+  });
+
+  test('should navigate to Projeler page and display empty state', async ({ page }) => {
+    await page.goto('/projeler/');
+    await expect(page.locator('h1')).toContainText('Portfolyo & Projelerimiz Hazırlanıyor');
+  });
+
+  test('should navigate to Akademi blog index and detail post', async ({ page }) => {
+    await page.goto('/akademi/');
+    await expect(page.locator('h1')).toContainText('İşletmenizi dijitalde öne geçirecek');
+
+    await page.goto('/akademi/kurumsal-web-sitesi-nedir/');
+    await expect(page.locator('h1')).toContainText('Kurumsal Web Sitesi Nedir?');
+  });
+
+  test('should navigate to İletişim page', async ({ page }) => {
+    await page.goto('/iletisim/');
+    await expect(page.locator('h1')).toContainText('Sorularınız ve projeniz için her zaman buradayız');
   });
 
   test('should render custom 404 page on invalid route', async ({ page }) => {

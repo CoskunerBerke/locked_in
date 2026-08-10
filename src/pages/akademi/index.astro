@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import brandConfig from '../../config/brand';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Clock, ArrowRight, Tag } from 'lucide-react';
+
+type BlogEntry = CollectionEntry<'blog'>;
+
+const breadcrumbItems = [{ name: 'Akademi / Blog', href: '/akademi/' }];
+const allBlogPosts = await getCollection('blog');
+const posts: BlogEntry[] = allBlogPosts.sort(
+  (a: BlogEntry, b: BlogEntry) =>
+    new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+---
+
+<Layout
+  title={`Akademi & Dijital Bilgi Merkezi — ${brandConfig.brandName}`}
+  description="Web tasarımı, teknik SEO, Google Maps, mobil uygulama ve sosyal medya reklamları hakkında rehber makaleler ve uzman bilgileri."
+  activePage="/akademi/"
+>
+  <Breadcrumb items={breadcrumbItems} title="Locked_in Akademi & Bilgi Merkezi" />
+
+  <section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="max-w-3xl">
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3 py-1 rounded-full border border-sky-200">
+          Özgün Rehberler &amp; Makaleler
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 leading-tight">
+          İşletmenizi dijitalde öne geçirecek uzman rehberleri
+        </h1>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
+          Gerçek kullanıcı sorularına yanıt veren, teknik kavramları sade bir dille açıklayan güncel bilgi bankamız.
+        </p>
+      </div>
+
+      <!-- Blog Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          posts.map((post: BlogEntry) => (
+            <article class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition-all flex flex-col justify-between group shadow-xs">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                  <span class="inline-flex items-center gap-1 text-sky-600 font-bold uppercase tracking-wider">
+                    <Tag className="w-3.5 h-3.5" />
+                    {post.data.category}
+                  </span>
+                  <span class="inline-flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    {post.data.readingTime}
+                  </span>
+                </div>
+
+                <h2 class="text-xl font-bold text-slate-900 group-hover:text-sky-600 transition-colors leading-snug">
+                  <a href={`/akademi/${post.slug}/`}>{post.data.title}</a>
+                </h2>
+
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-3">
+                  {post.data.description}
+                </p>
+              </div>
+
+              <div class="pt-6 mt-6 border-t border-slate-200/80 flex items-center justify-between text-xs font-bold text-sky-600">
+                <span>Okumaya Devam Et</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

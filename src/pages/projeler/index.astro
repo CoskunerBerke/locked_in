@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/common/Breadcrumb.astro';
+import FinalCTA from '../../components/sections/FinalCTA.astro';
+import brandConfig from '../../config/brand';
+import projectsData from '../../data/projects';
+import { FolderGit2, ArrowRight } from 'lucide-react';
+
+const breadcrumbItems = [{ name: 'Projeler', href: '/projeler/' }];
+const hasProjects = projectsData.length > 0;
+---
+
+<Layout
+  title={`Referans ve Projeler — ${brandConfig.brandName}`}
+  description={`${brandConfig.brandName} tarafından geliştirilen kurumsal web tasarımı, yazılım ve dijital projeler.`}
+  activePage="/projeler/"
+>
+  <Breadcrumb items={breadcrumbItems} title="Gerçekleştirdiğimiz Projeler" />
+
+  <section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {
+        hasProjects ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projectsData.map((project) => (
+              <div class="rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-xs hover:border-sky-300 transition-all">
+                <img src={project.image} alt={project.title} class="w-full h-48 object-cover" />
+                <div class="p-6 space-y-3">
+                  <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">{project.industry}</span>
+                  <h2 class="text-xl font-bold text-slate-900">{project.title}</h2>
+                  <p class="text-xs text-slate-600">{project.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center max-w-xl mx-auto py-16 px-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-6">
+            <div class="p-4 rounded-2xl bg-sky-100 text-sky-600 w-fit mx-auto">
+              <FolderGit2 className="w-10 h-10" />
+            </div>
+
+            <div class="space-y-2">
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                Portfolyo & Projelerimiz Hazırlanıyor
+              </h1>
+              <p class="text-slate-600 text-sm leading-relaxed">
+                Referans projelerimizin teknik detayları, müşteri onayları ve vaka analizleri (Case Study) güncellenmektedir. Projenize özel referans örneklerini görüşmek için iletişime geçebilirsiniz.
+              </p>
+            </div>
+
+            <a href="/iletisim/" class="btn-primary text-sm inline-flex items-center gap-2">
+              <span>Projenizi Birlikte Planlayalım</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <FinalCTA />
+</Layout>

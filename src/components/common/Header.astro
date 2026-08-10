@@ -1,5 +1,7 @@
 ---
 import brandConfig from '../../config/brand';
+import TopBar from './TopBar.astro';
+import MegaMenu from './MegaMenu.react';
 import MobileMenu from './MobileMenu.react';
 
 interface Props {
@@ -7,15 +9,6 @@ interface Props {
 }
 
 const { activePage } = Astro.props;
-
-const navLinks = [
-  { name: 'Hizmetler', href: '/#hizmetler' },
-  { name: 'Çözümler', href: '/hizmetler/yemeksepeti-trendyol-yemek/' },
-  { name: 'Süreç', href: '/#surec' },
-  { name: 'Hakkımızda', href: '/#neden-biz' },
-  { name: 'SSS', href: '/#faq' },
-  { name: 'İletişim', href: '/#teklif-formu' },
-];
 ---
 
 <!-- Accessibility Skip-to-Content Link -->
@@ -26,44 +19,83 @@ const navLinks = [
   İçeriğe Atla
 </a>
 
+<!-- Top Information Bar -->
+<TopBar />
+
+<!-- Main Corporate Header -->
 <header
   id="site-header"
-  class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300"
+  class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all duration-200"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20 transition-all duration-300" id="header-inner">
+    <div class="flex items-center justify-between h-20 transition-all duration-200" id="header-inner">
       <!-- Logo & Brand -->
       <a href="/" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-lg p-1">
         <img
           src={brandConfig.logoPath}
           alt={`${brandConfig.brandName} Logosu`}
-          class="h-10 w-auto transition-transform group-hover:scale-105"
+          class="h-9 sm:h-10 w-auto transition-transform group-hover:scale-105"
           width="180"
           height="40"
         />
       </a>
 
-      <!-- Desktop Nav Items -->
-      <nav class="hidden md:flex items-center gap-8" aria-label="Ana Gezinme">
-        {
-          navLinks.map((link) => (
-            <a
-              href={link.href}
-              class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
-                activePage === link.href ? 'text-sky-600 font-bold' : 'text-slate-700'
-              }`}
-            >
-              {link.name}
-            </a>
-          ))
-        }
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center gap-6" aria-label="Ana Gezinme">
+        <a
+          href="/"
+          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
+            activePage === '/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          }`}
+        >
+          Ana Sayfa
+        </a>
+
+        {/* Mega Menu for Hizmetler */}
+        <MegaMenu client:load />
+
+        <a
+          href="/projeler/"
+          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
+            activePage === '/projeler/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          }`}
+        >
+          Projeler
+        </a>
+
+        <a
+          href="/akademi/"
+          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
+            activePage === '/akademi/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          }`}
+        >
+          Akademi
+        </a>
+
+        <a
+          href="/hakkimizda/"
+          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
+            activePage === '/hakkimizda/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          }`}
+        >
+          Kurumsal
+        </a>
+
+        <a
+          href="/iletisim/"
+          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
+            activePage === '/iletisim/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          }`}
+        >
+          İletişim
+        </a>
       </nav>
 
-      <!-- Right Action CTAs & Mobile Toggle -->
+      <!-- Right Red CTA & Mobile Toggle -->
       <div class="flex items-center gap-4">
         <a
-          href="#teklif-formu"
-          class="hidden sm:inline-flex btn-primary text-sm py-2.5 px-5 shadow-sm"
+          href="/iletisim/"
+          class="hidden sm:inline-flex btn-cta text-sm py-2.5 px-5 shadow-sm"
         >
           Ücretsiz Ön Görüşme
         </a>
@@ -75,13 +107,12 @@ const navLinks = [
 </header>
 
 <script>
-  // Controlled shrink effect on scroll
   const header = document.getElementById('site-header');
   const headerInner = document.getElementById('header-inner');
 
   if (header && headerInner) {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 30) {
         headerInner.classList.remove('h-20');
         headerInner.classList.add('h-16');
         header.classList.add('shadow-md');

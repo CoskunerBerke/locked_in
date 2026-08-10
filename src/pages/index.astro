@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/hero/HeroSection.astro';
-import ServiceTicker from '../components/sections/ServiceTicker.astro';
-import BentoGrid from '../components/sections/BentoGrid.astro';
-import FoodDeliverySpecial from '../components/sections/FoodDeliverySpecial.astro';
-import CanvasFallback from '../components/3d/CanvasFallback.astro';
+import HeroServiceNav from '../components/sections/HeroServiceNav.astro';
+import CorporateAboutOverview from '../components/sections/CorporateAboutOverview.astro';
+import MainServicesDetailed from '../components/sections/MainServicesDetailed.astro';
+import ServiceChecklist from '../components/sections/ServiceChecklist.astro';
 import WorkProcess from '../components/sections/WorkProcess.astro';
 import WhyUs from '../components/sections/WhyUs.astro';
 import FAQSection from '../components/sections/FAQSection.astro';
@@ -13,15 +13,15 @@ import brandConfig from '../config/brand';
 ---
 
 <Layout
-  title={`${brandConfig.brandName} - Dijital Görünürlük ve Danışmanlık Hizmetleri`}
+  title={`${brandConfig.brandName} — Premium Kurumsal Dijital Hizmet Ajansı`}
   description={brandConfig.description}
   activePage="/"
 >
   <HeroSection />
-  <ServiceTicker />
-  <BentoGrid />
-  <FoodDeliverySpecial />
-  <CanvasFallback />
+  <HeroServiceNav />
+  <CorporateAboutOverview />
+  <MainServicesDetailed />
+  <ServiceChecklist />
   <WorkProcess />
   <WhyUs />
   <FAQSection />

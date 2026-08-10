@@ -1,66 +1,73 @@
 ---
 import HeroVideoPlayer from './HeroVideoPlayer.react';
+import { ArrowRight, ShieldCheck, Smartphone, Search, Server, Sparkles } from 'lucide-react';
 ---
 
-<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-50 border-b border-slate-200/80">
-  <!-- Looping Background Video & Controls -->
+<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900 border-b border-slate-800">
+  <!-- Background Video Player -->
   <HeroVideoPlayer client:load />
 
+  <!-- Gradient Overlay (Dark Navy / Translucent on right side) -->
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-950/40 z-10 pointer-events-none"
+    aria-hidden="true"
+  />
+
   <!-- Hero Content Container -->
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full pointer-events-none">
+  <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full pointer-events-none">
     <div class="max-w-3xl pointer-events-auto">
       <!-- Badge -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/90 border border-sky-200 text-sky-800 text-xs font-semibold mb-6 shadow-sm">
-        <span class="w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
-        <span>Dijital Sistemler & Danışmanlık</span>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-semibold mb-6 shadow-sm backdrop-blur-md">
+        <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+        <span>Web Tasarım • Yazılım • Dijital Büyüme</span>
       </div>
 
       <!-- Main Headline H1 -->
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6">
-        Dijitalde görünür,<br class="hidden sm:inline" />
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600">
-          işinizde güçlü olun.
-        </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-6">
+        İşletmenizi dijitalde<br class="hidden sm:inline" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-300 to-indigo-300">
+          güçlü bir sisteme
+        </span> dönüştürüyoruz.
       </h1>
 
+      <p class="text-sm font-bold text-sky-300 uppercase tracking-widest mb-4">
+        Tasarım, yazılım ve büyüme tek ekipte.
+      </p>
+
       <!-- Subtitle -->
-      <p class="text-lg sm:text-xl text-slate-700 leading-relaxed mb-8 max-w-2xl font-normal">
-        Web ve mobil ürünlerden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin dijital büyümesini tek merkezden yönetiyoruz.
+      <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl font-normal">
+        Web sitesi ve mobil uygulama geliştirmeden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin ihtiyaç duyduğu dijital hizmetleri tek merkezden sunuyoruz.
       </p>
 
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-        <a href="#teklif-formu" class="btn-primary text-center">
-          <span>Ücretsiz Ön Görüşme</span>
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
+        <a href="/iletisim/" class="btn-cta text-center shadow-lg">
+          <span>Ücretsiz Teklif Al</span>
+          <ArrowRight className="w-4 h-4 ml-1" />
         </a>
 
-        <a href="#hizmetler" class="btn-secondary text-center">
-          <span>Hizmetleri İncele</span>
+        <a href="#hizmetler-listesi" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-lg text-center font-semibold text-sm transition-all backdrop-blur-md">
+          <span>Hizmetlerimizi İncele</span>
         </a>
       </div>
 
-      <!-- Quick Trust Indicators -->
-      <div class="mt-12 pt-8 border-t border-slate-200/60 grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs text-slate-600 font-medium">
+      <!-- Quick Verifiable Trust Indicators -->
+      <div class="mt-12 pt-8 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-slate-300 font-medium">
         <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Uçtan Uça Dijital Çözüm</span>
+          <Smartphone className="w-4 h-4 text-sky-400 shrink-0" />
+          <span>Mobil Uyumlu Tasarım</span>
         </div>
         <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Mobil Öncelikli Altyapı</span>
+          <Search className="w-4 h-4 text-sky-400 shrink-0" />
+          <span>SEO Odaklı Altyapı</span>
         </div>
-        <div class="flex items-center gap-2 col-span-2 sm:col-span-1">
-          <svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Şeffaf &amp; Güvenli Süreç</span>
+        <div class="flex items-center gap-2">
+          <Server className="w-4 h-4 text-sky-400 shrink-0" />
+          <span>Güvenli Statik Mimari</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
+          <span>Yayın Sonrası Destek</span>
         </div>
       </div>
     </div>
