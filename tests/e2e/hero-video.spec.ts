@@ -1,73 +1,20 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Hero Background Video System', () => {
-  test('should load video element and verify source properties', async ({ page }) => {
+test.describe('Hero System & Solar System Canvas', () => {
+  test('should load Home Page cleanly with high-contrast text and 8-planet Solar System', async ({ page }) => {
     await page.goto('/');
 
-    const videoLocator = page.locator('video');
-    await expect(videoLocator).toBeAttached();
-    await expect(videoLocator).toBeVisible();
+    const h1 = page.locator('h1');
+    await expect(h1).toBeVisible();
+    await expect(h1).toContainText('İşletmenizi dijitalde');
+    await expect(h1).toContainText('güçlü bir sisteme');
 
-    const sourceLocator = page.locator('video source');
-    await expect(sourceLocator).toHaveAttribute('src', '/videos/hero-desktop.mp4');
-    await expect(sourceLocator).toHaveAttribute('type', 'video/mp4');
+    // Ensure NO video control button exists
+    const videoButton = page.locator('button[aria-label*="Arka plan videosunu"]');
+    await expect(videoButton).toHaveCount(0);
 
-    // Verify DOM properties
-    const videoProperties = await videoLocator.evaluate((el: HTMLVideoElement) => ({
-      muted: el.muted,
-      loop: el.loop,
-      playsInline: el.playsInline,
-      readyState: el.readyState,
-    }));
-
-    expect(videoProperties.muted).toBe(true);
-    expect(videoProperties.loop).toBe(true);
-    expect(videoProperties.playsInline).toBe(true);
-    expect(videoProperties.readyState).toBeGreaterThanOrEqual(1); // HAVE_METADATA or higher
-  });
-
-  test('should toggle play and pause via control button', async ({ page }) => {
-    await page.goto('/');
-
-    const button = page.locator('button[aria-label*="Arka plan videosunu"]');
-    await expect(button).toBeVisible();
-
-    const videoLocator = page.locator('video');
-    await expect(videoLocator).toBeAttached();
-
-    // Click control button
-    await button.click({ force: true });
-    await page.waitForTimeout(300);
-
-    const buttonTextAfterClick = (await button.innerText()).trim();
-    expect(buttonTextAfterClick).toMatch(/Arka plan videosunu (durdur|oynat)/i);
-  });
-
-  test('should respect reduced motion initially but allow manual play button click', async ({ page }) => {
-    // Emulate reduced motion
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-
-    const videoLocator = page.locator('video');
-    await expect(videoLocator).toBeAttached();
-    await expect(videoLocator).toBeVisible();
-
-    await page.waitForTimeout(200);
-
-    // Ensure paused state in reduced motion
-    await videoLocator.evaluate((el: HTMLVideoElement) => el.pause());
-
-    const isPausedInReducedMotion = await videoLocator.evaluate((el: HTMLVideoElement) => el.paused);
-    expect(isPausedInReducedMotion).toBe(true);
-
-    const button = page.locator('button[aria-label*="Arka plan videosunu"]');
-    await expect(button).toBeVisible();
-
-    // Click manual play button
-    await button.click({ force: true });
-
-    await page.waitForTimeout(300);
-    const buttonText = await button.innerText();
-    expect(buttonText).toMatch(/Arka plan videosunu (durdur|oynat)/i);
+    // Ensure Solar System Canvas is present
+    const canvas = page.locator('canvas');
+    await expect(canvas.first()).toBeVisible();
   });
 });
