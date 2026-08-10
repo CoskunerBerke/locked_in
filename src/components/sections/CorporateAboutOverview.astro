@@ -1,90 +1,75 @@
 ---
-import { CheckCircle2, Layers, ShieldCheck, Zap, BarChart3, Users } from 'lucide-react';
+import { Layers, ShieldCheck, Zap, BarChart3, Users, CheckCircle2 } from 'lucide-react';
 
 const corePillars = [
   {
     title: 'Strateji ve Hedef Analizi',
-    desc: 'Sadece kod yazmıyor, işletmenizin hedef kitlesini, rakip analizini ve satış hedeflerini inceleyerek dijital mimarinizi planlıyoruz.',
+    desc: 'İşletmenizin hedeflerini, rakip analizini ve satış fırsatlarını görsel dijital haritaya dönüştürüyoruz.',
     icon: BarChart3,
+    color: 'from-sky-500 to-blue-600',
   },
   {
     title: 'Modern UI/UX ve Mobil Uyum',
-    desc: 'Tüm ekranlarda 60 FPS akıcılıkta, yüksek okunabilirlikte ve dönüşüm odaklı tasarımlarla kullanıcı deneyimini zirveye taşıyoruz.',
+    desc: '60 FPS akıcılıkta, yüksek okunabilirlikte ve tüm cihazlarda kusursuz görünen animasyonlu tasarımlar.',
     icon: Layers,
+    color: 'from-indigo-500 to-purple-600',
   },
   {
-    title: 'SEO ve Yerel Görünürlük Altyapısı',
-    desc: 'Arama motorlarının ve Google Maps’in tam uyum sağladığı semantik HTML5, Schema.org ve yüksek hız standartlarıyla sitenizi yayına alıyoruz.',
+    title: 'SEO ve Yerel Görünürlük',
+    desc: 'Arama motorlarının ve Google Maps’in uyum sağladığı semantik altyapı ve yüksek hız standartları.',
     icon: Zap,
+    color: 'from-emerald-500 to-teal-600',
   },
   {
-    title: 'Kapsamlı Entegrasyon ve Yayın Desteği',
-    desc: 'Meta reklam kurulumlarından Yemeksepeti/Trendyol Yemek panel optimizasyonuna ve yayın sonrası teknik desteğe kadar yanınızdayız.',
+    title: 'Kapsamlı Entegrasyon & Destek',
+    desc: 'Meta reklam kurulumlarından yemek platformu yönetimine ve yayın sonrası desteğe kadar yanınızdayız.',
     icon: ShieldCheck,
+    color: 'from-rose-500 to-pink-600',
   },
 ];
 ---
 
-<section class="py-20 bg-white border-b border-slate-200 overflow-hidden">
+<section class="py-20 bg-white border-b border-slate-200 overflow-hidden relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <!-- Left Text Content -->
-      <div class="lg:col-span-7 space-y-6">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sky-50 border border-sky-200 text-sky-700 text-xs font-bold uppercase tracking-wider">
-          <Users className="w-3.5 h-3.5" />
-          <span>Kurumsal Yaklaşımımız</span>
-        </div>
-
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
-          Dijital ihtiyaçlarınızı ayrı ayrı değil, <span class="text-sky-600">tek bir sistem</span> olarak ele alıyoruz.
-        </h2>
-
-        <p class="text-slate-600 leading-relaxed text-base sm:text-lg">
-          Günümüz dijital dünyasında sadece bir web sitesine sahip olmak yeterli değildir. Başarılı bir dijital varlık; hızlı bir altyapı, mobil öncelikli arayüz, arama motoru görünürlüğü, Google Maps konumu, sosyal medya varlığı ve operasyonel entegrasyonların bir arada çalışmasıyla mümkündür.
-        </p>
-
-        <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
-          Ajansımız, işletmenizin tüm bu ihtiyaçlarını dağınık hizmet sağlayıcılar yerine tek bir profesyonel çatı altından ve sürdürülebilir kalite standartlarıyla yönetir.
-        </p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-          <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-            <CheckCircle2 className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-sm">Bütüncül Yönetim</h3>
-              <p class="text-xs text-slate-600">Teknik destek, tasarım ve pazarlama aynı iletişim kanalında.</p>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-            <CheckCircle2 className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
-            <div>
-              <h3 class="font-bold text-slate-900 text-sm">Özelliğe Özel Altyapı</h3>
-              <p class="text-xs text-slate-600">Şablon veya hazır temalar yerine işletmenize özel tasarlanmış çözümler.</p>
-            </div>
-          </div>
-        </div>
+    <!-- Header Badge & Title -->
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-bold uppercase tracking-wider">
+        <Users className="w-4 h-4 text-sky-600" />
+        <span>Bütüncül Ajans Yaklaşımı</span>
       </div>
 
-      <!-- Right Visual Grid Cards -->
-      <div class="lg:col-span-5 grid grid-cols-1 gap-4">
-        {
-          corePillars.map((pillar) => {
-            const IconComp = pillar.icon;
-            return (
-              <div class="p-5 rounded-xl bg-slate-50 hover:bg-sky-50/60 border border-slate-200 hover:border-sky-300 transition-all shadow-xs">
-                <div class="flex items-center gap-3 mb-2">
-                  <div class="p-2 rounded-lg bg-sky-500 text-white shadow-xs">
-                    <IconComp className="w-4 h-4" />
-                  </div>
-                  <h3 class="font-bold text-slate-900 text-sm sm:text-base">{pillar.title}</h3>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+        Dijital ihtiyaçlarınızı <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600">tek bir dinamik sistem</span> olarak yönetiyoruz.
+      </h2>
+
+      <p class="text-slate-600 text-base leading-relaxed">
+        Karmaşık süreçler yerine, görsel olarak net ve ölçülebilir dijital çözümler sunuyoruz.
+      </p>
+    </div>
+
+    <!-- Visual 4-Pillar Grid Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        corePillars.map((pillar) => {
+          const IconComp = pillar.icon;
+          return (
+            <div class="group relative p-6 rounded-2xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-sky-300 transition-all duration-300 shadow-xs hover:shadow-xl hover:-translate-y-2 flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class={`w-12 h-12 rounded-xl bg-gradient-to-br ${pillar.color} text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                  <IconComp className="w-6 h-6" />
                 </div>
-                <p class="text-xs text-slate-600 leading-relaxed pl-11">{pillar.desc}</p>
+                <h3 class="font-bold text-slate-900 text-lg group-hover:text-sky-600 transition-colors">{pillar.title}</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">{pillar.desc}</p>
               </div>
-            );
-          })
-        }
-      </div>
+
+              <div class="pt-4 mt-4 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold text-sky-600">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Locked_in Standartları</span>
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   </div>
 </section>

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/hero/HeroSection.astro';
 import HeroServiceNav from '../components/sections/HeroServiceNav.astro';
+import Visual3DShowcase from '../components/sections/Visual3DShowcase.astro';
 import CorporateAboutOverview from '../components/sections/CorporateAboutOverview.astro';
 import MainServicesDetailed from '../components/sections/MainServicesDetailed.astro';
 import ServiceChecklist from '../components/sections/ServiceChecklist.astro';
@@ -13,12 +14,13 @@ import brandConfig from '../config/brand';
 ---
 
 <Layout
-  title={`${brandConfig.brandName} — Premium Kurumsal Dijital Hizmet Ajansı`}
+  title={`${brandConfig.brandName} — Interaktif & Görsel Dijital Ajans`}
   description={brandConfig.description}
   activePage="/"
 >
   <HeroSection />
   <HeroServiceNav />
+  <Visual3DShowcase />
   <CorporateAboutOverview />
   <MainServicesDetailed />
   <ServiceChecklist />

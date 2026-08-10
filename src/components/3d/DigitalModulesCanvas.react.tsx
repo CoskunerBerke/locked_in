@@ -2,8 +2,8 @@ import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Translucent Floating Digital Module
-function ModuleBox({ position, rotationSpeed }: { position: [number, number, number]; rotationSpeed: number }) {
+// Translucent Floating Glass Box
+function FloatingCube({ position, rotationSpeed }: { position: [number, number, number]; rotationSpeed: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((_state, delta) => {
@@ -15,35 +15,54 @@ function ModuleBox({ position, rotationSpeed }: { position: [number, number, num
 
   return (
     <mesh ref={meshRef} position={position}>
-      <boxGeometry args={[1.4, 1.4, 1.4]} />
+      <boxGeometry args={[1.3, 1.3, 1.3]} />
       <meshPhysicalMaterial
-        color="#E0F2FE"
+        color="#078FEA"
         transmission={0.85}
-        opacity={1}
+        opacity={0.9}
         transparent
-        roughness={0.15}
+        roughness={0.1}
         ior={1.4}
         thickness={0.8}
-        clearcoat={0.5}
-        metalness={0.2}
+        clearcoat={0.6}
+        metalness={0.1}
       />
     </mesh>
   );
 }
 
-// Glowing Connecting Light Paths
+// Floating Torus Ring
+function FloatingTorus({ position, rotationSpeed }: { position: [number, number, number]; rotationSpeed: number }) {
+  const torusRef = useRef<THREE.Mesh>(null);
+
+  useFrame((_state, delta) => {
+    if (torusRef.current) {
+      torusRef.current.rotation.x += delta * (rotationSpeed * 0.8);
+      torusRef.current.rotation.z += delta * rotationSpeed;
+    }
+  });
+
+  return (
+    <mesh ref={torusRef} position={position}>
+      <torusGeometry args={[0.9, 0.28, 16, 32]} />
+      <meshStandardMaterial color="#38BDF8" roughness={0.2} metalness={0.8} wireframe={false} />
+    </mesh>
+  );
+}
+
+// Glowing Connecting Path
 function LightLines() {
   const points = [
-    new THREE.Vector3(-3, 0, 0),
-    new THREE.Vector3(0, 1.5, 0),
-    new THREE.Vector3(3, -0.5, 0),
+    new THREE.Vector3(-3.2, -0.5, 0),
+    new THREE.Vector3(0, 1.2, 0.5),
+    new THREE.Vector3(3.2, -0.2, 0),
   ];
   const curve = new THREE.CatmullRomCurve3(points);
-  const lineGeometry = new THREE.TubeGeometry(curve, 64, 0.04, 8, false);
+  const lineGeometry = new THREE.TubeGeometry(curve, 64, 0.05, 8, false);
 
   return (
     <mesh geometry={lineGeometry}>
-      <meshBasicMaterial color="#0EA5E9" wireframe={false} opacity={0.8} transparent />
+      <meshBasicMaterial color="#38BDF8" opacity={0.7} transparent />
     </mesh>
   );
 }
@@ -52,13 +71,13 @@ function LightLines() {
 function SceneContainer() {
   return (
     <>
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[10, 10, 5]} intensity={1.5} color="#38BDF8" />
-      <pointLight position={[-5, -5, -5]} intensity={0.8} color="#4F46E5" />
+      <ambientLight intensity={1.5} />
+      <directionalLight position={[10, 10, 5]} intensity={2.0} color="#38BDF8" />
+      <pointLight position={[-5, -5, -5]} intensity={1.0} color="#078FEA" />
 
-      <ModuleBox position={[-2.5, 0, 0]} rotationSpeed={0.3} />
-      <ModuleBox position={[0, 0.8, 0.5]} rotationSpeed={0.2} />
-      <ModuleBox position={[2.5, -0.3, -0.5]} rotationSpeed={0.25} />
+      <FloatingCube position={[-2.4, 0.2, 0]} rotationSpeed={0.35} />
+      <FloatingTorus position={[0, 0.6, 0.4]} rotationSpeed={0.4} />
+      <FloatingCube position={[2.4, -0.4, -0.2]} rotationSpeed={0.3} />
 
       <LightLines />
     </>
@@ -85,12 +104,11 @@ export const DigitalModulesCanvas: React.FC = () => {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(motionQuery.matches);
 
-    // Lazy load when visible in viewport via IntersectionObserver
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
     if (containerRef.current) {
@@ -102,20 +120,20 @@ export const DigitalModulesCanvas: React.FC = () => {
 
   if (!webGlSupported || reducedMotion) {
     return (
-      <div className="w-full h-64 bg-slate-100 rounded-2xl flex items-center justify-center p-6 border border-slate-200">
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center mx-auto mb-3 font-bold">
+      <div className="w-full h-72 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl flex items-center justify-center p-6 border border-slate-700 shadow-xl">
+        <div className="text-center text-white">
+          <div className="w-14 h-14 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-400/30 flex items-center justify-center mx-auto mb-3 font-extrabold text-xl shadow-lg">
             3D
           </div>
-          <p className="text-sm font-semibold text-slate-800">Luminous Digital Modules Architecture</p>
-          <p className="text-xs text-slate-500 mt-1">Interaktif sistem modülleri simülasyonu</p>
+          <p className="text-base font-bold">Interaktif 3D Dijital Mimari</p>
+          <p className="text-xs text-slate-300 mt-1">Görsel Modül Simülasyonu</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className="w-full h-80 relative rounded-2xl overflow-hidden bg-slate-900/5 border border-slate-200">
+    <div ref={containerRef} className="w-full h-80 sm:h-96 relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl">
       {isVisible ? (
         <Suspense
           fallback={
@@ -126,7 +144,7 @@ export const DigitalModulesCanvas: React.FC = () => {
         >
           <Canvas
             dpr={[1, 1.5]}
-            camera={{ position: [0, 0, 6], fov: 45 }}
+            camera={{ position: [0, 0, 5.5], fov: 45 }}
             gl={{ powerPreference: 'low-power', antialias: true }}
           >
             <SceneContainer />
@@ -134,7 +152,7 @@ export const DigitalModulesCanvas: React.FC = () => {
         </Suspense>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-slate-400">
-          Görünürlük Bekleniyor...
+          Interaktif 3D Sahnesi Bekleniyor...
         </div>
       )}
     </div>

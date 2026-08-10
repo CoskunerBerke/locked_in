@@ -1,5 +1,5 @@
 ---
-import { Globe, Smartphone, Search, MapPin, Utensils, Megaphone, CheckCircle, ArrowRight } from 'lucide-react';
+import { Globe, Smartphone, Search, MapPin, Utensils, Megaphone, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 const detailedServices = [
   {
@@ -7,17 +7,17 @@ const detailedServices = [
     badge: 'Web Çözümleri',
     title: 'Web Tasarım ve Özel Geliştirme',
     subtitle: 'Hızlı, mobil öncelikli ve yüksek dönüşüm odaklı kurumsal web siteleri.',
-    desc: 'Markanızın dijital vitrinini en yüksek hız ve güvenlik standartlarında inşa ediyoruz. Şablon kalıplardan uzak, işletmenize özel tasarlanan web sitelerimiz Vercel ve klasik FTP/hosting ortamlarıyla %100 uyumludur.',
     features: [
       'Kurumsal Web Sitesi & Landing Page Tasarımı',
       'Mobil Öncelikli & Dönüşüm Odaklı UI/UX',
       'Teknik SEO & Core Web Vitals Hız Optimizasyonu',
-      'Statik Mimari ile Maximum Güvenlik & 0 Zafiyet',
+      'Statik Mimari ile Maksimum Güvenlik & 0 Zafiyet',
     ],
     ctaText: 'Web Tasarım Hizmetini İncele',
     ctaHref: '/hizmetler/web-sitesi-tasarimi/',
     icon: Globe,
-    visualBg: 'from-sky-50 to-slate-100',
+    visualBg: 'from-sky-500/10 via-sky-500/5 to-slate-100',
+    iconGradient: 'from-sky-500 to-blue-600',
     alignLeft: true,
   },
   {
@@ -25,7 +25,6 @@ const detailedServices = [
     badge: 'Yazılım Çözümleri',
     title: 'Mobil Uygulama & Özel Web Yazılım',
     subtitle: 'iOS ve Android platformlarında performanslı mobil ürünler.',
-    desc: 'Fikrinizi kullanıcı dostu iOS ve Android uygulamalarına dönüştürüyoruz. API entegrasyonları, performans testleri ve mağaza yayınlama süreçlerini uçtan uca tamamlıyoruz.',
     features: [
       'Cross-Platform iOS & Android Geliştirme',
       'Özel Yönetim Paneli & API Entegrasyonları',
@@ -35,15 +34,15 @@ const detailedServices = [
     ctaText: 'Mobil Uygulama Hizmetini İncele',
     ctaHref: '/hizmetler/mobil-uygulama/',
     icon: Smartphone,
-    visualBg: 'from-indigo-50 to-slate-100',
+    visualBg: 'from-indigo-500/10 via-indigo-500/5 to-slate-100',
+    iconGradient: 'from-indigo-500 to-purple-600',
     alignLeft: false,
   },
   {
     id: 'seo',
-    badge: 'Arama Motoru Görünürlüğü',
+    badge: 'Arama Görünürlüğü',
     title: 'SEO ve Web Görünürlüğü',
     subtitle: 'Organik aramalarda üst sıralara tırmanan teknik ve içerik altyapısı.',
-    desc: 'Web sitenizi arama motorlarının tam olarak anladığı standartlara getiriyoruz. Şeffaf teknik analizler, site içi SEO iyileştirmeleri ve ölçülebilir Search Console takibiyle görünürlüğünüzü artırıyoruz.',
     features: [
       'Detaylı Teknik SEO Audit & Core Web Vitals',
       'Site İçi SEO & Semantik Schema.org Yapılandırması',
@@ -53,7 +52,8 @@ const detailedServices = [
     ctaText: 'SEO Hizmetini İncele',
     ctaHref: '/hizmetler/seo/',
     icon: Search,
-    visualBg: 'from-emerald-50 to-slate-100',
+    visualBg: 'from-emerald-500/10 via-emerald-500/5 to-slate-100',
+    iconGradient: 'from-emerald-500 to-teal-600',
     alignLeft: true,
   },
   {
@@ -61,7 +61,6 @@ const detailedServices = [
     badge: 'Yerel Görünürlük',
     title: 'Google Maps ve Yerel SEO',
     subtitle: 'Müşterilerinizin konumunuza ve hizmetlerinize kolayca ulaşmasını sağlayın.',
-    desc: 'Google Business Profile hesabınızı eksiksiz yapılandırıyor, hizmet kategorilerinizi düzenliyor ve bölgesel aramalarda harita üst sıralarında yer almanız için gerekli yerel sinyalleri kuruyoruz.',
     features: [
       'Google İşletme Profili Kurulum & Doğrulama',
       'Kategori, Fotoğraf ve Hizmet Alanı Düzenleme',
@@ -71,7 +70,8 @@ const detailedServices = [
     ctaText: 'Google Maps Hizmetini İncele',
     ctaHref: '/hizmetler/google-maps/',
     icon: MapPin,
-    visualBg: 'from-amber-50 to-slate-100',
+    visualBg: 'from-amber-500/10 via-amber-500/5 to-slate-100',
+    iconGradient: 'from-amber-500 to-orange-600',
     alignLeft: false,
   },
   {
@@ -79,7 +79,6 @@ const detailedServices = [
     badge: 'Yemek İşletmeleri',
     title: 'Yemeksepeti ve Trendyol Yemek Kurulumu',
     subtitle: 'Restoran ve kafeler için profesyonel dijital menü ve panel operasyonları.',
-    desc: 'Yemeksepeti ve Trendyol Yemek panellerinizi sıfırdan kurulum yapıyor, menü kategorilerinizi, ürün görsellerinizi ve kampanya ayarlarınızı satış odaklı olarak yapılandırıyoruz.',
     features: [
       'Panel Başvuru, Kurulum ve Doğrulama Desteği',
       'İştah Açıcı Menü & Kategori Organizasyonu',
@@ -89,7 +88,8 @@ const detailedServices = [
     ctaText: 'Yemek Platformu Hizmetini İncele',
     ctaHref: '/hizmetler/yemeksepeti-trendyol-yemek/',
     icon: Utensils,
-    visualBg: 'from-rose-50 to-slate-100',
+    visualBg: 'from-rose-500/10 via-rose-500/5 to-slate-100',
+    iconGradient: 'from-rose-500 to-pink-600',
     alignLeft: true,
   },
   {
@@ -97,7 +97,6 @@ const detailedServices = [
     badge: 'Sosyal Medya Reklamı',
     title: 'Instagram ve Meta Reklam Yönetimi',
     subtitle: 'Doğru hedef kitleye ulaşan, ölçülebilir ve verimli reklam kampanyaları.',
-    desc: 'Sosyal medyada bütçenizi boşa harcamadan doğru müşterilere ulaşmanızı sağlıyoruz. Hedef kitle analizinden reklam görseli hazırlamaya ve bütçe optimizasyonuna kadar tüm süreçleri yönetiyoruz.',
     features: [
       'Demografik & İlgi Alanı Hedef Kitle Analizi',
       'Meta Business Suite & Pixel Kurulumu',
@@ -107,24 +106,22 @@ const detailedServices = [
     ctaText: 'Instagram Reklam Hizmetini İncele',
     ctaHref: '/hizmetler/instagram-reklamlari/',
     icon: Megaphone,
-    visualBg: 'from-purple-50 to-slate-100',
+    visualBg: 'from-purple-500/10 via-purple-500/5 to-slate-100',
+    iconGradient: 'from-purple-500 to-indigo-600',
     alignLeft: false,
   },
 ];
 ---
 
 <section class="py-20 bg-slate-50 border-b border-slate-200" id="hizmetlerimiz">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-    <div class="text-center max-w-3xl mx-auto">
-      <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3 py-1 rounded-full border border-sky-200">
-        Kapsamlı Hizmet Kataloğumuz
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+      <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3.5 py-1 rounded-full border border-sky-200">
+        Görsel Hizmet Kataloğumuz
       </span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 leading-tight">
-        İşletmenizi dijitalde büyütecek uçtan uca uzmanlık alanlarımız
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+        Dijitalde büyümenizi sağlayacak <span class="text-sky-600">6 ana uzmanlık alanımız</span>
       </h2>
-      <p class="text-slate-600 text-base mt-3">
-        Aşağıdaki her hizmet, dijital varlığınızı güçlendirmek ve sürdürülebilir başarı yakalamanız için özel olarak kurgulanmıştır.
-      </p>
     </div>
 
     {
@@ -133,50 +130,49 @@ const detailedServices = [
         return (
           <div
             id={service.id}
-            class={`grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 sm:p-12 rounded-2xl bg-white border border-slate-200 shadow-sm ${
-              service.alignLeft ? '' : ''
-            }`}
+            class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-8 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-sky-300 transition-all duration-300 hover:shadow-xl group"
           >
-            {/* Text Side */}
-            <div class={`space-y-5 lg:col-span-7 ${service.alignLeft ? 'lg:order-1' : 'lg:order-2'}`}>
+            <!-- Text & Features Side -->
+            <div class={`space-y-4 lg:col-span-7 ${service.alignLeft ? 'lg:order-1' : 'lg:order-2'}`}>
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sky-50 text-sky-700 font-bold text-xs">
                 <IconComp className="w-4 h-4 text-sky-600" />
                 <span>{service.badge}</span>
               </div>
 
-              <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight group-hover:text-sky-600 transition-colors">
                 {service.title}
               </h3>
 
-              <p class="text-sm font-semibold text-sky-600">{service.subtitle}</p>
+              <p class="text-xs sm:text-sm font-semibold text-slate-600">{service.subtitle}</p>
 
-              <p class="text-slate-600 text-sm sm:text-base leading-relaxed">{service.desc}</p>
-
-              <ul class="space-y-2.5 pt-2">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 {service.features.map((feat) => (
-                  <li class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium">
-                    <CheckCircle className="w-4 h-4 text-sky-500 shrink-0 mt-0.5" />
+                  <div class="flex items-center gap-2.5 text-xs text-slate-700 font-semibold p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                    <CheckCircle className="w-4 h-4 text-sky-500 shrink-0" />
                     <span>{feat}</span>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
 
-              <div class="pt-4">
-                <a href={service.ctaHref} class="btn-primary text-xs sm:text-sm py-2.5 px-5">
+              <div class="pt-3">
+                <a href={service.ctaHref} class="btn-primary text-xs py-2.5 px-5">
                   <span>{service.ctaText}</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
             </div>
 
-            {/* Visual Side */}
+            <!-- Visual Showcase Card Side -->
             <div class={`lg:col-span-5 ${service.alignLeft ? 'lg:order-2' : 'lg:order-1'}`}>
-              <div class={`p-8 sm:p-12 rounded-xl bg-gradient-to-br ${service.visualBg} border border-slate-200 flex flex-col items-center justify-center text-center space-y-4 shadow-inner min-h-[260px]`}>
-                <div class="p-4 rounded-2xl bg-white text-sky-600 shadow-md">
+              <div class={`p-8 rounded-xl bg-gradient-to-br ${service.visualBg} border border-slate-200 flex flex-col items-center justify-center text-center space-y-4 shadow-inner min-h-[240px] group-hover:scale-102 transition-transform duration-300`}>
+                <div class={`p-4 rounded-2xl bg-gradient-to-br ${service.iconGradient} text-white shadow-lg group-hover:rotate-6 transition-transform duration-300`}>
                   <IconComp className="w-10 h-10" />
                 </div>
                 <h4 class="font-bold text-slate-900 text-lg">{service.title}</h4>
-                <span class="text-xs text-slate-500 font-medium">Locked_in Dijital Standartları</span>
+                <div class="inline-flex items-center gap-1 text-[11px] font-bold text-sky-600 bg-white px-3 py-1 rounded-full shadow-xs">
+                  <Sparkles className="w-3 h-3 text-sky-500" />
+                  <span>Dijital Modül Altyapısı</span>
+                </div>
               </div>
             </div>
           </div>

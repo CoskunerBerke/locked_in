@@ -1,0 +1,68 @@
+---
+import DigitalModulesCanvas from '../3d/DigitalModulesCanvas.react';
+import { Sparkles, Cpu, Zap, Activity } from 'lucide-react';
+---
+
+<section class="py-20 bg-slate-900 text-white relative overflow-hidden border-b border-slate-800">
+  <!-- Ambient Radial Glow Blobs -->
+  <div class="absolute -top-20 -left-20 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Left Visual Text & Metrics -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-semibold shadow-sm backdrop-blur-md">
+          <Sparkles className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+          <span>Interaktif 3D Dijital Mimari</span>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          Hızlı, güvenli ve <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300">dinamik modüller</span>
+        </h2>
+
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+          Geleneksel ağır ve hantal sistemler yerine, yüksek hızlı 3D grafikler, interaktif arayüzler ve modern teknolojilerle üretilmiş dinamik yapılar kurguluyoruz.
+        </p>
+
+        <!-- Dynamic Visual Badges Grid -->
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 backdrop-blur-md hover:border-sky-500/50 transition-all group">
+            <div class="flex items-center gap-3">
+              <div class="p-2 rounded-lg bg-sky-500/20 text-sky-400 group-hover:scale-110 transition-transform">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block font-medium">Render Performansı</span>
+                <span class="text-lg font-bold text-white">60 FPS Akıcı</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 backdrop-blur-md hover:border-sky-500/50 transition-all group">
+            <div class="flex items-center gap-3">
+              <div class="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 group-hover:scale-110 transition-transform">
+                <Zap className="w-5 h-5" />
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block font-medium">Lighthouse Skoru</span>
+                <span class="text-lg font-bold text-emerald-400">95+ Performans</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right 3D Interactive Canvas -->
+      <div class="lg:col-span-6 relative">
+        <!-- Floating Visual Card Badge -->
+        <div class="absolute -top-4 -right-4 z-20 hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-600/90 backdrop-blur-md text-white text-xs font-bold shadow-xl border border-sky-400/40 animate-float-slow">
+          <Activity className="w-4 h-4 text-sky-200 animate-pulse" />
+          <span>Canlı 3D Modül Simülasyonu</span>
+        </div>
+
+        <DigitalModulesCanvas client:visible />
+      </div>
+    </div>
+  </div>
+</section>
