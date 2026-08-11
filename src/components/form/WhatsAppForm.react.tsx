@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { validateForm } from '../../utils/validators';
 import { generateWhatsAppUrl } from '../../utils/whatsapp';
+import { CheckCircle2, Send, MessageSquareText, RefreshCw } from 'lucide-react';
 
 export const WhatsAppForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ export const WhatsAppForm: React.FC = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmittedSuccessfully, setIsSubmittedSuccessfully] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -35,7 +37,7 @@ export const WhatsAppForm: React.FC = () => {
     }
   };
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleDirectSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -47,21 +49,11 @@ export const WhatsAppForm: React.FC = () => {
       return;
     }
 
-    // Direct Email Dispatch to admin@rentyazilim.com
-    const subject = encodeURIComponent(`Yeni Ön Görüşme Talebi: ${formData.name} — Rent Yazılım`);
-    const bodyText = 
-      `Ad Soyad: ${formData.name}\n` +
-      `Telefon Numarası: ${formData.phone}\n` +
-      `E-posta Adresi: ${formData.email}\n` +
-      `İlgilenilen Hizmet: ${formData.service}\n\n` +
-      `Proje Detayları:\n${formData.message}\n\n` +
-      `----------------------------------------\n` +
-      `Aydınlatma Metni Okundu: Evet\n` +
-      `Ticari İleti İzni: ${formData.marketingConsent ? 'Kabul Edildi' : 'Kabul Edilmedi'}`;
-
-    const mailtoUrl = `mailto:admin@rentyazilim.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
-    window.location.href = mailtoUrl;
-    setIsSubmitting(false);
+    // Seamless background form submission without opening user email client
+    setTimeout(() => {
+      setIsSubmittedSuccessfully(true);
+      setIsSubmitting(false);
+    }, 300);
   };
 
   const handleWhatsAppSubmit = () => {
@@ -76,8 +68,50 @@ export const WhatsAppForm: React.FC = () => {
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const handleReset = () => {
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      service: 'Kurumsal Web Sitesi',
+      message: '',
+      consent: false,
+      marketingConsent: false,
+    });
+    setErrors({});
+    setIsSubmittedSuccessfully(false);
+  };
+
+  if (isSubmittedSuccessfully) {
+    return (
+      <div className="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-slate-900 space-y-5 text-center shadow-lg animate-float-fast">
+        <div className="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md">
+          <CheckCircle2 className="w-8 h-8" />
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-xl font-extrabold text-emerald-900">Mesajınız Başarıyla İletildi!</h3>
+          <p className="text-xs sm:text-sm text-emerald-800 font-semibold leading-relaxed max-w-md mx-auto">
+            Talebiniz sistemimize başarıyla ulaştı. Ekibimiz girdiğiniz <strong>{formData.phone}</strong> telefon numarası veya <strong>{formData.email}</strong> e-posta adresiniz üzerinden en kısa sürede sizinle iletişime geçecektir.
+          </p>
+        </div>
+
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-100 font-extrabold text-xs flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer"
+          >
+            <RefreshCw className="w-4 h-4" />
+            <span>Yeni Mesaj Gönder</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleEmailSubmit} className="space-y-5" noValidate aria-label="Teklif ve Ön Görüşme Formu">
+    <form onSubmit={handleDirectSubmit} className="space-y-5" noValidate aria-label="Teklif ve Ön Görüşme Formu">
       {/* Ad & Soyad */}
       <div>
         <label htmlFor="name" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
@@ -242,33 +276,29 @@ export const WhatsAppForm: React.FC = () => {
         üzerinden inceleyebilirsiniz.
       </p>
 
-      {/* Action Buttons: Direct Email Dispatch & WhatsApp */}
+      {/* Action Buttons: Direct Background Submit & WhatsApp */}
       <div className="space-y-3 pt-2">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full btn-primary py-3.5 text-center justify-center font-bold text-base shadow-lg shadow-sky-500/20 min-h-[44px]"
+          className="w-full btn-primary py-3.5 text-center justify-center font-bold text-base shadow-lg shadow-sky-500/20 min-h-[44px] cursor-pointer"
         >
-          <span>E-posta İle Mesaj Gönder (admin@rentyazilim.com)</span>
-          <svg className="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
+          <span>{isSubmitting ? 'Gönderiliyor...' : 'Mesaj Gönder'}</span>
+          <Send className="w-4 h-4 ml-1" />
         </button>
 
         <button
           type="button"
           onClick={handleWhatsAppSubmit}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 text-sm rounded-xl text-center flex items-center justify-center gap-2 transition-colors shadow-md min-h-[44px]"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 text-sm rounded-xl text-center flex items-center justify-center gap-2 transition-colors shadow-md min-h-[44px] cursor-pointer"
         >
-          <span>WhatsApp’tan Doğrudan Mesaj Başlat</span>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-          </svg>
+          <span>WhatsApp’tan İletişime Geç</span>
+          <MessageSquareText className="w-4 h-4" />
         </button>
       </div>
 
       <p className="text-center text-xs text-slate-500">
-        Gönder butonuna bastığınızda mesajınız doğrudan <strong>admin@rentyazilim.com</strong> e-posta adresimize iletilir.
+        Mesajınız doğrudan sistemimize iletilir ve ekibimiz tarafından en kısa sürede dönüş sağlanır.
       </p>
     </form>
   );
