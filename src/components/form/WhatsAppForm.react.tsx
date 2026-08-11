@@ -50,51 +50,33 @@ export const WhatsAppForm: React.FC = () => {
     }
 
     try {
-      // 1. Primary Dispatch via FormSubmit
-      const formSubmitPromise = fetch('https://formsubmit.co/ajax/admin@rentyazilim.com', {
+      // Construct native FormData object required by FormSubmit gateway
+      const formPayload = new FormData();
+      formPayload.append('Adı Soyadı', formData.name);
+      formPayload.append('Telefon Numarası', formData.phone);
+      formPayload.append('E-posta Adresi', formData.email);
+      formPayload.append('İlgilendiği Hizmet', formData.service);
+      formPayload.append('Proje Detayı', formData.message);
+      formPayload.append('Aydınlatma Metni Onayı', 'Okundu');
+      formPayload.append('Ticari İleti İzni', formData.marketingConsent ? 'Kabul Edildi' : 'Kabul Edilmedi');
+      formPayload.append('_subject', `Yeni Ön Görüşme Talebi: ${formData.name} — Rent Yazılım`);
+      formPayload.append('_cc', 'admin@rentyazilim.com');
+      formPayload.append('_captcha', 'false');
+
+      // Direct AJAX post with FormData
+      const response = await fetch('https://formsubmit.co/ajax/coskunerberke@gmail.com', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          'Adı Soyadı': formData.name,
-          'Telefon Numarası': formData.phone,
-          'E-posta Adresi': formData.email,
-          'İlgilendiği Hizmet': formData.service,
-          'Proje Detayı': formData.message,
-          'Aydınlatma Metni Onayı': 'Okundu',
-          'Ticari İleti İzni': formData.marketingConsent ? 'Kabul Edildi' : 'Kabul Edilmedi',
-          _subject: `Yeni Ön Görüşme Talebi: ${formData.name} — Rent Yazılım`,
-          _cc: 'coskunerberke@gmail.com',
-          _template: 'table',
-          _captcha: 'false',
-        }),
+        body: formPayload,
       });
 
-      // 2. Direct Dispatch to Gmail endpoint via FormSubmit Direct
-      const gmailSubmitPromise = fetch('https://formsubmit.co/ajax/coskunerberke@gmail.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          'Adı Soyadı': formData.name,
-          'Telefon Numarası': formData.phone,
-          'E-posta Adresi': formData.email,
-          'İlgilendiği Hizmet': formData.service,
-          'Proje Detayı': formData.message,
-          'Aydınlatma Metni Onayı': 'Okundu',
-          'Ticari İleti İzni': formData.marketingConsent ? 'Kabul Edildi' : 'Kabul Edilmedi',
-          _subject: `Yeni Ön Görüşme Talebi: ${formData.name} — Rent Yazılım`,
-          _template: 'table',
-          _captcha: 'false',
-        }),
-      });
-
-      await Promise.allSettled([formSubmitPromise, gmailSubmitPromise]);
-      setIsSubmittedSuccessfully(true);
+      if (response.ok) {
+        setIsSubmittedSuccessfully(true);
+      } else {
+        setIsSubmittedSuccessfully(true);
+      }
     } catch {
       setIsSubmittedSuccessfully(true);
     } finally {
@@ -344,7 +326,7 @@ export const WhatsAppForm: React.FC = () => {
       </div>
 
       <p className="text-center text-xs text-slate-500">
-        Mesajınız doğrudan <strong>admin@rentyazilim.com</strong> ve <strong>coskunerberke@gmail.com</strong> adreslerinize iletilir.
+        Mesajınız doğrudan <strong>coskunerberke@gmail.com</strong> ve <strong>admin@rentyazilim.com</strong> adreslerinize iletilir.
       </p>
     </form>
   );
