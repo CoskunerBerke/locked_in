@@ -5,7 +5,8 @@ import { generateWhatsAppUrl } from '../../utils/whatsapp';
 export const WhatsAppForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
-    contact: '',
+    phone: '',
+    email: '',
     service: 'Kurumsal Web Sitesi',
     message: '',
     consent: false,
@@ -50,9 +51,10 @@ export const WhatsAppForm: React.FC = () => {
     const subject = encodeURIComponent(`Yeni Ön Görüşme Talebi: ${formData.name} — Rent Yazılım`);
     const bodyText = 
       `Ad Soyad: ${formData.name}\n` +
-      `İletişim (Tel/E-posta): ${formData.contact}\n` +
+      `Telefon Numarası: ${formData.phone}\n` +
+      `E-posta Adresi: ${formData.email}\n` +
       `İlgilenilen Hizmet: ${formData.service}\n\n` +
-      `Proje Notları:\n${formData.message}\n\n` +
+      `Proje Detayları:\n${formData.message}\n\n` +
       `----------------------------------------\n` +
       `Aydınlatma Metni Okundu: Evet\n` +
       `Ticari İleti İzni: ${formData.marketingConsent ? 'Kabul Edildi' : 'Kabul Edilmedi'}`;
@@ -97,25 +99,49 @@ export const WhatsAppForm: React.FC = () => {
         {errors.name && <p className="mt-1 text-xs text-rose-600">{errors.name}</p>}
       </div>
 
-      {/* Telefon veya E-posta */}
-      <div>
-        <label htmlFor="contact" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-          Telefon Numarası veya E-posta <span className="text-rose-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="contact"
-          name="contact"
-          value={formData.contact}
-          onChange={handleChange}
-          maxLength={120}
-          placeholder="Örn: 0535 037 9074 veya ahmet@example.com"
-          className={`w-full px-4 py-3 rounded-xl border text-sm bg-white text-slate-900 focus:outline-none transition-colors ${
-            errors.contact ? 'border-rose-500 ring-1 ring-rose-500' : 'border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200'
-          }`}
-          required
-        />
-        {errors.contact && <p className="mt-1 text-xs text-rose-600">{errors.contact}</p>}
+      {/* Telefon Numarası & E-posta Adresi Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Telefon Numarası */}
+        <div>
+          <label htmlFor="phone" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            Telefon Numarası <span className="text-rose-500">*</span>
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            maxLength={20}
+            placeholder="Örn: 0535 037 90 74"
+            className={`w-full px-4 py-3 rounded-xl border text-sm bg-white text-slate-900 focus:outline-none transition-colors ${
+              errors.phone ? 'border-rose-500 ring-1 ring-rose-500' : 'border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200'
+            }`}
+            required
+          />
+          {errors.phone && <p className="mt-1 text-xs text-rose-600">{errors.phone}</p>}
+        </div>
+
+        {/* E-posta Adresi */}
+        <div>
+          <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+            E-posta Adresi <span className="text-rose-500">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            maxLength={120}
+            placeholder="Örn: ahmet@example.com"
+            className={`w-full px-4 py-3 rounded-xl border text-sm bg-white text-slate-900 focus:outline-none transition-colors ${
+              errors.email ? 'border-rose-500 ring-1 ring-rose-500' : 'border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200'
+            }`}
+            required
+          />
+          {errors.email && <p className="mt-1 text-xs text-rose-600">{errors.email}</p>}
+        </div>
       </div>
 
       {/* İlgilenilen Hizmet */}
