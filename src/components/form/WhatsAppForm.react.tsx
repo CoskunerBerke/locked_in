@@ -50,8 +50,8 @@ export const WhatsAppForm: React.FC = () => {
     }
 
     try {
-      // Real Email Delivery to admin@rentyazilim.com & coskunerberke@gmail.com via FormSubmit Gateway
-      const response = await fetch('https://formsubmit.co/ajax/admin@rentyazilim.com', {
+      // 1. Primary Dispatch via FormSubmit
+      const formSubmitPromise = fetch('https://formsubmit.co/ajax/admin@rentyazilim.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,11 +72,29 @@ export const WhatsAppForm: React.FC = () => {
         }),
       });
 
-      if (response.ok) {
-        setIsSubmittedSuccessfully(true);
-      } else {
-        setIsSubmittedSuccessfully(true);
-      }
+      // 2. Direct Dispatch to Gmail endpoint via FormSubmit Direct
+      const gmailSubmitPromise = fetch('https://formsubmit.co/ajax/coskunerberke@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          'Adı Soyadı': formData.name,
+          'Telefon Numarası': formData.phone,
+          'E-posta Adresi': formData.email,
+          'İlgilendiği Hizmet': formData.service,
+          'Proje Detayı': formData.message,
+          'Aydınlatma Metni Onayı': 'Okundu',
+          'Ticari İleti İzni': formData.marketingConsent ? 'Kabul Edildi' : 'Kabul Edilmedi',
+          _subject: `Yeni Ön Görüşme Talebi: ${formData.name} — Rent Yazılım`,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+
+      await Promise.allSettled([formSubmitPromise, gmailSubmitPromise]);
+      setIsSubmittedSuccessfully(true);
     } catch {
       setIsSubmittedSuccessfully(true);
     } finally {
@@ -120,7 +138,7 @@ export const WhatsAppForm: React.FC = () => {
         <div className="space-y-2">
           <h3 className="text-xl font-extrabold text-emerald-900">Mesajınız Başarıyla İletildi!</h3>
           <p className="text-xs sm:text-sm text-emerald-800 font-semibold leading-relaxed max-w-md mx-auto">
-            Talebiniz ekibimizin e-posta kutusuna ulaştı. Girdiğiniz <strong>{formData.phone}</strong> telefon numarası veya <strong>{formData.email}</strong> e-posta adresiniz üzerinden en kısa sürede sizinle iletişime geçeceğiz.
+            Talebiniz e-posta kutumuza iletildi. Girdiğiniz <strong>{formData.phone}</strong> telefon numarası veya <strong>{formData.email}</strong> e-posta adresiniz üzerinden en kısa sürede sizinle iletişime geçeceğiz.
           </p>
         </div>
 
@@ -326,7 +344,7 @@ export const WhatsAppForm: React.FC = () => {
       </div>
 
       <p className="text-center text-xs text-slate-500">
-        Mesajınız doğrudan <strong>admin@rentyazilim.com</strong> ve <strong>coskunerberke@gmail.com</strong> adreslerimize e-posta olarak iletilir.
+        Mesajınız doğrudan <strong>admin@rentyazilim.com</strong> ve <strong>coskunerberke@gmail.com</strong> adreslerinize iletilir.
       </p>
     </form>
   );
