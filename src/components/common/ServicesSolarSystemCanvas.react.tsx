@@ -29,7 +29,6 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
-  const [activePlanetInfo, setActivePlanetInfo] = useState<PlanetData | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -63,6 +62,15 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       loadedImages[p.id] = img;
     });
 
+    // Space Starlight Particles
+    const stars = Array.from({ length: 45 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 1.2 + 0.3,
+      alpha: Math.random() * 0.7 + 0.3,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+    }));
+
     // Monotonic Continuous Orbit Angles (Accumulates infinitely without resets)
     const planetsState = initialPlanetsData.map((p, idx) => ({
       ...p,
@@ -84,14 +92,13 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       mouseX = -1000;
       mouseY = -1000;
       setHoveredPlanet(null);
-      setActivePlanetInfo(null);
     };
 
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseleave', handleMouseLeave);
 
     const render = (now: number) => {
-      const delta = Math.min(now - lastTime, 64); // Cap delta to prevent huge jumps on tab switch
+      const delta = Math.min(now - lastTime, 64);
       lastTime = now;
 
       ctx.clearRect(0, 0, width, height);
@@ -100,18 +107,29 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       const centerY = height / 2;
       const baseRadius = Math.min(width, height) * 0.92;
 
+      // 0. Render Space Starlight Background Particles
+      stars.forEach((star) => {
+        star.alpha += star.twinkleSpeed;
+        if (star.alpha > 1 || star.alpha < 0.2) star.twinkleSpeed = -star.twinkleSpeed;
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, Math.min(1, star.alpha))})`;
+        ctx.fill();
+      });
+
       // 1. Draw Central Glowing Sun (Rent Yazılım Central Core)
       const sunRadius = Math.min(width, height) * 0.085;
 
       // Outer Corona Glow
-      const sunGlowGrad = ctx.createRadialGradient(centerX, centerY, sunRadius * 0.2, centerX, centerY, sunRadius * 2.2);
+      const sunGlowGrad = ctx.createRadialGradient(centerX, centerY, sunRadius * 0.2, centerX, centerY, sunRadius * 2.4);
       sunGlowGrad.addColorStop(0, '#FFFBEB');
       sunGlowGrad.addColorStop(0.3, '#F59E0B');
       sunGlowGrad.addColorStop(0.7, '#D97706');
       sunGlowGrad.addColorStop(1, 'rgba(217, 119, 6, 0)');
 
       ctx.beginPath();
-      ctx.arc(centerX, centerY, sunRadius * 2.2, 0, Math.PI * 2);
+      ctx.arc(centerX, centerY, sunRadius * 2.4, 0, Math.PI * 2);
       ctx.fillStyle = sunGlowGrad;
       ctx.fill();
 
@@ -139,8 +157,8 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       ctx.font = 'black 11px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.shadowColor = 'rgba(0,0,0,0.8)';
-      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(0,0,0,0.9)';
+      ctx.shadowBlur = 6;
       ctx.fillText('RENT YAZILIM', centerX, centerY - 2);
       ctx.font = 'bold 9px Inter, sans-serif';
       ctx.fillText('MERKEZ', centerX, centerY + 10);
@@ -151,24 +169,27 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
 
       planetsState.forEach((planet) => {
         const orbitR = baseRadius * planet.orbitRadiusRatio;
+        const isHovered = hoveredPlanet === planet.id;
 
-        // Orbital Line (Faint ring path)
+        // Orbital Line (Glowing Cyan Space Ring Path)
         ctx.beginPath();
         ctx.arc(centerX, centerY, orbitR, 0, Math.PI * 2);
-        ctx.strokeStyle = hoveredPlanet === planet.id ? planet.color : 'rgba(148, 163, 184, 0.22)';
-        ctx.lineWidth = hoveredPlanet === planet.id ? 2 : 1;
-        if (hoveredPlanet === planet.id) {
-          ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = isHovered ? 'rgba(56, 189, 248, 0.85)' : 'rgba(56, 189, 248, 0.22)';
+        ctx.lineWidth = isHovered ? 2.5 : 1;
+        if (isHovered) {
+          ctx.setLineDash([6, 6]);
+          ctx.shadowColor = '#38BDF8';
+          ctx.shadowBlur = 10;
         } else {
           ctx.setLineDash([]);
+          ctx.shadowBlur = 0;
         }
         ctx.stroke();
         ctx.setLineDash([]);
+        ctx.shadowBlur = 0;
 
-        // STRICT MONOTONIC ACCUMULATION (Continuous non-stop single-direction orbit)
-        if (!hoveredPlanet || hoveredPlanet !== planet.id) {
-          planet.angle += planet.orbitSpeed * (delta / 16);
-        }
+        // STRICT MONOTONIC UNCONDITIONAL ROTATION (Never freezes or stops on hover!)
+        planet.angle += planet.orbitSpeed * (delta / 16);
         planet.selfAngle += planet.selfSpinSpeed * (delta / 16);
 
         const px = centerX + orbitR * Math.cos(planet.angle);
@@ -183,12 +204,15 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
         ctx.save();
         ctx.translate(px, py);
 
-        // Hover Glow Aura
-        if (hoveredPlanet === planet.id) {
+        // Hover Glowing Cyan Aura Highlight
+        if (isHovered) {
           ctx.beginPath();
-          ctx.arc(0, 0, planet.size * 1.6, 0, Math.PI * 2);
-          ctx.fillStyle = `${planet.color}50`;
+          ctx.arc(0, 0, planet.size * 1.7, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+          ctx.shadowColor = '#38BDF8';
+          ctx.shadowBlur = 18;
           ctx.fill();
+          ctx.shadowBlur = 0;
         }
 
         // Draw 3D Saturn Rings for Saturn Planet
@@ -197,7 +221,7 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
           ctx.rotate(0.35); // Tilted Saturn Ring
           ctx.beginPath();
           ctx.ellipse(0, 0, planet.size * 2.1, planet.size * 0.7, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(234, 179, 8, 0.85)';
+          ctx.strokeStyle = 'rgba(234, 179, 8, 0.95)';
           ctx.lineWidth = 3.5;
           ctx.stroke();
           ctx.restore();
@@ -243,24 +267,27 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
         // Outer Sphere Rim Border
         ctx.beginPath();
         ctx.arc(0, 0, planet.size, 0, Math.PI * 2);
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.lineWidth = isHovered ? 2.5 : 1.5;
+        ctx.strokeStyle = isHovered ? '#38BDF8' : 'rgba(255, 255, 255, 0.85)';
         ctx.stroke();
 
         ctx.restore();
 
-        // Planet High-Contrast Bold Label
-        ctx.fillStyle = '#0F172A';
-        ctx.font = 'bold 11px Inter, sans-serif';
+        // Planet High-Contrast Bold Text Label (White on Space Background, Neon Cyan when Hovered)
+        ctx.fillStyle = isHovered ? '#38BDF8' : '#F8FAFC';
+        ctx.font = isHovered ? 'black 12px Inter, sans-serif' : 'bold 11px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
+        ctx.shadowColor = isHovered ? '#38BDF8' : 'rgba(0, 0, 0, 0.9)';
+        ctx.shadowBlur = isHovered ? 8 : 4;
         ctx.fillText(planet.shortName, px, py + planet.size + 8);
+        ctx.shadowBlur = 0;
       });
 
       if (foundHover) {
-        const hoverItem: PlanetData = foundHover;
-        setHoveredPlanet(hoverItem.id);
-        setActivePlanetInfo(hoverItem);
+        setHoveredPlanet((foundHover as PlanetData).id);
+      } else {
+        setHoveredPlanet(null);
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -274,22 +301,11 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       canvas.removeEventListener('mouseleave', handleMouseLeave);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [hoveredPlanet]);
+  }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-[480px] sm:h-[550px] flex items-center justify-center">
       <canvas ref={canvasRef} className="w-full h-full cursor-pointer z-10" />
-
-      {/* Active Planet Detail Card Tooltip */}
-      {activePlanetInfo && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 px-5 py-3 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-2xl border border-sky-400/50 flex items-center gap-3 animate-float-fast">
-          <div className="w-3.5 h-3.5 rounded-full border border-white" style={{ backgroundColor: activePlanetInfo.color }} />
-          <div>
-            <span className="text-sky-300 block text-[10px] uppercase font-bold tracking-wider">Gerçek Güneş Sistemi Yörüngesi</span>
-            <span className="text-white text-sm font-black">{activePlanetInfo.name}</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
