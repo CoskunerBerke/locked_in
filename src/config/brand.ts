@@ -36,8 +36,7 @@ export const brandConfig: BrandConfig = {
   secondaryColor: '#0284C7',
   accentColor: '#4F46E5',
   legalCompanyName: 'RENT YAZILIM DİJİTAL HİZMETLER LTD. ŞTİ.',
-  indexingEnabled:
-    process.env.PUBLIC_INDEXING_ENABLED === 'true' ? true : false,
+  indexingEnabled: process.env.PUBLIC_INDEXING_ENABLED === 'false' ? false : true,
 };
 
 export default brandConfig;

@@ -12,10 +12,20 @@ interface Props {
 const {
   title = `${brandConfig.brandName} - Dijital Hizmetler ve Danışmanlık Ajansı`,
   description = brandConfig.description,
-  image = `${brandConfig.siteUrl}/brand/logo.svg`,
-  canonicalUrl = Astro.url.href,
+  image = '/brand/logo.svg',
+  canonicalUrl,
   type = 'website',
 } = Astro.props;
+
+// Ensure clean canonical URL pointing directly to https://rentyazilim.com domain + current path
+const siteBaseUrl = brandConfig.siteUrl.endsWith('/') ? brandConfig.siteUrl.slice(0, -1) : brandConfig.siteUrl;
+const currentPath = Astro.url.pathname;
+const cleanPath = currentPath === '' || currentPath === '/' ? '/' : currentPath;
+const calculatedCanonical = `${siteBaseUrl}${cleanPath}`;
+const finalCanonicalUrl = canonicalUrl || calculatedCanonical;
+
+// Ensure absolute OG image URL using rentyazilim.com
+const ogImageUrl = image.startsWith('http') ? image : `${siteBaseUrl}${image.startsWith('/') ? image : '/' + image}`;
 
 const isIndexingAllowed = brandConfig.indexingEnabled;
 const robotsContent = isIndexingAllowed ? 'index, follow' : 'noindex, nofollow';
@@ -34,22 +44,25 @@ const robotsContent = isIndexingAllowed ? 'index, follow' : 'noindex, nofollow';
 <meta name="googlebot" content={robotsContent} />
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalUrl} />
+<link rel="canonical" href={finalCanonicalUrl} />
+
+<!-- Sitemap Reference -->
+<link rel="sitemap" href="/sitemap-index.xml" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
-<meta property="og:url" content={canonicalUrl} />
+<meta property="og:url" content={finalCanonicalUrl} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={image} />
+<meta property="og:image" content={ogImageUrl} />
 <meta property="og:site_name" content={brandConfig.brandName} />
 
 <!-- Twitter Cards -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalUrl} />
+<meta property="twitter:url" content={finalCanonicalUrl} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={image} />
+<meta property="twitter:image" content={ogImageUrl} />
 
 <!-- Favicon & PWA -->
 <link rel="icon" type="image/svg+xml" href="/brand/logo.svg" />

@@ -10,8 +10,8 @@ describe('Brand Configuration Unit Tests', () => {
     expect(brandConfig.legalCompanyName).toBe('RENT YAZILIM DİJİTAL HİZMETLER LTD. ŞTİ.');
   });
 
-  it('should defaulted indexing to false for unverified brand info', () => {
-    expect(brandConfig.indexingEnabled).toBe(false);
+  it('should default indexing to true for production indexing readiness', () => {
+    expect(brandConfig.indexingEnabled).toBe(true);
   });
 
   it('should have valid placeholder contact data', () => {
