@@ -28,9 +28,10 @@ test.describe('Navigation & Corporate Page Loads', () => {
     await expect(page.locator('h1')).toContainText('Dijitalde güçlü ve sürdürülebilir');
   });
 
-  test('should navigate to Projeler page and display empty state', async ({ page }) => {
+  test('should navigate to Projeler page and display real client showcase', async ({ page }) => {
     await page.goto('/projeler/');
-    await expect(page.locator('h1')).toContainText('Portfolyo & Projelerimiz Hazırlanıyor');
+    await expect(page.locator('h1')).toContainText('Canlı Proje ve Referanslarımız');
+    await expect(page.locator('text=RN Vize Danışmanlık')).toBeVisible();
   });
 
   test('should navigate to Akademi blog index and detail post', async ({ page }) => {
