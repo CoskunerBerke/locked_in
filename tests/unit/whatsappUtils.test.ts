@@ -12,7 +12,7 @@ describe('WhatsApp Sanitization & URL Encoder Unit Tests', () => {
   it('should generate valid WhatsApp URL with sanitized parameters', () => {
     const payload = {
       name: 'Ahmet Yılmaz',
-      contact: '05550000000',
+      phone: '05350379074',
       service: 'Kurumsal Web Sitesi',
       message: 'Proje teklifi almak istiyorum.',
     };
@@ -21,5 +21,6 @@ describe('WhatsApp Sanitization & URL Encoder Unit Tests', () => {
     expect(url).toContain('https://wa.me/905350379074?text=');
     expect(url).toContain(encodeURIComponent('Ahmet Yılmaz'));
     expect(url).toContain(encodeURIComponent('Kurumsal Web Sitesi'));
+    expect(url).toContain(encodeURIComponent('bilgi almak istiyorum'));
   });
 });
