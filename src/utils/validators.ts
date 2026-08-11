@@ -9,6 +9,7 @@ export function validateForm(data: {
   service: string;
   message: string;
   consent: boolean;
+  marketingConsent?: boolean;
 }): ValidationResult {
   const errors: Record<string, string> = {};
 
@@ -35,7 +36,7 @@ export function validateForm(data: {
   }
 
   if (!data.consent) {
-    errors.consent = 'Lütfen KVKK ve Gizlilik Koşullarını onaylayınız.';
+    errors.consent = 'Lütfen Kişisel Verilerin İşlenmesine İlişkin Aydınlatma Metni’ni okuduğunuzu onaylayınız.';
   }
 
   return {

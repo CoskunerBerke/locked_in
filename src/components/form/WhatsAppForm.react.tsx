@@ -9,6 +9,7 @@ export const WhatsAppForm: React.FC = () => {
     service: 'Kurumsal Web Sitesi',
     message: '',
     consent: false,
+    marketingConsent: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -139,7 +140,7 @@ export const WhatsAppForm: React.FC = () => {
         {errors.message && <p className="mt-1 text-xs text-rose-600">{errors.message}</p>}
       </div>
 
-      {/* KVKK Onay Kutusu */}
+      {/* KVKK Okuma Kutusu (Zorunlu) */}
       <div className="flex items-start gap-3 pt-1">
         <input
           type="checkbox"
@@ -151,17 +152,47 @@ export const WhatsAppForm: React.FC = () => {
           required
         />
         <label htmlFor="consent" className="text-xs text-slate-600 leading-normal">
-          <a href="/gizlilik-politikasi/" target="_blank" className="text-sky-600 underline">
-            Gizlilik Politikası
-          </a>{' '}
-          ve{' '}
-          <a href="/kvkk-aydinlatma-metni/" target="_blank" className="text-sky-600 underline">
-            KVKK Koşullarını
-          </a>{' '}
-          okudum, onaylıyorum.
+          <a
+            href="/kvkk-aydinlatma-metni/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-600 underline hover:text-sky-700 font-semibold"
+          >
+            Kişisel Verilerin İşlenmesine İlişkin Aydınlatma Metni
+          </a>
+          ’ni okudum.
         </label>
       </div>
       {errors.consent && <p className="text-xs text-rose-600">{errors.consent}</p>}
+
+      {/* Ticari İleti Onay Kutusu (İsteğe Bağlı - Varsayılan İşaretlenmemiş) */}
+      <div className="flex items-start gap-3">
+        <input
+          type="checkbox"
+          id="marketingConsent"
+          name="marketingConsent"
+          checked={formData.marketingConsent}
+          onChange={handleChange}
+          className="mt-1 w-4 h-4 rounded text-sky-600 focus:ring-sky-500 border-slate-300"
+        />
+        <label htmlFor="marketingConsent" className="text-xs text-slate-600 leading-normal">
+          Kampanya ve hizmetler hakkında tarafıma ticari elektronik ileti gönderilmesini kabul ediyorum.
+        </label>
+      </div>
+
+      {/* Bilgilendirme Notu */}
+      <p className="text-xs text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
+        Kişisel verilerinizin nasıl işlendiğini{' '}
+        <a
+          href="/kvkk-aydinlatma-metni/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sky-600 underline font-semibold hover:text-sky-700"
+        >
+          Kişisel Verilerin İşlenmesine İlişkin Aydınlatma Metni
+        </a>{' '}
+        üzerinden inceleyebilirsiniz.
+      </p>
 
       {/* WhatsApp Redirect Submit Button */}
       <button
