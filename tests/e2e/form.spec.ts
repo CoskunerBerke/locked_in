@@ -8,6 +8,6 @@ test.describe('Contact Form Validation & Field Separation', () => {
     await submitButton.click();
 
     await expect(page.locator('text=Lütfen geçerli bir ad ve soyad giriniz.')).toBeVisible();
-    await expect(page.locator('text=Lütfen geçerli bir telefon numarası giriniz.')).toBeVisible();
+    await expect(page.locator('text=Lütfen projeniz hakkında en az 10 karakterlik bilgi veriniz.')).toBeVisible();
   });
 });

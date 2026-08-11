@@ -6,8 +6,7 @@ import { MessageSquareText } from 'lucide-react';
 export const WhatsAppForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
-    service: 'Kurumsal Web Sitesi',
+    service: 'Kurumsal Web Sitesi Tasarımı',
     message: '',
     consent: false,
     marketingConsent: false,
@@ -70,27 +69,6 @@ export const WhatsAppForm: React.FC = () => {
           required
         />
         {errors.name && <p className="mt-1 text-xs text-rose-600">{errors.name}</p>}
-      </div>
-
-      {/* Telefon Numarası */}
-      <div>
-        <label htmlFor="phone" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-          Telefon Numarası <span className="text-rose-500">*</span>
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          maxLength={20}
-          placeholder="Örn: 0535 037 90 74"
-          className={`w-full px-4 py-3 rounded-xl border text-sm bg-white text-slate-900 focus:outline-none transition-colors ${
-            errors.phone ? 'border-rose-500 ring-1 ring-rose-500' : 'border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-200'
-          }`}
-          required
-        />
-        {errors.phone && <p className="mt-1 text-xs text-rose-600">{errors.phone}</p>}
       </div>
 
       {/* İlgilenilen Hizmet */}

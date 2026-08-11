@@ -2,7 +2,6 @@ import brandConfig from '../config/brand';
 
 export interface WhatsAppFormPayload {
   name: string;
-  phone: string;
   service: string;
   message: string;
 }
@@ -32,13 +31,11 @@ export function sanitizeInput(input: string): string {
  */
 export function generateWhatsAppUrl(payload: WhatsAppFormPayload): string {
   const cleanName = sanitizeInput(payload.name);
-  const cleanPhone = sanitizeInput(payload.phone);
   const cleanService = sanitizeInput(payload.service);
   const cleanMessage = sanitizeInput(payload.message);
 
   const formattedText =
     `Merhabalar, adım ${cleanName}, ${cleanService} için bilgi almak istiyorum.\n\n` +
-    `Telefon Numaram: ${cleanPhone}\n` +
     `Proje Notum:\n${cleanMessage}`;
 
   const encodedText = encodeURIComponent(formattedText);
