@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Globe, Zap, RefreshCw, Search, Smartphone, MapPin, Utensils, Megaphone } from 'lucide-react';
 
 interface PlanetData {
@@ -28,13 +28,13 @@ const initialPlanetsData: PlanetData[] = [
 export const ServicesSolarSystemCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
+  const hoveredPlanetIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -91,14 +91,14 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
     const handleMouseLeave = () => {
       mouseX = -1000;
       mouseY = -1000;
-      setHoveredPlanet(null);
+      hoveredPlanetIdRef.current = null;
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    canvas.addEventListener('mousemove', handleMouseMove, { passive: true });
+    canvas.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     const render = (now: number) => {
-      const delta = Math.min(now - lastTime, 64);
+      const delta = Math.min(now - lastTime, 32); // Smooth 60-120Hz ProMotion delta cap
       lastTime = now;
 
       ctx.clearRect(0, 0, width, height);
@@ -169,7 +169,7 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
 
       planetsState.forEach((planet) => {
         const orbitR = baseRadius * planet.orbitRadiusRatio;
-        const isHovered = hoveredPlanet === planet.id;
+        const isHovered = hoveredPlanetIdRef.current === planet.id;
 
         // Orbital Line (Glowing Cyan Space Ring Path)
         ctx.beginPath();
@@ -284,11 +284,8 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
         ctx.shadowBlur = 0;
       });
 
-      if (foundHover) {
-        setHoveredPlanet((foundHover as PlanetData).id);
-      } else {
-        setHoveredPlanet(null);
-      }
+      // Update native Ref variable without triggering React component re-renders
+      hoveredPlanetIdRef.current = foundHover ? (foundHover as PlanetData).id : null;
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -304,8 +301,12 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[480px] sm:h-[550px] flex items-center justify-center">
-      <canvas ref={canvasRef} className="w-full h-full cursor-pointer z-10" />
+    <div ref={containerRef} className="relative w-full h-[480px] sm:h-[550px] flex items-center justify-center transform-gpu translate-z-0">
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full cursor-pointer z-10 transform-gpu translate-z-0"
+        style={{ transform: 'translateZ(0)', willChange: 'transform' }}
+      />
     </div>
   );
 };

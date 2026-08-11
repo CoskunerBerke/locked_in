@@ -21,16 +21,17 @@ const { activePage } = Astro.props;
 <!-- Main Corporate Header -->
 <header
   id="site-header"
-  class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all duration-200"
+  class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-shadow duration-200 transform-gpu translate-z-0 will-change-[transform,opacity]"
+  style="transform: translateZ(0); will-change: transform;"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-24 sm:h-28 transition-all duration-200" id="header-inner">
+    <div class="flex items-center justify-between h-20 sm:h-22 transition-none" id="header-inner">
       <!-- Large Brand Logo -->
       <a href="/" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-lg p-1">
         <img
           src={brandConfig.logoPath}
           alt={`${brandConfig.brandName} Logosu`}
-          class="h-12 sm:h-16 lg:h-20 w-auto transition-transform group-hover:scale-105 object-contain"
+          class="h-11 sm:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105 object-contain"
           width="240"
           height="80"
         />
@@ -104,19 +105,21 @@ const { activePage } = Astro.props;
 
 <script>
   const header = document.getElementById('site-header');
-  const headerInner = document.getElementById('header-inner');
+  let ticking = false;
 
-  if (header && headerInner) {
+  if (header) {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 30) {
-        headerInner.classList.remove('h-24', 'sm:h-28');
-        headerInner.classList.add('h-20');
-        header.classList.add('shadow-md');
-      } else {
-        headerInner.classList.remove('h-20');
-        headerInner.classList.add('h-24', 'sm:h-28');
-        header.classList.remove('shadow-md');
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 20) {
+            header.classList.add('shadow-md');
+          } else {
+            header.classList.remove('shadow-md');
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
-    });
+    }, { passive: true });
   }
 </script>
