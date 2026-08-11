@@ -7,7 +7,7 @@ const blogCollection = defineCollection({
     description: z.string(),
     publishDate: z.string(),
     updateDate: z.string().optional(),
-    author: z.string().default('Locked_in Editör Ekibi'),
+    author: z.string().default('Rent Yazılım Editör Ekibi'),
     category: z.enum(['web-tasarim', 'seo', 'google-maps', 'yemek-platformlari', 'dijital-reklam']),
     readingTime: z.string(),
     relatedServiceHref: z.string(),

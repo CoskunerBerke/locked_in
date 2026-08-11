@@ -5,7 +5,7 @@ describe('JSON-LD Schema Generators Unit Tests', () => {
   it('should generate valid Organization schema', () => {
     const schema = getOrganizationSchema();
     expect(schema['@type']).toBe('ProfessionalService');
-    expect(schema.name).toBe('MARKA ADI');
+    expect(schema.name).toBe('Rent Yazılım');
   });
 
   it('should generate valid FAQPage schema', () => {

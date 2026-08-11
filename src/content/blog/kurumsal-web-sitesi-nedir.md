@@ -3,7 +3,7 @@ title: "Kurumsal Web Sitesi Nedir? İşletmeler İçin Neden Hayati Öneme Sahip
 description: "Kurumsal web sitesi kavramı, başarılı bir dijital varlığın bileşenleri, mobil uyumluluk ve modern web teknolojilerinin şirket güvenilirliğine etkisi."
 publishDate: "2026-02-01"
 updateDate: "2026-02-10"
-author: "Locked_in Editör Ekibi"
+author: "Rent Yazılım Editör Ekibi"
 category: "web-tasarim"
 readingTime: "6 dk"
 relatedServiceHref: "/hizmetler/web-sitesi-tasarimi/"

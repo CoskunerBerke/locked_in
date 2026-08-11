@@ -3,11 +3,11 @@ import brandConfig from '../../src/config/brand';
 
 describe('Brand Configuration Unit Tests', () => {
   it('should contain all required brand fields', () => {
-    expect(brandConfig.brandName).toBe('MARKA ADI');
+    expect(brandConfig.brandName).toBe('Rent Yazılım');
     expect(brandConfig.tagline).toBe('Dijitalde görünür, işinizde güçlü olun.');
     expect(brandConfig.serviceArea).toBe('Ankara ve Türkiye geneli');
     expect(brandConfig.logoPath).toBe('/brand/logo.svg');
-    expect(brandConfig.legalCompanyName).toBe('MARKA ADI DİJİTAL HİZMETLER LTD. ŞTİ.');
+    expect(brandConfig.legalCompanyName).toBe('RENT YAZILIM DİJİTAL HİZMETLER LTD. ŞTİ.');
   });
 
   it('should defaulted indexing to false for unverified brand info', () => {

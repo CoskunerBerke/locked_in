@@ -1,6 +1,6 @@
 # Güvenlik Bildirim Politikası (SECURITY.md)
 
-{brandConfig.brandName} olarak projelerimizde güvenlik standartlarını en üst düzeyde tutmayı hedefliyoruz.
+Rent Yazılım olarak projelerimizde güvenlik standartlarını en üst düzeyde tutmayı hedefliyoruz.
 
 ## Güvenlik Bildirimi
 

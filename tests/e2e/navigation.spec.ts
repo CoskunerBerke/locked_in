@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Navigation & Corporate Page Loads', () => {
   test('should load Home Page cleanly with new corporate title', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/MARKA ADI/);
+    await expect(page).toHaveTitle(/Rent Yazılım/);
     await expect(page.locator('h1')).toContainText('İşletmenizi dijitalde');
   });
 

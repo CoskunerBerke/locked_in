@@ -19,23 +19,23 @@ export interface BrandConfig {
 }
 
 export const brandConfig: BrandConfig = {
-  brandName: 'MARKA ADI',
-  shortName: 'MARKA',
+  brandName: 'Rent Yazılım',
+  shortName: 'rentyazilim',
   tagline: 'Dijitalde görünür, işinizde güçlü olun.',
   description:
     'Web ve mobil ürünlerden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin dijital büyümesini tek merkezden yönetiyoruz.',
-  phone: '+90 (850) 000 00 00 (Geçici Numara)',
+  phone: '+90 (850) 000 00 00',
   whatsappNumber: '905000000000',
-  email: 'iletisim@ornek-domain.com (Geçici E-posta)',
-  instagramUrl: 'https://instagram.com/marka_adi_gecici',
-  address: 'Çankaya / Ankara (Geçici Adres)',
+  email: 'iletisim@rentyazilim.com',
+  instagramUrl: 'https://instagram.com/rentyazilim',
+  address: 'Çankaya / Ankara',
   serviceArea: 'Ankara ve Türkiye geneli',
-  siteUrl: process.env.PUBLIC_SITE_URL || 'https://example.com',
+  siteUrl: process.env.PUBLIC_SITE_URL || 'https://rentyazilim.com',
   logoPath: '/brand/logo.svg',
   primaryColor: '#0F172A',
   secondaryColor: '#0284C7',
   accentColor: '#4F46E5',
-  legalCompanyName: 'MARKA ADI DİJİTAL HİZMETLER LTD. ŞTİ.',
+  legalCompanyName: 'RENT YAZILIM DİJİTAL HİZMETLER LTD. ŞTİ.',
   indexingEnabled:
     process.env.PUBLIC_INDEXING_ENABLED === 'true' ? true : false,
 };

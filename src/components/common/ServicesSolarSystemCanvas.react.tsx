@@ -100,7 +100,7 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       const centerY = height / 2;
       const baseRadius = Math.min(width, height) * 0.92;
 
-      // 1. Draw Central Glowing Sun (Locked_in Central Core)
+      // 1. Draw Central Glowing Sun (Rent Yazılım Central Core)
       const sunRadius = Math.min(width, height) * 0.085;
 
       // Outer Corona Glow
@@ -141,7 +141,7 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       ctx.textBaseline = 'middle';
       ctx.shadowColor = 'rgba(0,0,0,0.8)';
       ctx.shadowBlur = 4;
-      ctx.fillText('LOCKED_IN', centerX, centerY - 2);
+      ctx.fillText('RENT YAZILIM', centerX, centerY - 2);
       ctx.font = 'bold 9px Inter, sans-serif';
       ctx.fillText('MERKEZ', centerX, centerY + 10);
       ctx.shadowBlur = 0;

@@ -3,7 +3,7 @@ title: "Instagram Reklam Bütçesi Nasıl Planlanır? Doğru Hedef Kitle Kılavu
 description: "Küçük ve orta ölçekli işletmeler için verimli Meta reklam bütçesi yönetimi, kreatif seçimi, hedef kitle tanımlama ve dönüşüm takibi."
 publishDate: "2026-02-08"
 updateDate: "2026-02-10"
-author: "Locked_in Editör Ekibi"
+author: "Rent Yazılım Editör Ekibi"
 category: "dijital-reklam"
 readingTime: "6 dk"
 relatedServiceHref: "/hizmetler/instagram-reklamlari/"
