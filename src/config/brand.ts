@@ -24,9 +24,9 @@ export const brandConfig: BrandConfig = {
   tagline: 'Dijitalde görünür, işinizde güçlü olun.',
   description:
     'Web ve mobil ürünlerden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin dijital büyümesini tek merkezden yönetiyoruz.',
-  phone: '+90 (850) 000 00 00',
-  whatsappNumber: '905000000000',
-  email: 'iletisim@rentyazilim.com',
+  phone: '+90 (535) 037 90 74',
+  whatsappNumber: '905350379074',
+  email: 'admin@rentyazilim.com',
   instagramUrl: 'https://instagram.com/rentyazilim',
   address: 'Çankaya / Ankara',
   serviceArea: 'Ankara ve Türkiye geneli',

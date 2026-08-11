@@ -18,7 +18,7 @@ describe('WhatsApp Sanitization & URL Encoder Unit Tests', () => {
     };
 
     const url = generateWhatsAppUrl(payload);
-    expect(url).toContain('https://wa.me/905000000000?text=');
+    expect(url).toContain('https://wa.me/905350379074?text=');
     expect(url).toContain(encodeURIComponent('Ahmet Yılmaz'));
     expect(url).toContain(encodeURIComponent('Kurumsal Web Sitesi'));
   });

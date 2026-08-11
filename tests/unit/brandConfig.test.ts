@@ -16,7 +16,7 @@ describe('Brand Configuration Unit Tests', () => {
 
   it('should have valid placeholder contact data', () => {
     expect(brandConfig.phone).toBeDefined();
-    expect(brandConfig.whatsappNumber).toBe('905000000000');
+    expect(brandConfig.whatsappNumber).toBe('905350379074');
     expect(brandConfig.email).toContain('@');
   });
 });
