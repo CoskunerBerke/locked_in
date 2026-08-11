@@ -27,7 +27,7 @@ export const brandConfig: BrandConfig = {
   phone: '+90 (535) 037 90 74',
   whatsappNumber: '905350379074',
   email: 'admin@rentyazilim.com',
-  instagramUrl: 'https://instagram.com/rentyazilim',
+  instagramUrl: 'https://www.instagram.com/rentyazilim/',
   address: 'Çankaya / Ankara',
   serviceArea: 'Ankara ve Türkiye geneli',
   siteUrl: process.env.PUBLIC_SITE_URL || 'https://rentyazilim.com',
