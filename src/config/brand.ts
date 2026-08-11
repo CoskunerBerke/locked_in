@@ -31,7 +31,7 @@ export const brandConfig: BrandConfig = {
   address: 'Çankaya / Ankara',
   serviceArea: 'Ankara ve Türkiye geneli',
   siteUrl: process.env.PUBLIC_SITE_URL || 'https://rentyazilim.com',
-  logoPath: '/brand/logo.svg',
+  logoPath: '/brand/logo.png',
   primaryColor: '#0F172A',
   secondaryColor: '#0284C7',
   accentColor: '#4F46E5',

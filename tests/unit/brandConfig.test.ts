@@ -6,7 +6,7 @@ describe('Brand Configuration Unit Tests', () => {
     expect(brandConfig.brandName).toBe('Rent Yazılım');
     expect(brandConfig.tagline).toBe('Dijitalde görünür, işinizde güçlü olun.');
     expect(brandConfig.serviceArea).toBe('Ankara ve Türkiye geneli');
-    expect(brandConfig.logoPath).toBe('/brand/logo.svg');
+    expect(brandConfig.logoPath).toBe('/brand/logo.png');
     expect(brandConfig.legalCompanyName).toBe('RENT YAZILIM DİJİTAL HİZMETLER LTD. ŞTİ.');
   });
 

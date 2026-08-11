@@ -1,6 +1,5 @@
 ---
 import brandConfig from '../../config/brand';
-import TopBar from './TopBar.astro';
 import MegaMenu from './MegaMenu.react';
 import MobileMenu from './MobileMenu.react';
 
@@ -19,24 +18,21 @@ const { activePage } = Astro.props;
   İçeriğe Atla
 </a>
 
-<!-- Top Information Bar -->
-<TopBar />
-
 <!-- Main Corporate Header -->
 <header
   id="site-header"
   class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all duration-200"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20 transition-all duration-200" id="header-inner">
-      <!-- Logo & Brand -->
+    <div class="flex items-center justify-between h-24 sm:h-28 transition-all duration-200" id="header-inner">
+      <!-- Large Brand Logo -->
       <a href="/" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-lg p-1">
         <img
           src={brandConfig.logoPath}
           alt={`${brandConfig.brandName} Logosu`}
-          class="h-9 sm:h-10 w-auto transition-transform group-hover:scale-105"
-          width="180"
-          height="40"
+          class="h-12 sm:h-16 lg:h-20 w-auto transition-transform group-hover:scale-105 object-contain"
+          width="240"
+          height="80"
         />
       </a>
 
@@ -44,8 +40,8 @@ const { activePage } = Astro.props;
       <nav class="hidden md:flex items-center gap-6" aria-label="Ana Gezinme">
         <a
           href="/"
-          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
-            activePage === '/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          class={`text-base font-bold transition-colors hover:text-sky-600 ${
+            activePage === '/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
           }`}
         >
           Ana Sayfa
@@ -56,8 +52,8 @@ const { activePage } = Astro.props;
 
         <a
           href="/projeler/"
-          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
-            activePage === '/projeler/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          class={`text-base font-bold transition-colors hover:text-sky-600 ${
+            activePage === '/projeler/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
           }`}
         >
           Projeler
@@ -65,8 +61,8 @@ const { activePage } = Astro.props;
 
         <a
           href="/akademi/"
-          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
-            activePage === '/akademi/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          class={`text-base font-bold transition-colors hover:text-sky-600 ${
+            activePage === '/akademi/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
           }`}
         >
           Akademi
@@ -74,8 +70,8 @@ const { activePage } = Astro.props;
 
         <a
           href="/hakkimizda/"
-          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
-            activePage === '/hakkimizda/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          class={`text-base font-bold transition-colors hover:text-sky-600 ${
+            activePage === '/hakkimizda/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
           }`}
         >
           Kurumsal
@@ -83,8 +79,8 @@ const { activePage } = Astro.props;
 
         <a
           href="/iletisim/"
-          class={`text-sm font-semibold transition-colors hover:text-sky-600 ${
-            activePage === '/iletisim/' ? 'text-sky-600 font-bold' : 'text-slate-800'
+          class={`text-base font-bold transition-colors hover:text-sky-600 ${
+            activePage === '/iletisim/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
           }`}
         >
           İletişim
@@ -95,7 +91,7 @@ const { activePage } = Astro.props;
       <div class="flex items-center gap-4">
         <a
           href="/iletisim/"
-          class="hidden sm:inline-flex btn-cta text-sm py-2.5 px-5 shadow-sm"
+          class="hidden sm:inline-flex btn-cta text-sm py-3 px-6 shadow-md"
         >
           Ücretsiz Ön Görüşme
         </a>
@@ -113,12 +109,12 @@ const { activePage } = Astro.props;
   if (header && headerInner) {
     window.addEventListener('scroll', () => {
       if (window.scrollY > 30) {
-        headerInner.classList.remove('h-20');
-        headerInner.classList.add('h-16');
+        headerInner.classList.remove('h-24', 'sm:h-28');
+        headerInner.classList.add('h-20');
         header.classList.add('shadow-md');
       } else {
-        headerInner.classList.remove('h-16');
-        headerInner.classList.add('h-20');
+        headerInner.classList.remove('h-20');
+        headerInner.classList.add('h-24', 'sm:h-28');
         header.classList.remove('shadow-md');
       }
     });
