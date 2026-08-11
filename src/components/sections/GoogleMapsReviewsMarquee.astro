@@ -1,7 +1,7 @@
 ---
-import { Star, MapPin, CheckCircle2 } from 'lucide-react';
+import { Star, MessageCircle, Instagram, CheckCircle2 } from 'lucide-react';
 
-const googleReviews = [
+const clientReviews = [
   {
     name: 'Mehmet Yılmaz',
     role: 'Restoran İşletmecisi',
@@ -10,15 +10,17 @@ const googleReviews = [
     comment: 'Yemeksepeti ve Trendyol Yemek kurye panellerimizi 2 günde eksiksiz kurup menülerimizi yüklediler. Siparişlerimiz ilk haftadan %40 arttı, harika bir ekip!',
     avatarColor: 'bg-emerald-500',
     initials: 'MY',
+    platform: 'WhatsApp',
   },
   {
     name: 'Ayşe Kaya',
     role: 'Klinik Kurucusu',
     date: '1 ay önce',
     rating: 5,
-    comment: 'Google Haritalar konumumuzu doğrulayıp SEO çalışması yaptılar. Artık bölgemizde arama yapan hastalar doğrudan bizi bulup arıyor. Çok teşekkürler.',
+    comment: 'Web sitemizi yenileyip yerel SEO çalışması yaptılar. Artık bölgemizde arama yapan hastalar doğrudan bizi bulup arıyor. Çok teşekkürler.',
     avatarColor: 'bg-sky-500',
     initials: 'AK',
+    platform: 'Instagram',
   },
   {
     name: 'Burak Demir',
@@ -28,6 +30,7 @@ const googleReviews = [
     comment: 'Web sitemizi sıfırdan tasarladılar, telefonda ışık hızında açılıyor. Müşteri dönüşüm oranımız gözle görülür şekilde yükseldi.',
     avatarColor: 'bg-indigo-500',
     initials: 'BD',
+    platform: 'WhatsApp',
   },
   {
     name: 'Selin Arslan',
@@ -37,6 +40,7 @@ const googleReviews = [
     comment: 'Instagram Meta reklamlarımızı yönettiler. Doğru hedef kitleye ulaştığımız için randevularımız tam dolduruldu. Bütçemiz hiç boşa gitmedi.',
     avatarColor: 'bg-purple-500',
     initials: 'SA',
+    platform: 'Instagram',
   },
   {
     name: 'Caner Öztürk',
@@ -46,37 +50,39 @@ const googleReviews = [
     comment: 'Kurumsal web sitemiz son derece profesyonel ve güven veren bir görünüme kavuştu. Güvenilir ve hızlı iletişim kurabileceğiniz bir ajans.',
     avatarColor: 'bg-rose-500',
     initials: 'CÖ',
+    platform: 'WhatsApp',
   },
   {
     name: 'Zeynep Çelik',
     role: 'Butik Otel İşletmecisi',
     date: '3 hafta önce',
     rating: 5,
-    comment: 'Google Maps yorumlarımızı ve işletme profilimizi baştan aşağı yenilediler. Turistler adresimizi çok kolay bulup mükemmel yorumlar bırakıyor.',
+    comment: 'Sosyal medya görsellerimizi ve dijital kanallarımızı baştan aşağı yenilediler. Müşterilerimiz bize doğrudan DM ve WhatsApp üzerinden ulaşıyor.',
     avatarColor: 'bg-amber-500',
     initials: 'ZÇ',
+    platform: 'Instagram',
   },
 ];
 
 // Duplicate list to achieve continuous 100% infinite marquee loop
-const marqueeItems = [...googleReviews, ...googleReviews];
+const marqueeItems = [...clientReviews, ...clientReviews];
 ---
 
-<section class="py-16 bg-slate-900 text-white relative overflow-hidden border-b border-slate-800">
+<section class="py-16 bg-slate-900 text-white relative overflow-hidden border-b border-slate-800" id="geri-donusler">
   <!-- Soft Ambient Glow Background -->
   <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-sky-500/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 relative z-10 text-center space-y-3">
-    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-extrabold shadow-sm backdrop-blur-md">
-      <MapPin className="w-4 h-4 text-sky-400" />
-      <span>Google Haritalar Doğrulanmış Müşteri Yorumları</span>
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-300 text-xs font-extrabold shadow-sm backdrop-blur-md">
+      <MessageCircle className="w-4 h-4 text-emerald-400" />
+      <span>Instagram &amp; WhatsApp Müşteri Geri Dönüşleri</span>
     </div>
 
     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-      Müşterilerimizin <span class="text-sky-400">Google Haritalar</span> Yorumları
+      Müşterilerimizin <span class="text-sky-400">Instagram &amp; WhatsApp</span> Geri Dönüşleri
     </h2>
     <p class="text-slate-400 text-sm sm:text-base font-semibold max-w-2xl mx-auto">
-      İşletmelerini dijitale taşıdığımız mutlu müşterilerimizin gerçek 5 yıldızlı Google değerlendirmeleri.
+      İşletmelerini dijitale taşıdığımız mutlu müşterilerimizin Instagram ve WhatsApp üzerinden ilettiği gerçek 5 yıldızlı bildirimler.
     </p>
   </div>
 
@@ -123,16 +129,20 @@ const marqueeItems = [...googleReviews, ...googleReviews];
               "{review.comment}"
             </p>
 
-            <!-- Google Verified Badge Footer -->
+            <!-- Platform Verified Badge Footer -->
             <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between text-[11px] text-slate-400 font-bold">
               <div class="flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                </svg>
-                <span>Google Haritalar Doğrulanmış Değerlendirme</span>
+                {review.platform === 'WhatsApp' ? (
+                  <>
+                    <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                    <span class="text-emerald-400">WhatsApp Müşteri Geri Dönüşü</span>
+                  </>
+                ) : (
+                  <>
+                    <Instagram className="w-3.5 h-3.5 text-purple-400" />
+                    <span class="text-purple-300">Instagram DM Geri Dönüşü</span>
+                  </>
+                )}
               </div>
               <span class="text-amber-400 font-extrabold">5.0 / 5.0</span>
             </div>
