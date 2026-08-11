@@ -10,19 +10,22 @@ interface PlanetData {
   orbitRadiusRatio: number;
   size: number;
   color: string;
-  orbitSpeed: number; // Monotonic speed factor
+  orbitSpeed: number; // Synchronized uniform orbital speed
   selfSpinSpeed: number;
 }
 
+// Unified base orbit speed = 0.0022 guarantees perfect 45-degree fixed angular separation forever (ZERO OVERLAP!)
+const UNIFORM_ORBIT_SPEED = 0.0022;
+
 const initialPlanetsData: PlanetData[] = [
-  { id: 'web', name: 'Kurumsal Web Sitesi', shortName: 'Dünya • Web Sitesi', icon: Globe, imgSrc: '/images/planets/earth.jpg', orbitRadiusRatio: 0.16, size: 16, color: '#3B82F6', orbitSpeed: 0.008, selfSpinSpeed: 0.03 },
-  { id: 'landing', name: 'Landing Page Tasarımı', shortName: 'Merkür • Landing Page', icon: Zap, imgSrc: '/images/planets/venus.jpg', orbitRadiusRatio: 0.22, size: 14, color: '#F59E0B', orbitSpeed: 0.0065, selfSpinSpeed: 0.04 },
-  { id: 'redesign', name: 'Web Sitesi Yenileme', shortName: 'Venüs • Site Yenileme', icon: RefreshCw, imgSrc: '/images/planets/venus.jpg', orbitRadiusRatio: 0.27, size: 15, color: '#EAB308', orbitSpeed: 0.005, selfSpinSpeed: 0.025 },
-  { id: 'seo', name: 'SEO & Görünürlük', shortName: 'Mars • SEO & Arama', icon: Search, imgSrc: '/images/planets/mars.jpg', orbitRadiusRatio: 0.32, size: 15, color: '#EF4444', orbitSpeed: 0.004, selfSpinSpeed: 0.035 },
-  { id: 'mobile', name: 'Mobil Uygulama', shortName: 'Jüpiter • Mobil App', icon: Smartphone, imgSrc: '/images/planets/jupiter.jpg', orbitRadiusRatio: 0.37, size: 18, color: '#F97316', orbitSpeed: 0.0032, selfSpinSpeed: 0.02 },
-  { id: 'maps', name: 'Google Maps & Yerel SEO', shortName: 'Satürn • Google Maps', icon: MapPin, imgSrc: '/images/planets/saturn.jpg', orbitRadiusRatio: 0.42, size: 17, color: '#EAB308', orbitSpeed: 0.0026, selfSpinSpeed: 0.03 },
-  { id: 'food', name: 'Yemeksepeti & Trendyol Panel', shortName: 'Uranüs • Yemek Paneli', icon: Utensils, imgSrc: '/images/planets/neptune.jpg', orbitRadiusRatio: 0.46, size: 15, color: '#06B6D4', orbitSpeed: 0.0021, selfSpinSpeed: 0.025 },
-  { id: 'social', name: 'Instagram & Meta Reklamları', shortName: 'Neptün • Instagram Reklam', icon: Megaphone, imgSrc: '/images/planets/neptune.jpg', orbitRadiusRatio: 0.49, size: 16, color: '#3B82F6', orbitSpeed: 0.0017, selfSpinSpeed: 0.04 },
+  { id: 'web', name: 'Kurumsal Web Sitesi', shortName: 'Dünya • Web Sitesi', icon: Globe, imgSrc: '/images/planets/earth.jpg', orbitRadiusRatio: 0.16, size: 16, color: '#3B82F6', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.03 },
+  { id: 'landing', name: 'Landing Page Tasarımı', shortName: 'Merkür • Landing Page', icon: Zap, imgSrc: '/images/planets/venus.jpg', orbitRadiusRatio: 0.21, size: 14, color: '#F59E0B', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.04 },
+  { id: 'redesign', name: 'Web Sitesi Yenileme', shortName: 'Venüs • Site Yenileme', icon: RefreshCw, imgSrc: '/images/planets/venus.jpg', orbitRadiusRatio: 0.26, size: 15, color: '#EAB308', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.025 },
+  { id: 'seo', name: 'SEO & Görünürlük', shortName: 'Mars • SEO & Arama', icon: Search, imgSrc: '/images/planets/mars.jpg', orbitRadiusRatio: 0.31, size: 15, color: '#EF4444', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.035 },
+  { id: 'mobile', name: 'Mobil Uygulama', shortName: 'Jüpiter • Mobil App', icon: Smartphone, imgSrc: '/images/planets/jupiter.jpg', orbitRadiusRatio: 0.36, size: 18, color: '#F97316', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.02 },
+  { id: 'maps', name: 'Google Maps & Yerel SEO', shortName: 'Satürn • Google Maps', icon: MapPin, imgSrc: '/images/planets/saturn.jpg', orbitRadiusRatio: 0.41, size: 17, color: '#EAB308', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.03 },
+  { id: 'food', name: 'Yemeksepeti & Trendyol Panel', shortName: 'Uranüs • Yemek Paneli', icon: Utensils, imgSrc: '/images/planets/neptune.jpg', orbitRadiusRatio: 0.46, size: 15, color: '#06B6D4', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.025 },
+  { id: 'social', name: 'Instagram & Meta Reklamları', shortName: 'Neptün • Instagram Reklam', icon: Megaphone, imgSrc: '/images/planets/neptune.jpg', orbitRadiusRatio: 0.50, size: 16, color: '#3B82F6', orbitSpeed: UNIFORM_ORBIT_SPEED, selfSpinSpeed: 0.04 },
 ];
 
 export const ServicesSolarSystemCanvas: React.FC = () => {
@@ -71,10 +74,10 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       twinkleSpeed: Math.random() * 0.02 + 0.005,
     }));
 
-    // Monotonic Continuous Orbit Angles (Accumulates infinitely without resets)
+    // Equal 45-degree (PI / 4) phase offset for perfect zero-overlap spacing
     const planetsState = initialPlanetsData.map((p, idx) => ({
       ...p,
-      angle: (idx * (Math.PI * 2)) / 8, // Fixed initial offset angle
+      angle: (idx * (Math.PI * 2)) / 8, // Exact 45-degree step
       selfAngle: Math.random() * Math.PI * 2,
     }));
 
@@ -167,7 +170,7 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
       // 2. Draw Orbits and Planets
       let foundHover: PlanetData | null = null;
 
-      planetsState.forEach((planet) => {
+      planetsState.forEach((planet, idx) => {
         const orbitR = baseRadius * planet.orbitRadiusRatio;
         const isHovered = hoveredPlanetIdRef.current === planet.id;
 
@@ -188,7 +191,7 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
         ctx.setLineDash([]);
         ctx.shadowBlur = 0;
 
-        // STRICT MONOTONIC UNCONDITIONAL ROTATION (Never freezes or stops on hover!)
+        // Synchronized Monotonic Orbital Speed
         planet.angle += planet.orbitSpeed * (delta / 16);
         planet.selfAngle += planet.selfSpinSpeed * (delta / 16);
 
@@ -273,14 +276,19 @@ export const ServicesSolarSystemCanvas: React.FC = () => {
 
         ctx.restore();
 
+        // Alternating Smart Label Offset (Odds above planet, Evens below planet) for ZERO TEXT OVERLAP
+        const isOdd = idx % 2 !== 0;
+        const textY = isOdd ? py - planet.size - 10 : py + planet.size + 8;
+        const textBaseline = isOdd ? 'bottom' : 'top';
+
         // Planet High-Contrast Bold Text Label (White on Space Background, Neon Cyan when Hovered)
         ctx.fillStyle = isHovered ? '#38BDF8' : '#F8FAFC';
         ctx.font = isHovered ? 'black 12px Inter, sans-serif' : 'bold 11px Inter, sans-serif';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
+        ctx.textBaseline = textBaseline;
         ctx.shadowColor = isHovered ? '#38BDF8' : 'rgba(0, 0, 0, 0.9)';
         ctx.shadowBlur = isHovered ? 8 : 4;
-        ctx.fillText(planet.shortName, px, py + planet.size + 8);
+        ctx.fillText(planet.shortName, px, textY);
         ctx.shadowBlur = 0;
       });
 
