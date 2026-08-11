@@ -1,6 +1,6 @@
 ---
 import ServicesSolarSystemCanvas from '../common/ServicesSolarSystemCanvas.react';
-import { ArrowRight, ShieldCheck, Smartphone, Search, Server, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 ---
 
 <section class="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-sky-50/40 to-slate-100 border-b border-slate-200">
@@ -21,16 +21,11 @@ import { ArrowRight, ShieldCheck, Smartphone, Search, Server, Sparkles } from 'l
       
       <!-- Left Column: High-Contrast Sharp Text (Deep Dark Navy #0F172A & Vibrant Sky Blue #0284C7) -->
       <div class="lg:col-span-6 space-y-6">
-        <!-- Badge Label -->
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-600 text-white text-xs sm:text-sm font-extrabold shadow-md">
-          <Sparkles className="w-4 h-4 text-sky-200 animate-pulse" />
-          <span>Web Tasarım • Yazılım • Dijital Büyüme</span>
-        </div>
-
+        
         <!-- Main Headline H1 - High-Contrast Deep Dark Navy -->
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]">
           İşletmenizi dijitalde<br class="hidden sm:inline" />
-          <span class="text-sky-600 font-black underline decoration-sky-400 decoration-wavy">
+          <span class="text-sky-600 font-black">
             güçlü bir sisteme
           </span> dönüştürüyoruz.
         </h1>
@@ -55,26 +50,6 @@ import { ArrowRight, ShieldCheck, Smartphone, Search, Server, Sparkles } from 'l
           <a href="#hizmetlerimiz" class="bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300 px-6 py-3.5 rounded-lg text-center font-extrabold text-sm transition-all shadow-md">
             <span>Hizmetlerimizi İncele</span>
           </a>
-        </div>
-
-        <!-- Verified Trust Badges - High-Contrast White Cards -->
-        <div class="mt-8 pt-6 border-t border-slate-300 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-slate-900 font-black">
-          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
-            <Smartphone className="w-4 h-4 text-sky-600 shrink-0" />
-            <span>Mobil Uyumlu</span>
-          </div>
-          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
-            <Search className="w-4 h-4 text-sky-600 shrink-0" />
-            <span>SEO Odaklı</span>
-          </div>
-          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
-            <Server className="w-4 h-4 text-sky-600 shrink-0" />
-            <span>Güvenli Statik</span>
-          </div>
-          <div class="flex items-center gap-2 p-2.5 rounded-lg bg-white border border-slate-200 shadow-xs">
-            <ShieldCheck className="w-4 h-4 text-sky-600 shrink-0" />
-            <span>Yayın Destek</span>
-          </div>
         </div>
       </div>
 
