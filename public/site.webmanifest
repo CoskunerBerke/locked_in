@@ -1,12 +1,16 @@
 {
-  "name": "MARKA ADI - Dijital Ajans",
-  "short_name": "MARKA ADI",
+  "name": "Rent Yazılım - Dijital Hizmetler ve Danışmanlık Ajansı",
+  "short_name": "Rent Yazılım",
   "icons": [
     {
-      "src": "/brand/logo.svg",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "theme_color": "#0EA5E9",
