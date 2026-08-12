@@ -9,7 +9,7 @@ export function getOrganizationSchema() {
     alternateName: brandConfig.legalCompanyName,
     url: brandConfig.siteUrl,
     logo: `${brandConfig.siteUrl}${brandConfig.logoPath}`,
-    image: `${brandConfig.siteUrl}/brand/logo.svg`,
+    image: `${brandConfig.siteUrl}${brandConfig.logoPath}`,
     description: brandConfig.description,
     telephone: brandConfig.phone,
     email: brandConfig.email,

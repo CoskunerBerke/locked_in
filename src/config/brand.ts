@@ -23,7 +23,7 @@ export const brandConfig: BrandConfig = {
   shortName: 'rentyazilim',
   tagline: 'Dijitalde görünür, işinizde güçlü olun.',
   description:
-    'Web ve mobil ürünlerden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin dijital büyümesini tek merkezden yönetiyoruz.',
+    'Ankara web tasarım, SEO hizmeti, Google Maps optimizasyonu, mobil uygulama, Instagram reklamları ve Yemeksepeti/Trendyol Yemek panel danışmanlığı ile işiniz için dijital çözümler sunuyoruz.',
   phone: '+90 (535) 037 90 74',
   whatsappNumber: '905350379074',
   email: 'admin@rentyazilim.com',
