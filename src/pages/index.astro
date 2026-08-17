@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/hero/HeroSection.astro';
+import PlanetServicesExperience from '../components/experience/PlanetServicesExperience.react';
 import GoogleMapsReviewsMarquee from '../components/sections/GoogleMapsReviewsMarquee.astro';
 import CorporateAboutOverview from '../components/sections/CorporateAboutOverview.astro';
 import MainServicesDetailed from '../components/sections/MainServicesDetailed.astro';
@@ -18,6 +19,7 @@ import brandConfig from '../config/brand';
   activePage="/"
 >
   <HeroSection />
+  <PlanetServicesExperience client:load />
   <GoogleMapsReviewsMarquee />
   <CorporateAboutOverview />
   <MainServicesDetailed />

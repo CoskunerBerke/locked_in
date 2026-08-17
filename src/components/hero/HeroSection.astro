@@ -1,11 +1,10 @@
 ---
-import ServicesSolarSystemCanvas from '../common/ServicesSolarSystemCanvas.react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, Compass, ShieldCheck, Zap } from 'lucide-react';
 ---
 
-<section class="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-sky-50/40 to-slate-100 border-b border-slate-200">
+<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-sky-50/40 to-slate-100 border-b border-slate-200">
   
-  <!-- Light Grid Pattern (Matching User Screenshot) -->
+  <!-- Light Grid Pattern -->
   <div 
     class="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-70 z-0 pointer-events-none"
     aria-hidden="true"
@@ -22,7 +21,7 @@ import { ArrowRight } from 'lucide-react';
       <!-- Left Column: High-Contrast Sharp Text -->
       <div class="lg:col-span-6 space-y-6">
         
-        <!-- Main Headline H1 - High-Contrast Deep Dark Navy -->
+        <!-- Main Headline H1 -->
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.15]">
           İşletmenizi dijitalde<br class="hidden sm:inline" />
           <span class="text-sky-600 font-black">
@@ -35,7 +34,7 @@ import { ArrowRight } from 'lucide-react';
           TASARIM, YAZILIM VE BÜYÜME TEK EKİPTE.
         </p>
 
-        <!-- Subtitle Description - Sharp Dark Slate -->
+        <!-- Subtitle Description -->
         <p class="text-base sm:text-lg text-slate-800 leading-relaxed font-bold max-w-xl">
           Web sitesi ve mobil uygulama geliştirmeden SEO, Google Maps, sosyal medya reklamları ve yemek platformu yönetimine kadar işletmenizin ihtiyaç duyduğu dijital hizmetleri tek merkezden sunuyoruz.
         </p>
@@ -53,23 +52,47 @@ import { ArrowRight } from 'lucide-react';
         </div>
       </div>
 
-      <!-- Right Column: Interactive 8-Planet Animated Solar System Canvas with Dedicated Space Blue & Starlight Styling -->
+      <!-- Right Column: Visual Showcase Badge Card inviting to scroll experience -->
       <div class="lg:col-span-6 relative">
-        <div class="p-5 rounded-3xl bg-gradient-to-br from-[#0B1528] via-[#0F172A] to-[#020617] border border-sky-500/30 shadow-2xl shadow-sky-950/60 relative overflow-hidden group transform-gpu translate-z-0" style="transform: translateZ(0);">
+        <div class="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0B1528] via-[#0F172A] to-[#020617] border border-sky-500/30 shadow-2xl shadow-sky-950/60 relative overflow-hidden group">
           
-          <!-- Deep Space Cosmic Radial Glow & Starlight Background Effects -->
-          <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.14),transparent_75%)] pointer-events-none"></div>
+          <!-- Cosmic Glow Effects -->
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.18),transparent_75%)] pointer-events-none"></div>
           <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-sky-500/10 blur-3xl pointer-events-none"></div>
-          <div class="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none"></div>
+          
+          <div class="relative z-10 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-950/80 border border-sky-400/40 text-sky-300 text-xs font-black uppercase tracking-widest shadow-lg">
+              <Sparkles className="w-4 h-4 text-sky-400" />
+              <span>İnteraktif Hizmet Sistemi</span>
+            </div>
 
-          <div class="text-center mb-3 relative z-20">
-            <span class="text-[11px] font-black uppercase tracking-widest text-sky-300 bg-sky-950/80 px-4 py-1.5 rounded-full border border-sky-400/40 shadow-lg shadow-sky-950/50 backdrop-blur-md inline-block">
-              Solar Sistem • 8 Hizmetimiz Döner Yörüngede
-            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+              8 Ana Uzmanlık Alanı ile Tam Ekran Dijital Yolculuk
+            </h2>
+
+            <p class="text-sm text-slate-300 font-medium leading-relaxed">
+              Aşağı kaydırarak Dünya'dan Neptün'e uzanan 8 gezegenlik interaktif hizmet yolculuğumuzu keşfedin.
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-2.5 text-xs text-slate-200 font-bold">
+                <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
+                <span>%100 Güvenli Altyapı</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-2.5 text-xs text-slate-200 font-bold">
+                <Zap className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>Hızlı &amp; Sonuç Odaklı</span>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <a href="#hizmetlerimiz" class="inline-flex items-center gap-2 text-xs font-extrabold text-sky-400 hover:text-sky-300 transition-colors">
+                <Compass className="w-4 h-4" />
+                <span>Gezegen Yolculuğuna Başla</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
-
-          <!-- Solar System Interactive Canvas -->
-          <ServicesSolarSystemCanvas client:load />
         </div>
       </div>
 
