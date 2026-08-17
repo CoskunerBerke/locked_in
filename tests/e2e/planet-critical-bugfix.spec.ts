@@ -6,7 +6,7 @@ const artifactsDir = 'C:\\Users\\berke\\.gemini\\antigravity\\brain\\ee6e6f74-ba
 test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
   test.setTimeout(120000);
 
-  test('1. Verify 8 Fullscreen Stage Anchors and Hero CTA Navigation', async ({ page }) => {
+  test('1. Verify 8 Fullscreen Stage Anchors and Hero CTA Navigation', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -34,10 +34,12 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
     await expect(card).toBeVisible();
     await expect(card.locator('h2')).toContainText('Web Tasarım ve Kurumsal Web Sitesi');
 
-    await page.screenshot({ path: path.join(artifactsDir, '01_hero_adventure_invitation.png') });
+    if (testInfo.project.name === 'chromium') {
+      await page.screenshot({ path: path.join(artifactsDir, '01_hero_adventure_invitation.png') });
+    }
   });
 
-  test('2. Earth to Mercury Cinematic Prototype Capture (t=0.00, t=0.50, t=1.00)', async ({ page }) => {
+  test('2. Earth to Mercury Cinematic Prototype Capture (t=0.00, t=0.50, t=1.00)', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -49,6 +51,7 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
           const totalDistance = section.offsetHeight - window.innerHeight;
           const targetY = window.scrollY + rect.top + ratio * totalDistance;
           window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
+          window.dispatchEvent(new Event('scroll'));
         }
       }, r);
       await page.waitForTimeout(300);
@@ -58,20 +61,27 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
     await scrollToRatio(0.06);
     const exp = page.locator('[data-testid="planet-experience"]');
     await expect(exp).toHaveAttribute('data-planet-id', 'earth');
-    await page.screenshot({ path: path.join(artifactsDir, '02_earth_start_scene.png') });
+    if (testInfo.project.name === 'chromium') {
+      await page.screenshot({ path: path.join(artifactsDir, '02_earth_start_scene.png') });
+    }
 
-    // 2. Progress 0.50 — Midpoint transition wave (Between Earth & Mercury: ~0.125)
+    // 2. Progress 0.50 — Midpoint transition wave
     await scrollToRatio(0.125);
-    await page.waitForTimeout(400);
-    await page.screenshot({ path: path.join(artifactsDir, '03_earth_to_mercury_morph_midpoint.png') });
+    await page.waitForTimeout(300);
+    if (testInfo.project.name === 'chromium') {
+      await page.screenshot({ path: path.join(artifactsDir, '03_earth_to_mercury_morph_midpoint.png') });
+    }
 
     // 3. Progress 1.00 — Mercury Stage Center
-    await scrollToRatio(0.1875);
+    await scrollToRatio(0.19);
+    await page.waitForTimeout(300);
     await expect(exp).toHaveAttribute('data-planet-id', 'mercury');
-    await page.screenshot({ path: path.join(artifactsDir, '03_mercury_scene.png') });
+    if (testInfo.project.name === 'chromium') {
+      await page.screenshot({ path: path.join(artifactsDir, '03_mercury_scene.png') });
+    }
   });
 
-  test('3. Real 3D Y-Axis Sphere Rotation verification on Earth and Saturn', async ({ page }) => {
+  test('3. Real 3D Y-Axis Sphere Rotation verification on Earth and Saturn', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -110,10 +120,12 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
     expect(saturnAngle2).not.toBeNull();
     expect(saturnAngle1).not.toEqual(saturnAngle2);
 
-    await page.screenshot({ path: path.join(artifactsDir, '07_saturn_scene.png') });
+    if (testInfo.project.name === 'chromium') {
+      await page.screenshot({ path: path.join(artifactsDir, '07_saturn_scene.png') });
+    }
   });
 
-  test('4. Planet Navigation Buttons navigate to all 8 stages accurately', async ({ page }) => {
+  test('4. Planet Navigation Buttons navigate to all 8 stages accurately', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -139,7 +151,7 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
         const b = document.querySelector(`[data-testid="planet-nav-${targetId}"]`) as HTMLButtonElement;
         b?.click();
       }, stage.id);
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(200);
 
       await expect(exp).toHaveAttribute('data-active-index', stage.index);
       await expect(exp).toHaveAttribute('data-planet-id', stage.id);
@@ -150,11 +162,13 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
       const card = page.locator('[data-testid="active-service-card"]');
       await expect(card.locator('h2')).toContainText(stage.title);
 
-      await page.screenshot({ path: path.join(artifactsDir, stage.file) });
+      if (testInfo.project.name === 'chromium') {
+        await page.screenshot({ path: path.join(artifactsDir, stage.file) });
+      }
     }
   });
 
-  test('5. Downward and Upward Scroll Trajectory verification', async ({ page }) => {
+  test('5. Downward and Upward Scroll Trajectory verification', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -166,15 +180,15 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
           const totalDistance = section.offsetHeight - window.innerHeight;
           const targetY = window.scrollY + rect.top + r * totalDistance;
           window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
+          window.dispatchEvent(new Event('scroll'));
         }
       }, ratio);
-      await page.waitForTimeout(250);
+      await page.waitForTimeout(300);
     };
 
     const exp = page.locator('[data-testid="planet-experience"]');
     const stickyViewport = page.locator('[data-testid="planet-sticky-viewport"]');
 
-    // Downward scroll steps (0 to 7)
     const downSteps = [
       { ratio: 0.06, id: 'earth' },
       { ratio: 0.18, id: 'mercury' },
@@ -195,10 +209,12 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
     // Upward scroll back to Earth
     await scrollToProgress(0.02);
     await expect(exp).toHaveAttribute('data-planet-id', 'earth');
-    await page.screenshot({ path: path.join(artifactsDir, '10_scroll_back_to_earth.png') });
+    if (testInfo.project.name === 'chromium') {
+      await page.screenshot({ path: path.join(artifactsDir, '10_scroll_back_to_earth.png') });
+    }
   });
 
-  test('6. Multi-Device Responsive & Mobile Rendering', async ({ page }) => {
+  test('6. Multi-Device Responsive & Mobile Rendering', async ({ page }, testInfo) => {
     const viewports = [
       { width: 320, height: 568 },
       { width: 390, height: 844 },
@@ -219,7 +235,7 @@ test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       expect(scrollWidth).toBeLessThanOrEqual(vp.width + 1);
 
-      if (vp.width === 390) {
+      if (vp.width === 390 && testInfo.project.name === 'chromium') {
         await page.screenshot({ path: path.join(artifactsDir, '11_mobile_earth.png') });
 
         await page.evaluate(() => {
