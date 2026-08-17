@@ -1,5 +1,5 @@
 export interface PlanetServiceStage {
-  id: string;
+  id: 'earth' | 'mercury' | 'venus' | 'mars' | 'jupiter' | 'saturn' | 'uranus' | 'neptune';
   sequence: number; // 1 to 8
   planetName: string;
   serviceName: string;
@@ -16,7 +16,7 @@ export interface PlanetServiceStage {
 
 export const planetServicesData: PlanetServiceStage[] = [
   {
-    id: 'web-tasarim',
+    id: 'earth',
     sequence: 1,
     planetName: 'Dünya',
     serviceName: 'Web Tasarım ve Kurumsal Web Sitesi',
@@ -36,7 +36,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Dünya - Web Tasarım ve Kurumsal Web Sitesi Hizmeti',
   },
   {
-    id: 'landing-page',
+    id: 'mercury',
     sequence: 2,
     planetName: 'Merkür',
     serviceName: 'Landing Page Tasarımı',
@@ -56,7 +56,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Merkür - Landing Page Tasarımı Hizmeti',
   },
   {
-    id: 'web-yenileme',
+    id: 'venus',
     sequence: 3,
     planetName: 'Venüs',
     serviceName: 'Web Sitesi Yenileme',
@@ -76,7 +76,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Venüs - Web Sitesi Yenileme Hizmeti',
   },
   {
-    id: 'seo',
+    id: 'mars',
     sequence: 4,
     planetName: 'Mars',
     serviceName: 'Google SEO ve Arama Görünürlüğü',
@@ -96,7 +96,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Mars - Google SEO ve Arama Görünürlüğü Hizmeti',
   },
   {
-    id: 'mobil-uygulama',
+    id: 'jupiter',
     sequence: 5,
     planetName: 'Jüpiter',
     serviceName: 'Mobil Uygulama ve İşletme Yazılımı',
@@ -116,7 +116,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Jüpiter - Mobil Uygulama ve İşletme Yazılımı Hizmeti',
   },
   {
-    id: 'google-maps',
+    id: 'saturn',
     sequence: 6,
     planetName: 'Satürn',
     serviceName: 'Google Maps ve Yerel SEO',
@@ -136,7 +136,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Satürn - Google Maps ve Yerel SEO Hizmeti',
   },
   {
-    id: 'yemek-panelleri',
+    id: 'uranus',
     sequence: 7,
     planetName: 'Uranüs',
     serviceName: 'Yemeksepeti ve Trendyol Yemek Kurulumu',
@@ -156,7 +156,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ariaLabel: 'Uranüs - Yemeksepeti ve Trendyol Yemek Kurulumu Hizmeti',
   },
   {
-    id: 'instagram-reklamlari',
+    id: 'neptune',
     sequence: 8,
     planetName: 'Neptün',
     serviceName: 'Instagram ve Meta Reklam Yönetimi',
