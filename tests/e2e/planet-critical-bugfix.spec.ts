@@ -3,12 +3,19 @@ import path from 'path';
 
 const artifactsDir = 'C:\\Users\\berke\\.gemini\\antigravity\\brain\\ee6e6f74-bae3-43fc-a1c4-dc4b91e1aa18';
 
-test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
+test.describe('Planet Experience Cinematic Fluid & Flame Morph Suite', () => {
   test.setTimeout(120000);
 
-  test('1. Hero Button "Serüvene Başla" smoothly scrolls to #gezegen-seruveni and activates Earth', async ({ page }) => {
+  test('1. Verify 8 Fullscreen Stage Anchors and Hero CTA Navigation', async ({ page }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
+
+    // Check all 8 anchor tags
+    const anchors = ['dunya', 'merkur', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptun'];
+    for (const anchor of anchors) {
+      const el = page.locator(`#${anchor}`);
+      await expect(el).toBeAttached();
+    }
 
     const heroCta = page.locator('a:has-text("Serüvene Başla")').first();
     await expect(heroCta).toBeVisible();
@@ -28,14 +35,46 @@ test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
     await expect(card.locator('h2')).toContainText('Web Tasarım ve Kurumsal Web Sitesi');
 
     await page.screenshot({ path: path.join(artifactsDir, '01_hero_adventure_invitation.png') });
-    await page.screenshot({ path: path.join(artifactsDir, '02_earth_start_scene.png') });
   });
 
-  test('2. Real 3D Y-Axis Sphere Rotation verification on Earth and Saturn', async ({ page }) => {
+  test('2. Earth to Mercury Cinematic Prototype Capture (t=0.00, t=0.50, t=1.00)', async ({ page }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
-    // Scroll to planet experience section first
+    const scrollToRatio = async (r: number) => {
+      await page.evaluate((ratio) => {
+        const section = document.getElementById('gezegen-seruveni');
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          const totalDistance = section.offsetHeight - window.innerHeight;
+          const targetY = window.scrollY + rect.top + ratio * totalDistance;
+          window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
+        }
+      }, r);
+      await page.waitForTimeout(300);
+    };
+
+    // 1. Progress 0.00 — Earth Stage Center
+    await scrollToRatio(0.06);
+    const exp = page.locator('[data-testid="planet-experience"]');
+    await expect(exp).toHaveAttribute('data-planet-id', 'earth');
+    await page.screenshot({ path: path.join(artifactsDir, '02_earth_start_scene.png') });
+
+    // 2. Progress 0.50 — Midpoint transition wave (Between Earth & Mercury: ~0.125)
+    await scrollToRatio(0.125);
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: path.join(artifactsDir, '03_earth_to_mercury_morph_midpoint.png') });
+
+    // 3. Progress 1.00 — Mercury Stage Center
+    await scrollToRatio(0.1875);
+    await expect(exp).toHaveAttribute('data-planet-id', 'mercury');
+    await page.screenshot({ path: path.join(artifactsDir, '03_mercury_scene.png') });
+  });
+
+  test('3. Real 3D Y-Axis Sphere Rotation verification on Earth and Saturn', async ({ page }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto('/');
+
     const heroCta = page.locator('a:has-text("Serüvene Başla")').first();
     await heroCta.click();
     await page.waitForTimeout(600);
@@ -74,7 +113,7 @@ test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
     await page.screenshot({ path: path.join(artifactsDir, '07_saturn_scene.png') });
   });
 
-  test('3. Planet Navigation Buttons navigate to all 8 stages accurately', async ({ page }) => {
+  test('4. Planet Navigation Buttons navigate to all 8 stages accurately', async ({ page }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -115,7 +154,7 @@ test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
     }
   });
 
-  test('4. Downward and Upward Scroll Trajectory verification', async ({ page }) => {
+  test('5. Downward and Upward Scroll Trajectory verification', async ({ page }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -159,7 +198,7 @@ test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
     await page.screenshot({ path: path.join(artifactsDir, '10_scroll_back_to_earth.png') });
   });
 
-  test('5. Multi-Device Responsive & Mobile Rendering', async ({ page }) => {
+  test('6. Multi-Device Responsive & Mobile Rendering', async ({ page }) => {
     const viewports = [
       { width: 320, height: 568 },
       { width: 390, height: 844 },
@@ -177,15 +216,12 @@ test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
       const section = page.locator('#gezegen-seruveni');
       await expect(section).toBeAttached();
 
-      // Check no horizontal scrollbar on body
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       expect(scrollWidth).toBeLessThanOrEqual(vp.width + 1);
 
-      // Verify Earth on mobile
       if (vp.width === 390) {
         await page.screenshot({ path: path.join(artifactsDir, '11_mobile_earth.png') });
 
-        // Click Neptune on mobile
         await page.evaluate(() => {
           const btn = document.querySelector('[data-testid="planet-nav-neptune"]') as HTMLButtonElement;
           btn?.click();
