@@ -137,14 +137,14 @@ test.describe('Planet Experience Critical Bugfix V2 Suite', () => {
 
     // Downward scroll steps (0 to 7)
     const downSteps = [
-      { ratio: 0.05, id: 'earth' },
+      { ratio: 0.06, id: 'earth' },
       { ratio: 0.18, id: 'mercury' },
-      { ratio: 0.32, id: 'venus' },
-      { ratio: 0.45, id: 'mars' },
-      { ratio: 0.58, id: 'jupiter' },
-      { ratio: 0.72, id: 'saturn' },
-      { ratio: 0.85, id: 'uranus' },
-      { ratio: 0.98, id: 'neptune' },
+      { ratio: 0.31, id: 'venus' },
+      { ratio: 0.43, id: 'mars' },
+      { ratio: 0.56, id: 'jupiter' },
+      { ratio: 0.68, id: 'saturn' },
+      { ratio: 0.81, id: 'uranus' },
+      { ratio: 0.94, id: 'neptune' },
     ];
 
     for (const step of downSteps) {
