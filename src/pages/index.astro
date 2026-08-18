@@ -2,12 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/hero/HeroSection.astro';
 import PlanetServicesExperience from '../components/experience/PlanetServicesExperience.react';
-import GoogleMapsReviewsMarquee from '../components/sections/GoogleMapsReviewsMarquee.astro';
-import CorporateAboutOverview from '../components/sections/CorporateAboutOverview.astro';
-import MainServicesDetailed from '../components/sections/MainServicesDetailed.astro';
 import PortfolioShowcase from '../components/sections/PortfolioShowcase.astro';
-import WorkProcess from '../components/sections/WorkProcess.astro';
-import WhyUs from '../components/sections/WhyUs.astro';
+import GoogleMapsReviewsMarquee from '../components/sections/GoogleMapsReviewsMarquee.astro';
 import FAQSection from '../components/sections/FAQSection.astro';
 import FinalCTA from '../components/sections/FinalCTA.astro';
 import brandConfig from '../config/brand';
@@ -20,12 +16,8 @@ import brandConfig from '../config/brand';
 >
   <HeroSection />
   <PlanetServicesExperience client:load />
-  <GoogleMapsReviewsMarquee />
-  <CorporateAboutOverview />
-  <MainServicesDetailed />
   <PortfolioShowcase />
-  <WorkProcess />
-  <WhyUs />
+  <GoogleMapsReviewsMarquee />
   <FAQSection />
   <FinalCTA />
 </Layout>

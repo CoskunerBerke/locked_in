@@ -5,7 +5,22 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import planetServicesData from '../../data/planetServices';
 import type { PlanetServiceStage } from '../../data/planetServices';
-import { CheckCircle2, ArrowRight, Sparkles, ChevronDown, Globe, Search, Smartphone, MapPin, Utensils, Megaphone, Zap, RefreshCw } from 'lucide-react';
+import {
+  CheckCircle2,
+  ArrowRight,
+  Sparkles,
+  ChevronUp,
+  ChevronDown,
+  Globe,
+  Search,
+  Smartphone,
+  MapPin,
+  Utensils,
+  Megaphone,
+  Zap,
+  RefreshCw,
+  FolderGit2
+} from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   earth: Globe,
@@ -40,7 +55,7 @@ const TRANSITION_VARIANTS: boolean[] = [
   false, // 6 -> 7: Uranüs -> Neptün (Cold Fluid / Deep Ocean Energy)
 ];
 
-// Generate soft glowing circular alpha texture for sparks/embers
+// Soft glowing circular alpha texture for particle embers (prevents square artifacts)
 function createGlowParticleTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 64;
@@ -48,8 +63,8 @@ function createGlowParticleTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d')!;
   const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
-  grad.addColorStop(0.25, 'rgba(255, 200, 100, 0.8)');
-  grad.addColorStop(0.55, 'rgba(255, 120, 30, 0.35)');
+  grad.addColorStop(0.25, 'rgba(255, 210, 120, 0.85)');
+  grad.addColorStop(0.6, 'rgba(255, 130, 40, 0.35)');
   grad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 64, 64);
@@ -58,48 +73,42 @@ function createGlowParticleTexture(): THREE.CanvasTexture {
   return tex;
 }
 
-// Ultra-realistic procedural cratered rocky texture for Mercury
+// Procedural detailed texture for Mercury
 function createMercuryDetailedTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 2048;
   canvas.height = 1024;
   const ctx = canvas.getContext('2d')!;
 
-  // Base metallic rocky gray
   ctx.fillStyle = '#6E7278';
   ctx.fillRect(0, 0, 2048, 1024);
 
-  // Multi-frequency noise
   const imgData = ctx.getImageData(0, 0, 2048, 1024);
   const data = imgData.data;
   for (let i = 0; i < data.length; i += 4) {
     const n = (Math.random() - 0.5) * 35;
-    data[i] = Math.min(255, Math.max(0, 110 + n));     // R
-    data[i + 1] = Math.min(255, Math.max(0, 112 + n)); // G
-    data[i + 2] = Math.min(255, Math.max(0, 116 + n)); // B
+    data[i] = Math.min(255, Math.max(0, 110 + n));
+    data[i + 1] = Math.min(255, Math.max(0, 112 + n));
+    data[i + 2] = Math.min(255, Math.max(0, 116 + n));
   }
   ctx.putImageData(imgData, 0, 0);
 
-  // Layered craters with highlight & shadow
   for (let i = 0; i < 900; i++) {
     const x = Math.random() * 2048;
     const y = Math.random() * 1024;
     const r = Math.random() * 22 + 2;
 
-    // Rim highlight
     ctx.beginPath();
     ctx.arc(x - r * 0.15, y - r * 0.15, r, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(210, 215, 220, 0.25)';
     ctx.fill();
 
-    // Crater floor
     ctx.beginPath();
     ctx.arc(x, y, r * 0.85, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(45, 48, 52, 0.4)';
     ctx.fill();
   }
 
-  // Major rayed impact basins
   for (let i = 0; i < 8; i++) {
     const bx = Math.random() * 2048;
     const by = Math.random() * 1024;
@@ -122,7 +131,7 @@ function createMercuryDetailedTexture(): THREE.CanvasTexture {
   return texture;
 }
 
-// Procedural texture for Uranus
+// Procedural detailed texture for Uranus
 function createUranusDetailedTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
@@ -149,39 +158,35 @@ function createUranusDetailedTexture(): THREE.CanvasTexture {
 
 // ============================================================================
 // CINEMATIC FLUID / FLAME TRANSITION SHADER
-// Fluid Wave Front + Hot White Energy Core + Volumetric Plasma / Liquid Glow
+// Smooth Wave Front + Controlled Hot Core + Fluid/Flame Plasma Shading
 // ============================================================================
 const CinematicFluidFlameShader = {
   vertexShader: `
     varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vPosition;
-    varying vec3 vWorldPosition;
 
     void main() {
       vUv = uv;
       vNormal = normalize(normalMatrix * normal);
       vPosition = position;
-      vec4 worldPos = modelMatrix * vec4(position, 1.0);
-      vWorldPosition = worldPos.xyz;
-      gl_Position = projectionMatrix * viewMatrix * worldPos;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
   fragmentShader: `
     uniform sampler2D uTexFrom;
     uniform sampler2D uTexTo;
-    uniform float uProgress;       // 0.0 to 1.0 continuous scroll transition
-    uniform float uUvOffset;       // Continuous Y-axis spin offset
+    uniform float uProgress;       // 0.0 to 1.0 smooth animated transition
+    uniform float uUvOffset;       // Continuous horizontal UV spin
     uniform float uTime;
-    uniform int uVariant;          // 0 = Cold Fluid Energy (Cyan/Blue), 1 = Hot Flame Plasma (Gold/Orange)
+    uniform int uVariant;          // 0 = Cold Fluid Energy (Cyan), 1 = Hot Flame Plasma (Gold/Orange)
     uniform vec3 uLightDir;
 
     varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vPosition;
-    varying vec3 vWorldPosition;
 
-    // 3D Simplex-style Noise & FBM for fluid/flame turbulence
+    // 3D Simplex & FBM Noise
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -239,19 +244,16 @@ const CinematicFluidFlameShader = {
     }
 
     void main() {
-      // Horizontal UV spin
       vec2 uv = vec2(fract(vUv.x + uUvOffset), vUv.y);
 
-      // Sample base planet textures
       vec4 texFrom = texture2D(uTexFrom, uv);
       vec4 texTo = texture2D(uTexTo, uv);
 
-      // Spherical directional lighting & atmosphere fresnel
-      float diffuse = max(0.2, dot(vNormal, normalize(uLightDir)));
+      float diffuse = max(0.22, dot(vNormal, normalize(uLightDir)));
       float fresnel = pow(1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.4);
 
       if (uProgress <= 0.001) {
-        vec3 finalCol = texFrom.rgb * diffuse + vec3(0.1, 0.4, 0.8) * (fresnel * 0.35);
+        vec3 finalCol = texFrom.rgb * diffuse + vec3(0.1, 0.45, 0.85) * (fresnel * 0.3);
         gl_FragColor = vec4(finalCol, 1.0);
         return;
       }
@@ -261,65 +263,55 @@ const CinematicFluidFlameShader = {
         return;
       }
 
-      // ====================================================================
-      // FLUID / FLAME ADVANCING WAVE FRONT
-      // Coordinates sweep diagonally from top-left to bottom-right across the sphere
-      // ====================================================================
+      // Smooth flowing wave front sweeping diagonally across sphere
       vec3 flowPos = vPosition * 1.5 + vec3(uTime * 0.3, uTime * 0.2, uTime * 0.15);
       float flowNoise = fbm(flowPos);
 
-      // Wave direction across sphere surface
       float sweepCoord = (vPosition.x * 0.75 + vPosition.y * 0.65 - vPosition.z * 0.3) / 1.8;
       float waveFront = sweepCoord + flowNoise * 0.45;
 
-      // Map progress to sweep range [-1.2, 1.2]
       float threshold = mix(-1.2, 1.2, uProgress);
       float dist = waveFront - threshold;
 
-      // Seamless Texture Blend across the sweeping front
       float blendFactor = smoothstep(-0.15, 0.15, dist);
       vec3 blendedTex = mix(texTo.rgb, texFrom.rgb, blendFactor);
 
-      // Dynamic Color Palettes
-      vec3 coreWhite = vec3(1.0, 1.0, 0.95);
+      // Controlled color palettes (no full-screen blinding whiteout)
+      vec3 coreWhite = vec3(1.0, 0.98, 0.92);
       vec3 energyPrimary = (uVariant == 1)
-        ? vec3(1.0, 0.45, 0.05)   // Flame Orange / Solar Gold
+        ? vec3(1.0, 0.42, 0.05)   // Flame Orange / Solar Gold
         : vec3(0.05, 0.75, 1.0);  // Cyan / Electric Blue Fluid
 
       vec3 energySecondary = (uVariant == 1)
-        ? vec3(1.0, 0.85, 0.2)    // Bright Yellow Core Flame
-        : vec3(0.4, 0.95, 1.0);   // Bright Cyan Liquid Core
+        ? vec3(1.0, 0.85, 0.2)    // Warm Yellow
+        : vec3(0.4, 0.95, 1.0);   // Bright Cyan
 
       vec3 energyDeep = (uVariant == 1)
-        ? vec3(0.8, 0.12, 0.02)   // Deep Crimson Plasma
-        : vec3(0.0, 0.2, 0.7);    // Deep Indigo Fluid
+        ? vec3(0.75, 0.12, 0.02)  // Crimson Plasma
+        : vec3(0.0, 0.2, 0.65);   // Indigo Fluid
 
-      // 1. Hot Intense Energy Core (Thin, piercing laser/plasma line right on the front)
-      float coreIntensity = exp(-abs(dist) * 22.0) * sin(uProgress * 3.14159) * 3.8;
+      // 1. Hot Energy Core Line (Clean, high-contrast, non-blinding)
+      float coreIntensity = exp(-abs(dist) * 20.0) * sin(uProgress * 3.14159) * 2.2;
 
-      // 2. Volumetric Fluid / Flame Wave Band (Wide glowing fluid body trailing the front)
-      float waveBody = exp(-max(0.0, dist) * 6.0) * exp(-max(0.0, -dist) * 3.5) * sin(uProgress * 3.14159) * 2.6;
+      // 2. Volumetric Fluid / Flame Wave Body
+      float waveBody = exp(-max(0.0, dist) * 5.5) * exp(-max(0.0, -dist) * 3.0) * sin(uProgress * 3.14159) * 1.6;
 
-      // 3. Ambient Plasma Dispersion across the active sphere
-      float activeDispersal = sin(uProgress * 3.14159) * 0.35 * (flowNoise * 0.5 + 0.5);
+      // 3. Subtle ambient plasma aura
+      float activeDispersal = sin(uProgress * 3.14159) * 0.25 * (flowNoise * 0.5 + 0.5);
 
-      // Composite final emissive glow layer
       vec3 waveGlow = coreWhite * coreIntensity
-                    + energySecondary * (waveBody * 0.8)
-                    + energyPrimary * (waveBody * 1.2 + activeDispersal)
-                    + energyDeep * (fresnel * sin(uProgress * 3.14159) * 1.8);
+                    + energySecondary * (waveBody * 0.7)
+                    + energyPrimary * (waveBody * 1.0 + activeDispersal)
+                    + energyDeep * (fresnel * sin(uProgress * 3.14159) * 1.2);
 
-      // Lit surface + glowing flame/fluid wave
       vec3 finalColor = blendedTex * diffuse + waveGlow;
-
       gl_FragColor = vec4(finalColor, 1.0);
     }
   `
 };
 
 // ============================================================================
-// VOLUMETRIC OUTER FLAME / CORONA MESH SHADER (Layer 3)
-// Billowing flames & fluid energy expanding beyond the planet's spherical edge
+// VOLUMETRIC OUTER FLAME / CORONA SHADER (Layer 3)
 // ============================================================================
 const OuterCoronaShader = {
   vertexShader: `
@@ -343,7 +335,6 @@ const OuterCoronaShader = {
     varying vec3 vNormal;
     varying vec3 vPosition;
 
-    // Fast 3D Simplex
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -393,22 +384,20 @@ const OuterCoronaShader = {
     }
 
     void main() {
-      // Inverted rim falloff (highest at extreme silhouette edge)
       float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
       rim = pow(rim, 2.0);
 
-      // Swirling flame turbulence beyond silhouette
       vec3 noisePos = vPosition * 2.2 + vec3(uTime * 0.4, uTime * 0.3, uTime * 0.2);
       float flameNoise = snoise(noisePos) * 0.5 + 0.5;
 
       float activity = sin(uProgress * 3.14159);
-      float alpha = rim * flameNoise * activity * 0.85;
+      float alpha = rim * flameNoise * activity * 0.75;
 
       vec3 flameColor = (uVariant == 1)
         ? mix(vec3(1.0, 0.35, 0.05), vec3(1.0, 0.85, 0.2), flameNoise)
         : mix(vec3(0.05, 0.6, 1.0), vec3(0.4, 0.95, 1.0), flameNoise);
 
-      gl_FragColor = vec4(flameColor * 1.8, alpha);
+      gl_FragColor = vec4(flameColor * 1.5, alpha);
     }
   `
 };
@@ -419,11 +408,23 @@ export const PlanetServicesExperience: React.FC = () => {
   const fallbackRef = useRef<HTMLDivElement>(null);
 
   const [activeStageIndex, setActiveStageIndex] = useState<number>(0);
-  const [localProgress, setLocalProgress] = useState<number>(0);
-  const progressRatioRef = useRef<number>(0);
+  const activeStageIndexRef = useRef<number>(0);
+
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+  const isTransitioningRef = useRef<boolean>(false);
+
+  // Transition animation refs
+  const transitionAnimRef = useRef<{
+    fromIndex: number;
+    toIndex: number;
+    startTime: number;
+    duration: number;
+  } | null>(null);
+
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
   const [isWebGLAvailable, setIsWebGLAvailable] = useState<boolean>(true);
 
+  // Active stage data
   const activeStage: PlanetServiceStage = useMemo(() => {
     return planetServicesData[activeStageIndex] || planetServicesData[0];
   }, [activeStageIndex]);
@@ -440,42 +441,95 @@ export const PlanetServicesExperience: React.FC = () => {
     return () => motionQuery.removeEventListener('change', handleMotionChange);
   }, []);
 
-  // Passive High-Precision Scroll Progress Calculation
-  const handleScroll = useCallback(() => {
-    if (!containerRef.current) return;
-    const section = containerRef.current;
-    const rect = section.getBoundingClientRect();
-    const windowHeight = window.innerHeight || 800;
-    const totalScrollableDistance = section.offsetHeight - windowHeight;
+  // Three.js Scene References
+  const shaderMaterialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const coronaMaterialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const ringMeshRef = useRef<THREE.Mesh | null>(null);
+  const particleSystemRef = useRef<THREE.Points | null>(null);
+  const texturesRef = useRef<THREE.Texture[]>([]);
 
-    if (totalScrollableDistance <= 0) return;
+  // Smooth easeInOutCubic function
+  const easeInOutCubic = (t: number): number => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
 
-    const currentScroll = -rect.top;
-    const rawRatio = Math.max(0, Math.min(1, currentScroll / totalScrollableDistance));
+  // Trigger Complete Single-Click Animated Transition (1500ms)
+  const startTransitionTo = useCallback((targetIndex: number) => {
+    if (isTransitioningRef.current || targetIndex === activeStageIndexRef.current) return;
+    if (targetIndex < 0 || targetIndex >= planetServicesData.length) return;
 
-    progressRatioRef.current = rawRatio;
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
 
-    // Map 0..1 to 8 equal stage intervals (0..7)
-    const floatStage = rawRatio * 8;
-    const stageIdx = Math.min(7, Math.max(0, Math.floor(floatStage)));
-    const stageProg = Math.max(0, Math.min(1, floatStage - stageIdx));
+    const fromIdx = activeStageIndexRef.current;
+    const duration = prefersReducedMotion ? 300 : 1500;
 
-    setActiveStageIndex((prev) => (prev !== stageIdx ? stageIdx : prev));
-    setLocalProgress(stageProg);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+    transitionAnimRef.current = {
+      fromIndex: fromIdx,
+      toIndex: targetIndex,
+      startTime: performance.now(),
+      duration,
     };
-  }, [handleScroll]);
 
-  // 3D Three.js WebGL Cinematic Flame/Fluid Morph Engine
+    // Update target uniforms immediately
+    if (shaderMaterialRef.current && texturesRef.current.length > 0) {
+      shaderMaterialRef.current.uniforms.uTexFrom.value = texturesRef.current[fromIdx];
+      shaderMaterialRef.current.uniforms.uTexTo.value = texturesRef.current[targetIndex];
+      const variantIdx = Math.min(fromIdx, targetIndex);
+      shaderMaterialRef.current.uniforms.uVariant.value = TRANSITION_VARIANTS[variantIdx] ? 1 : 0;
+    }
+    if (coronaMaterialRef.current) {
+      const variantIdx = Math.min(fromIdx, targetIndex);
+      coronaMaterialRef.current.uniforms.uVariant.value = TRANSITION_VARIANTS[variantIdx] ? 1 : 0;
+    }
+
+    // Safety fallback timer to guarantee transition completion even if RAF is throttled in headless environments
+    setTimeout(() => {
+      if (isTransitioningRef.current && transitionAnimRef.current?.toIndex === targetIndex) {
+        try {
+          setActiveStageIndex(targetIndex);
+          activeStageIndexRef.current = targetIndex;
+          if (shaderMaterialRef.current && texturesRef.current.length > 0) {
+            shaderMaterialRef.current.uniforms.uTexFrom.value = texturesRef.current[targetIndex] || texturesRef.current[0];
+            shaderMaterialRef.current.uniforms.uTexTo.value = texturesRef.current[targetIndex] || texturesRef.current[0];
+            shaderMaterialRef.current.uniforms.uProgress.value = 0.0;
+          }
+          if (coronaMaterialRef.current) {
+            coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
+          }
+        } finally {
+          transitionAnimRef.current = null;
+          isTransitioningRef.current = false;
+          setIsTransitioning(false);
+        }
+      }
+    }, duration + 60);
+  }, [prefersReducedMotion]);
+
+  // Arrow Navigation Handlers
+  const handlePrev = useCallback(() => {
+    if (isTransitioningRef.current) return;
+    const cur = activeStageIndexRef.current;
+    if (cur > 0) {
+      startTransitionTo(cur - 1);
+    }
+  }, [startTransitionTo]);
+
+  const handleNext = useCallback(() => {
+    if (isTransitioningRef.current) return;
+    const cur = activeStageIndexRef.current;
+    if (cur < planetServicesData.length - 1) {
+      startTransitionTo(cur + 1);
+    } else {
+      // Neptune final action -> Scroll down to Projects section
+      const projSec = document.getElementById('portfolyo-section') || document.getElementById('projeler');
+      if (projSec) {
+        projSec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [startTransitionTo]);
+
+  // 3D Three.js WebGL Engine (Single Fullscreen Section)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -507,24 +561,23 @@ export const PlanetServicesExperience: React.FC = () => {
       camera = new THREE.PerspectiveCamera(45, (canvas.clientWidth || 800) / (canvas.clientHeight || 600), 0.1, 100);
       camera.position.z = 6.0;
 
-      // Post-Processing Composer with Bloom Pass
       try {
         const renderPass = new RenderPass(scene, camera);
         const bloomPass = new UnrealBloomPass(
           new THREE.Vector2(canvas.clientWidth || 800, canvas.clientHeight || 600),
-          0.85, // Bloom Strength
-          0.4,  // Bloom Radius
+          0.75, // Bloom Strength
+          0.35, // Bloom Radius
           0.7   // Bloom Threshold
         );
         composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
         composer.addPass(bloomPass);
       } catch (err) {
-        console.warn('Post-processing fallback to standard render:', err);
+        console.warn('Bloom postprocessing fallback:', err);
         composer = null;
       }
 
-      // Load all 8 planet textures with high-precision procedural textures
+      // Load all 8 planet textures
       const textureLoader = new THREE.TextureLoader();
       planetServicesData.forEach((stage) => {
         let tex: THREE.Texture;
@@ -539,8 +592,9 @@ export const PlanetServicesExperience: React.FC = () => {
         }
         textures.push(tex);
       });
+      texturesRef.current = textures;
 
-      // Layer 1: Base Planet Mesh (Fixed Perfect Sphere Radius 1.8, 64x64 segments)
+      // Layer 1: Base Planet Mesh (Radius 1.8, 64x64 segments)
       sphereGeometry = new THREE.SphereGeometry(1.8, 64, 64);
 
       shaderMaterial = new THREE.ShaderMaterial({
@@ -556,11 +610,12 @@ export const PlanetServicesExperience: React.FC = () => {
           uLightDir: { value: new THREE.Vector3(5.0, 3.0, 5.0).normalize() },
         },
       });
+      shaderMaterialRef.current = shaderMaterial;
 
       planetMesh = new THREE.Mesh(sphereGeometry, shaderMaterial);
       scene.add(planetMesh);
 
-      // Layer 3: Outer Volumetric Corona / Flame Mesh (Radius 1.96, 1.09x base sphere)
+      // Layer 3: Outer Volumetric Corona / Flame Mesh (Radius 1.96)
       const coronaGeo = new THREE.SphereGeometry(1.96, 48, 48);
       coronaMaterial = new THREE.ShaderMaterial({
         vertexShader: OuterCoronaShader.vertexShader,
@@ -575,10 +630,11 @@ export const PlanetServicesExperience: React.FC = () => {
         depthWrite: false,
         side: THREE.BackSide,
       });
+      coronaMaterialRef.current = coronaMaterial;
       coronaMesh = new THREE.Mesh(coronaGeo, coronaMaterial);
       scene.add(coronaMesh);
 
-      // Saturn Ring Mesh attached to same center
+      // Saturn Ring Mesh
       const ringGeo = new THREE.RingGeometry(2.3, 3.7, 64);
       const ringMat = new THREE.MeshStandardMaterial({
         color: 0xEAB308,
@@ -590,24 +646,18 @@ export const PlanetServicesExperience: React.FC = () => {
       ringMesh = new THREE.Mesh(ringGeo, ringMat);
       ringMesh.rotation.x = Math.PI / 2.3;
       ringMesh.rotation.y = 0.2;
+      ringMeshRef.current = ringMesh;
       scene.add(ringMesh);
 
       // Layer 4: Soft Glowing Circular Particle Embers
       const particleCount = 320;
       const particleGeo = new THREE.BufferGeometry();
       const particlePositions = new Float32Array(particleCount * 3);
-      const particleBaseRadii = new Float32Array(particleCount);
-      const particleThetas = new Float32Array(particleCount);
-      const particlePhis = new Float32Array(particleCount);
 
       for (let i = 0; i < particleCount; i++) {
         const radius = 1.85 + Math.random() * 0.6;
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.acos(2 * Math.random() - 1);
-        particleBaseRadii[i] = radius;
-        particleThetas[i] = theta;
-        particlePhis[i] = phi;
-
         particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
         particlePositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
         particlePositions[i * 3 + 2] = radius * Math.cos(phi);
@@ -625,6 +675,7 @@ export const PlanetServicesExperience: React.FC = () => {
         depthWrite: false,
       });
       particleSystem = new THREE.Points(particleGeo, particleMat);
+      particleSystemRef.current = particleSystem;
       scene.add(particleSystem);
     }
 
@@ -663,9 +714,38 @@ export const PlanetServicesExperience: React.FC = () => {
         }
       }
 
+      // Handle animated transition progress
+      let currentProgress = 0.0;
+      if (transitionAnimRef.current) {
+        const anim = transitionAnimRef.current;
+        const elapsed = now - anim.startTime;
+        const rawT = Math.min(1.0, Math.max(0.0, elapsed / anim.duration));
+        currentProgress = easeInOutCubic(rawT);
+
+        if (rawT >= 1.0) {
+          // Transition finished!
+          try {
+            const targetIdx = anim.toIndex;
+            setActiveStageIndex(targetIdx);
+            activeStageIndexRef.current = targetIdx;
+            if (shaderMaterial) {
+              shaderMaterial.uniforms.uTexFrom.value = textures[targetIdx] || textures[0];
+              shaderMaterial.uniforms.uTexTo.value = textures[targetIdx] || textures[0];
+              shaderMaterial.uniforms.uProgress.value = 0.0;
+            }
+            if (coronaMaterial) {
+              coronaMaterial.uniforms.uProgress.value = 0.0;
+            }
+          } finally {
+            transitionAnimRef.current = null;
+            isTransitioningRef.current = false;
+            setIsTransitioning(false);
+          }
+        }
+      }
+
       if (renderer && scene && camera && shaderMaterial && planetMesh) {
         const isMobile = window.innerWidth < 768;
-        // Desktop: Right side (x = 1.7) leaving wide clear separation for service card on left
         const targetX = isMobile ? 0 : 1.7;
         const targetY = isMobile ? 0.9 : 0;
         const targetScale = isMobile ? 0.78 : 1.0;
@@ -686,46 +766,39 @@ export const PlanetServicesExperience: React.FC = () => {
           particleSystem.rotation.y += delta * 0.25;
         }
 
-        // Calculate exact stage transition indices and progress
-        const floatStage = progressRatioRef.current * 8;
-        const stageIndex = Math.min(7, Math.max(0, Math.floor(floatStage)));
-        const nextStageIndex = Math.min(7, stageIndex + 1);
-        const stageProgress = Math.max(0, Math.min(1, floatStage - stageIndex));
-
         // Update Shader Uniforms
-        shaderMaterial.uniforms.uTexFrom.value = textures[stageIndex] || textures[0];
-        shaderMaterial.uniforms.uTexTo.value = textures[nextStageIndex] || textures[stageIndex];
-        shaderMaterial.uniforms.uProgress.value = stageProgress;
+        shaderMaterial.uniforms.uProgress.value = currentProgress;
         shaderMaterial.uniforms.uUvOffset.value = uvRotation;
         shaderMaterial.uniforms.uTime.value = totalTime;
-        shaderMaterial.uniforms.uVariant.value = TRANSITION_VARIANTS[stageIndex] ? 1 : 0;
 
         if (coronaMaterial) {
-          coronaMaterial.uniforms.uProgress.value = stageProgress;
+          coronaMaterial.uniforms.uProgress.value = currentProgress;
           coronaMaterial.uniforms.uTime.value = totalTime;
-          coronaMaterial.uniforms.uVariant.value = TRANSITION_VARIANTS[stageIndex] ? 1 : 0;
         }
 
-        // Saturn Ring Opacity (Stage 5 = Saturn)
+        // Saturn Ring Visibility & Opacity
         if (ringMesh) {
+          const activeIdx = transitionAnimRef.current ? transitionAnimRef.current.toIndex : activeStageIndexRef.current;
+          const fromIdx = transitionAnimRef.current ? transitionAnimRef.current.fromIndex : activeStageIndexRef.current;
           let ringOpacity = 0;
-          if (stageIndex === 5 && stageProgress <= 0.5) {
-            ringOpacity = (1.0 - stageProgress * 2.0) * 0.85;
-          } else if (nextStageIndex === 5 && stageProgress > 0.5) {
-            ringOpacity = ((stageProgress - 0.5) * 2.0) * 0.85;
-          } else if (stageIndex === 5) {
+          if (activeIdx === 5 && fromIdx === 5) {
             ringOpacity = 0.85;
+          } else if (activeIdx === 5) {
+            ringOpacity = currentProgress * 0.85;
+          } else if (fromIdx === 5) {
+            ringOpacity = (1.0 - currentProgress) * 0.85;
           }
           (ringMesh.material as THREE.MeshStandardMaterial).opacity = ringOpacity;
           ringMesh.visible = ringOpacity > 0.01;
         }
 
-        // Particle System Dynamics (Embers erupt at peak transition t=0.5)
+        // Particle System Dynamics (Embers active during transition)
         if (particleSystem) {
-          const particleIntensity = Math.sin(stageProgress * Math.PI);
+          const particleIntensity = Math.sin(currentProgress * Math.PI);
           (particleSystem.material as THREE.PointsMaterial).opacity = particleIntensity * 0.85;
+          const activeVariantIdx = transitionAnimRef.current ? Math.min(transitionAnimRef.current.fromIndex, transitionAnimRef.current.toIndex) : activeStageIndexRef.current;
           (particleSystem.material as THREE.PointsMaterial).color.setHex(
-            TRANSITION_VARIANTS[stageIndex] ? 0xF59E0B : 0x38BDF8
+            TRANSITION_VARIANTS[activeVariantIdx] ? 0xF59E0B : 0x38BDF8
           );
         }
 
@@ -756,25 +829,10 @@ export const PlanetServicesExperience: React.FC = () => {
     };
   }, [prefersReducedMotion]);
 
-  // Planet Navigation Button Click
-  const handleStageClick = (index: number) => {
-    setActiveStageIndex(index);
-    setLocalProgress(0);
-    const targetProgress = (index + 0.5) / 8;
-    progressRatioRef.current = targetProgress;
-
-    const section = containerRef.current || document.getElementById('gezegen-seruveni');
-    if (!section) return;
-
-    const rect = section.getBoundingClientRect();
-    const windowHeight = window.innerHeight || 800;
-    const totalScrollableDistance = section.offsetHeight - windowHeight;
-    const targetScrollY = window.scrollY + rect.top + targetProgress * totalScrollableDistance;
-
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: prefersReducedMotion ? 'auto' : 'smooth',
-    });
+  // Planet Navigation Pill Click
+  const handlePillClick = (index: number) => {
+    if (isTransitioningRef.current || index === activeStageIndexRef.current) return;
+    startTransitionTo(index);
   };
 
   return (
@@ -784,193 +842,214 @@ export const PlanetServicesExperience: React.FC = () => {
       aria-label="Tam Ekran Gezegen Hizmet Serüveni"
       data-testid="planet-experience"
       data-active-index={activeStageIndex}
+      data-transitioning={isTransitioning ? 'true' : 'false'}
       data-planet-id={activeStage.id}
-      className="relative w-full h-[800vh] bg-slate-950 border-t border-b border-slate-900 text-slate-100"
+      className="relative w-full min-h-[calc(100svh-5rem)] min-h-[90vh] bg-slate-950 border-t border-b border-slate-900 text-slate-100 flex flex-col justify-between p-4 sm:p-8 lg:p-12 select-none overflow-hidden"
     >
-      {/* 8 Fullscreen Anchor Targets for URL Hash & Direct Navigation */}
+      {/* 8 Fullscreen Anchor Targets for URL Hash Direct Navigation */}
       <span id="hizmetlerimiz" className="absolute top-0 left-0" aria-hidden="true" />
-      {STAGE_ANCHORS.map((anchor, idx) => (
-        <span
-          key={anchor}
-          id={anchor}
-          className="absolute"
-          style={{ top: `${(idx / 8) * 100}%` }}
-          aria-hidden="true"
-        />
+      {STAGE_ANCHORS.map((anchor) => (
+        <span key={anchor} id={anchor} className="absolute top-0 left-0" aria-hidden="true" />
       ))}
 
-      {/* Sticky Fullscreen Viewport Shell */}
-      <div
-        data-testid="planet-sticky-viewport"
-        className="sticky top-0 w-full h-screen h-[100dvh] overflow-x-clip overflow-y-visible flex flex-col justify-between p-4 sm:p-8 lg:p-12 select-none"
-      >
-        {/* Background 3D WebGL Canvas Layer (Fixed Perfect Sphere) */}
-        {isWebGLAvailable ? (
-          <canvas
-            ref={canvasRef}
-            data-testid="active-planet"
-            data-planet-id={activeStage.id}
-            data-rotation-angle="0"
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full pointer-events-none z-0"
-          />
-        ) : (
-          /* WebGL Fallback Image Layer */
-          <div
-            ref={fallbackRef}
-            data-testid="active-planet"
-            data-planet-id={activeStage.id}
-            data-rotation-angle="0"
-            className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-32 pointer-events-none z-0"
-          >
-            <img
-              src={activeStage.fallbackImage}
-              alt={activeStage.planetName}
-              className="w-64 h-64 sm:w-96 sm:h-96 rounded-full shadow-2xl animate-pulse-glow object-cover"
-            />
-          </div>
-        )}
-
-        {/* Ambient Color Glow reacting to transition */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0 transition-colors duration-700 opacity-20"
-          style={{
-            background: `radial-gradient(circle at 65% 50%, ${activeStage.accentColor}35, transparent 70%)`,
-          }}
+      {/* Background 3D WebGL Canvas Layer (Fixed Perfect Sphere) */}
+      {isWebGLAvailable ? (
+        <canvas
+          ref={canvasRef}
+          data-testid="active-planet"
+          data-planet-id={activeStage.id}
+          data-rotation-angle="0"
           aria-hidden="true"
+          className="absolute inset-0 w-full h-full pointer-events-none z-0"
         />
+      ) : (
+        /* WebGL Fallback Image Layer */
+        <div
+          ref={fallbackRef}
+          data-testid="active-planet"
+          data-planet-id={activeStage.id}
+          data-rotation-angle="0"
+          className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-32 pointer-events-none z-0"
+        >
+          <img
+            src={activeStage.fallbackImage}
+            alt={activeStage.planetName}
+            className="w-64 h-64 sm:w-96 sm:h-96 rounded-full shadow-2xl animate-pulse-glow object-cover"
+          />
+        </div>
+      )}
 
-        {/* Top Header Bar: Experience Badge & Stage Counter */}
-        <header className="relative z-10 flex items-center justify-between max-w-7xl mx-auto w-full pt-2">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-sky-400 backdrop-blur-md shadow-lg">
-              <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-              <span>Gezegen Hizmet Serüveni</span>
-            </span>
-            <span className="hidden sm:inline-block text-xs font-bold text-slate-400">
-              Scroll ile Keşfedin
+      {/* Ambient Color Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 transition-colors duration-700 opacity-20"
+        style={{
+          background: `radial-gradient(circle at 65% 50%, ${activeStage.accentColor}35, transparent 70%)`,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Top Header Bar: Experience Badge & Stage Counter */}
+      <header className="relative z-10 flex items-center justify-between max-w-7xl mx-auto w-full pt-2">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-sky-400 backdrop-blur-md shadow-lg">
+            <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+            <span>Gezegen Hizmet Serüveni</span>
+          </span>
+          <span className="hidden sm:inline-block text-xs font-bold text-slate-400">
+            Yön Tuşlarıyla Keşfedin
+          </span>
+        </div>
+
+        {/* 01 / 08 Stage Counter */}
+        <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full backdrop-blur-md shadow-xl">
+          <span className="text-xs font-black tracking-wider text-sky-400">
+            0{activeStage.sequence}
+          </span>
+          <span className="text-xs font-bold text-slate-600">/</span>
+          <span className="text-xs font-bold text-slate-400">08</span>
+          <span className="ml-2 pl-2 border-l border-slate-800 text-xs font-extrabold text-slate-200">
+            {activeStage.planetName}
+          </span>
+        </div>
+      </header>
+
+      {/* Middle Main Content Grid (Service Card on Left, 3D Planet on Right with Safe Clearance) */}
+      <main className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-auto py-4">
+        
+        {/* Active Service Card */}
+        <article
+          data-testid="active-service-card"
+          key={activeStage.id}
+          className="lg:col-span-6 xl:col-span-5 bg-slate-950/85 backdrop-blur-xl border border-slate-800/90 p-6 sm:p-8 rounded-3xl shadow-2xl shadow-slate-950/90 space-y-4 sm:space-y-5 transition-all duration-500 ease-out"
+        >
+          {/* Category & Planet Badge */}
+          <div className="flex items-center justify-between gap-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-sky-950/90 border border-sky-500/30 text-sky-300 font-bold text-xs">
+              <IconComponent className="w-4 h-4 text-sky-400" />
+              <span>{activeStage.category}</span>
+            </div>
+            <span className="text-xs font-black tracking-widest uppercase text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+              {activeStage.planetName} SAHNESİ
             </span>
           </div>
 
-          {/* 01 / 08 Stage Counter */}
-          <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full backdrop-blur-md shadow-xl">
-            <span className="text-xs font-black tracking-wider text-sky-400">
-              0{activeStage.sequence}
-            </span>
-            <span className="text-xs font-bold text-slate-600">/</span>
-            <span className="text-xs font-bold text-slate-400">08</span>
-            <span className="ml-2 pl-2 border-l border-slate-800 text-xs font-extrabold text-slate-200">
-              {activeStage.planetName}
-            </span>
-          </div>
-        </header>
+          {/* H2 Service Title */}
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            {activeStage.serviceName}
+          </h2>
 
-        {/* Middle Main Content Grid (Card on Left, Planet clearly visible on Right) */}
-        <main className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-auto">
-          
-          {/* Active Service Card with Calm Transition */}
-          <article
-            data-testid="active-service-card"
-            key={activeStage.id}
-            style={{
-              opacity: Math.max(0.4, 1.0 - Math.abs(localProgress - 0.5) * 0.9),
-              transform: `translateY(${ (localProgress - 0.5) * -10 }px)`,
-            }}
-            className="lg:col-span-6 xl:col-span-5 bg-slate-950/85 backdrop-blur-xl border border-slate-800/90 p-6 sm:p-8 rounded-3xl shadow-2xl shadow-slate-950/90 space-y-4 sm:space-y-5 transition-all duration-300 ease-out"
-          >
-            {/* Category & Planet Badge */}
-            <div className="flex items-center justify-between gap-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-sky-950/90 border border-sky-500/30 text-sky-300 font-bold text-xs">
-                <IconComponent className="w-4 h-4 text-sky-400" />
-                <span>{activeStage.category}</span>
-              </div>
-              <span className="text-xs font-black tracking-widest uppercase text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
-                {activeStage.planetName} SAHNESİ
-              </span>
-            </div>
+          {/* Description */}
+          <p className="text-xs sm:text-sm md:text-base font-medium text-slate-300 leading-relaxed">
+            {activeStage.description}
+          </p>
 
-            {/* H2 Service Title */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {activeStage.serviceName}
-            </h2>
-
-            {/* Description */}
-            <p className="text-xs sm:text-sm md:text-base font-medium text-slate-300 leading-relaxed">
-              {activeStage.description}
-            </p>
-
-            {/* 2x2 Benefits Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
-              {activeStage.benefits.map((benefit, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start gap-2.5 text-xs text-slate-200 font-semibold p-2.5 sm:p-3 rounded-xl bg-slate-900/90 border border-slate-800/80 shadow-inner"
-                >
-                  <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
-                  <span>{benefit}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Action CTA Button */}
-            <div className="pt-2 sm:pt-3 flex items-center justify-between gap-4">
-              <a
-                href={activeStage.href}
-                className="btn-primary text-xs sm:text-sm py-3 px-6 inline-flex items-center gap-2 shadow-lg shadow-sky-950/50"
+          {/* 2x2 Benefits Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
+            {activeStage.benefits.map((benefit, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-2.5 text-xs text-slate-200 font-semibold p-2.5 sm:p-3 rounded-xl bg-slate-900/90 border border-slate-800/80 shadow-inner"
               >
-                <span>{activeStage.ctaLabel}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-
-              <span className="text-[11px] font-bold text-slate-400 hidden sm:inline-block">
-                Rent Yazılım Standartları
-              </span>
-            </div>
-          </article>
-
-          {/* Reserved Space for 3D Planet on Desktop */}
-          <div className="hidden lg:block lg:col-span-6 xl:col-span-7 pointer-events-none" aria-hidden="true" />
-        </main>
-
-        {/* Bottom Navigation Controls */}
-        <footer className="relative z-10 max-w-7xl mx-auto w-full pb-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-          
-          {/* Stage Navigation Pills */}
-          <nav
-            aria-label="Gezegen Hizmet Navigasyonu"
-            className="flex items-center gap-1 sm:gap-1.5 bg-slate-900/90 border border-slate-800 p-1.5 rounded-full backdrop-blur-md overflow-x-auto max-w-full"
-          >
-            {planetServicesData.map((stage, idx) => {
-              const isActive = idx === activeStageIndex;
-              return (
-                <button
-                  type="button"
-                  key={stage.id}
-                  data-testid={`planet-nav-${stage.id}`}
-                  onClick={() => handleStageClick(idx)}
-                  aria-label={`${stage.sequence}. Aşama: ${stage.planetName} - ${stage.serviceName}`}
-                  aria-current={isActive ? 'step' : undefined}
-                  className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
-                    isActive
-                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/40 scale-105'
-                      : 'bg-slate-900/60 text-slate-400 hover:text-white hover:bg-slate-800'
-                  }`}
-                >
-                  <span className="font-mono text-[10px] opacity-80">0{stage.sequence}</span>
-                  <span className={isActive ? 'inline' : 'hidden md:inline'}>{stage.planetName}</span>
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Scroll Hint */}
-          <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-400 bg-slate-900/80 border border-slate-800 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-            <span>Aşağı kaydırın</span>
-            <ChevronDown className="w-4 h-4 animate-bounce text-sky-400" />
+                <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                <span>{benefit}</span>
+              </div>
+            ))}
           </div>
-        </footer>
 
-      </div>
+          {/* Action CTA Button */}
+          <div className="pt-2 sm:pt-3 flex items-center justify-between gap-4">
+            <a
+              href={activeStage.href}
+              className="btn-primary text-xs sm:text-sm py-3 px-6 inline-flex items-center gap-2 shadow-lg shadow-sky-950/50"
+            >
+              <span>{activeStage.ctaLabel}</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+
+            <span className="text-[11px] font-bold text-slate-400 hidden sm:inline-block">
+              Rent Yazılım Standartları
+            </span>
+          </div>
+        </article>
+
+        {/* Reserved Space for 3D Planet on Desktop */}
+        <div className="hidden lg:block lg:col-span-6 xl:col-span-7 pointer-events-none" aria-hidden="true" />
+      </main>
+
+      {/* Bottom Navigation Controls: Pills on Left, Directional Arrow Controls on Right */}
+      <footer className="relative z-10 max-w-7xl mx-auto w-full pb-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+        
+        {/* Stage Navigation Pills */}
+        <nav
+          aria-label="Gezegen Hizmet Navigasyonu"
+          className="flex items-center gap-1 sm:gap-1.5 bg-slate-900/90 border border-slate-800 p-1.5 rounded-full backdrop-blur-md overflow-x-auto max-w-full"
+        >
+          {planetServicesData.map((stage, idx) => {
+            const isActive = idx === activeStageIndex;
+            return (
+              <button
+                type="button"
+                key={stage.id}
+                data-testid={`planet-nav-${stage.id}`}
+                disabled={isTransitioning}
+                onClick={() => handlePillClick(idx)}
+                aria-label={`${stage.sequence}. Aşama: ${stage.planetName} - ${stage.serviceName}`}
+                aria-current={isActive ? 'step' : undefined}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                  isActive
+                    ? 'bg-sky-500 text-white shadow-md shadow-sky-500/40 scale-105'
+                    : 'bg-slate-900/60 text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <span className="font-mono text-[10px] opacity-80">0{stage.sequence}</span>
+                <span className={isActive ? 'inline' : 'hidden md:inline'}>{stage.planetName}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Directional Arrow Controls (Prev / Next Buttons) */}
+        <div className="flex items-center gap-3">
+          {/* Previous Planet Button (Up Arrow) */}
+          <button
+            type="button"
+            data-testid="planet-prev"
+            disabled={activeStageIndex === 0 || isTransitioning}
+            onClick={handlePrev}
+            aria-label="Önceki Gezegen"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-lg cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-slate-900/90 focus-visible:ring-2 focus-visible:ring-sky-400 focus:outline-none active:scale-95"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </button>
+
+          {/* Next Planet Button (Down Arrow) or Explore Projects Button on Neptune */}
+          {activeStageIndex < planetServicesData.length - 1 ? (
+            <button
+              type="button"
+              data-testid="planet-next"
+              disabled={isTransitioning}
+              onClick={handleNext}
+              aria-label={`Sonraki Gezegen: ${planetServicesData[activeStageIndex + 1]?.planetName}`}
+              className="h-11 min-h-[44px] px-4 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition-all shadow-lg shadow-sky-500/25 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-sky-400 focus:outline-none active:scale-95"
+            >
+              <span>Sonraki: {planetServicesData[activeStageIndex + 1]?.planetName}</span>
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              data-testid="planet-next"
+              disabled={isTransitioning}
+              onClick={handleNext}
+              aria-label="Projelerimizi Keşfet"
+              className="h-11 min-h-[44px] px-5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/30 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus:outline-none active:scale-95"
+            >
+              <span>Projelerimizi Keşfet</span>
+              <FolderGit2 className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </footer>
     </section>
   );
 };
