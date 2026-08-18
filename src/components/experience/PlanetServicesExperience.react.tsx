@@ -55,12 +55,12 @@ const TRANSITION_VARIANTS: boolean[] = [
   false, // 6 -> 7: Uranüs -> Neptün (Cool Fluid)
 ];
 
-// VFX Overlay Video URLs
+// VFX Overlay Video URLs (Clean extracted volumetric corona without UI leaks)
 const VFX_VIDEOS = {
-  warmForward: '/videos/planet-vfx/warm-forward.mp4',
-  warmReverse: '/videos/planet-vfx/warm-reverse.mp4',
-  coolForward: '/videos/planet-vfx/cool-forward.mp4',
-  coolReverse: '/videos/planet-vfx/cool-reverse.mp4',
+  warmForward: '/videos/planet-vfx/warm-clean-forward.mp4',
+  warmReverse: '/videos/planet-vfx/warm-clean-reverse.mp4',
+  coolForward: '/videos/planet-vfx/cool-clean-forward.mp4',
+  coolReverse: '/videos/planet-vfx/cool-clean-reverse.mp4',
 };
 
 // Soft glowing circular alpha texture for particle embers
@@ -186,27 +186,27 @@ const PlanetTransitionShader = {
       vec4 texFrom = texture2D(uTexFrom, uv);
       vec4 texTo = texture2D(uTexTo, uv);
 
-      // Smooth Crossfade in the middle of transition [0.30, 0.70]
-      float blendFactor = smoothstep(0.28, 0.72, uProgress);
+      // Smooth Crossfade in the peak middle of transition [0.35, 0.65] (1800ms to 3200ms)
+      float blendFactor = smoothstep(0.35, 0.65, uProgress);
       vec4 blendedTex = mix(texFrom, texTo, blendFactor);
 
-      // Spherical 3D Lighting
+      // Spherical 3D Lighting (Rich shading and contrast)
       vec3 normal = normalize(vNormal);
       vec3 lightDir = normalize(uLightDir);
       float diff = max(dot(normal, lightDir), 0.0);
-      float ambient = 0.40;
+      float ambient = 0.30;
       float lighting = ambient + (1.0 - ambient) * diff;
 
-      // Fresnel Rim Glow
+      // Fresnel Rim Glow (Controlled elegant rim)
       vec3 viewDir = normalize(-vPosition);
       float fresnel = 1.0 - max(dot(viewDir, normal), 0.0);
-      float rim = pow(fresnel, 2.5);
+      float rim = pow(fresnel, 3.5);
 
-      vec3 rimColor = (uVariant == 1) ? vec3(1.0, 0.65, 0.25) : vec3(0.25, 0.75, 1.0);
+      vec3 rimColor = (uVariant == 1) ? vec3(1.0, 0.60, 0.20) : vec3(0.20, 0.65, 0.95);
       
-      // Subtle energy pulse on sphere edge during transition
+      // Subtle edge flare during transition peak
       float transitionEnergy = sin(uProgress * 3.14159265);
-      vec3 finalColor = blendedTex.rgb * lighting + rim * rimColor * (0.6 + transitionEnergy * 0.8);
+      vec3 finalColor = blendedTex.rgb * lighting + rim * rimColor * (0.35 + transitionEnergy * 0.45);
 
       gl_FragColor = vec4(finalColor, 1.0);
     }
@@ -298,7 +298,7 @@ export const PlanetServicesExperience: React.FC = () => {
     const variantIdx = Math.min(fromIdx, targetIndex);
     const isWarm = TRANSITION_VARIANTS[variantIdx];
 
-    const duration = prefersReducedMotion ? 300 : 2200;
+    const duration = prefersReducedMotion ? 300 : 4800;
     wheelCooldownUntilRef.current = performance.now() + duration + 400;
     let vfxSrc = VFX_VIDEOS.coolForward;
     if (isWarm && isForward) vfxSrc = VFX_VIDEOS.warmForward;
@@ -310,6 +310,7 @@ export const PlanetServicesExperience: React.FC = () => {
     setIsVfxActive(true);
 
     if (videoRef.current) {
+      videoRef.current.playbackRate = 1.0;
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
     }
@@ -528,9 +529,9 @@ export const PlanetServicesExperience: React.FC = () => {
         const renderPass = new RenderPass(scene, camera);
         const bloomPass = new UnrealBloomPass(
           new THREE.Vector2(canvas.clientWidth || 800, canvas.clientHeight || 600),
-          0.65, // Controlled Bloom Strength
-          0.30, // Bloom Radius
-          0.75  // Bloom Threshold
+          0.30, // Controlled Bloom Strength
+          0.20, // Bloom Radius
+          0.92  // Bloom Threshold - prevents full whiteout
         );
         composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
@@ -627,6 +628,11 @@ export const PlanetServicesExperience: React.FC = () => {
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
       if (composer) composer.setSize(width, height);
+
+      const isDesktop = width >= 1024;
+      const offsetX = isDesktop ? 1.5 : 0.0;
+      if (planetMesh) planetMesh.position.x = offsetX;
+      if (ringMesh) ringMesh.position.x = offsetX;
     };
 
     handleResize();
@@ -792,15 +798,18 @@ export const PlanetServicesExperience: React.FC = () => {
         </div>
       )}
 
-      {/* Layer 2: Real-time VFX Video Overlay from Reference Flow (Screen Composited) */}
-      <div className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-12 pointer-events-none z-10 overflow-hidden" aria-hidden="true">
+      {/* Layer 2: Real-time Clean VFX Video Overlay from Reference Flow (Screen Composited) */}
+      <div className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[10vw] xl:pr-[13vw] pointer-events-none z-10 overflow-hidden" aria-hidden="true">
         <video
           ref={videoRef}
           src={currentVfxSrc}
           playsInline
           muted
           preload="auto"
-          className={`w-[360px] h-[360px] sm:w-[500px] sm:h-[500px] lg:w-[620px] lg:h-[620px] object-cover transition-opacity duration-300 pointer-events-none ${
+          controls={false}
+          tabIndex={-1}
+          aria-hidden="true"
+          className={`w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] lg:w-[600px] lg:h-[600px] object-cover transition-opacity duration-500 pointer-events-none ${
             isVfxActive ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ mixBlendMode: 'screen' }}

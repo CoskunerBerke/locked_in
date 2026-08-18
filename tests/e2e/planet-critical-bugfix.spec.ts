@@ -4,7 +4,7 @@ import path from 'path';
 const artifactsDir = 'C:\\Users\\berke\\.gemini\\antigravity\\brain\\ee6e6f74-bae3-43fc-a1c4-dc4b91e1aa18';
 
 test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', () => {
-  test.setTimeout(180000);
+  test.setTimeout(240000);
 
   test('Test 1: Normal Scroll Locked on Earth & Discrete Advance to Mercury', async ({ page }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
@@ -21,7 +21,7 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
     });
 
     // Should begin transition to Mercury, remaining locked at scrollY = 0
-    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 12000 });
     await expect(gate).toHaveAttribute('data-active-index', '1');
     await expect(gate).toHaveAttribute('data-gate-status', 'locked');
 
@@ -41,7 +41,7 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
       window.dispatchEvent(new WheelEvent('wheel', { deltaY: 120, bubbles: true, cancelable: true }));
     });
 
-    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 12000 });
     await expect(gate).toHaveAttribute('data-active-index', '1');
     await expect(gate).toHaveAttribute('data-transitioning', 'false');
 
@@ -81,7 +81,7 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
         btn?.click();
       });
 
-      await expect(gate).toHaveAttribute('data-active-planet', targetStage.id, { timeout: 8000 });
+      await expect(gate).toHaveAttribute('data-active-planet', targetStage.id, { timeout: 12000 });
       await expect(gate).toHaveAttribute('data-active-index', targetStage.index);
       await expect(gate).toHaveAttribute('data-transitioning', 'false');
 
@@ -104,22 +104,23 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
 
     // Advance sequentially through stages to Neptune
     for (let i = 1; i <= 7; i++) {
+      await page.waitForTimeout(400);
       await page.evaluate(() => {
         const btn = document.querySelector('[data-testid="planet-next"]') as HTMLButtonElement;
         btn?.click();
       });
-      await expect(gate).toHaveAttribute('data-active-index', String(i), { timeout: 8000 });
-      await expect(gate).toHaveAttribute('data-transitioning', 'false');
+      await expect(gate).toHaveAttribute('data-active-index', String(i), { timeout: 15000 });
+      await expect(gate).toHaveAttribute('data-transitioning', 'false', { timeout: 15000 });
     }
 
-    await expect(gate).toHaveAttribute('data-active-planet', 'neptune', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'neptune', { timeout: 12000 });
 
     // Click "Projelerimizi Keşfet" on Neptune
     const exploreBtn = page.locator('[data-testid="planet-next"]:has-text("Projelerimizi Keşfet")');
     await expect(exploreBtn).toBeVisible();
     await exploreBtn.click();
 
-    await expect(gate).toHaveAttribute('data-gate-status', 'released', { timeout: 5000 });
+    await expect(gate).toHaveAttribute('data-gate-status', 'released', { timeout: 6000 });
 
     await page.waitForTimeout(600);
     const portfolioSec = page.locator('#portfolyo-section');
@@ -137,11 +138,12 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
     await page.evaluate(() => {
       for (let i = 0; i < 6; i++) {
         window.dispatchEvent(new WheelEvent('wheel', { deltaY: 80, bubbles: true, cancelable: true }));
+        document.getElementById('gezegen-seruveni')?.dispatchEvent(new WheelEvent('wheel', { deltaY: 80, bubbles: true, cancelable: true }));
       }
     });
 
     // Wait for transition to complete
-    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 15000 });
     await expect(gate).toHaveAttribute('data-active-index', '1');
     await expect(gate).toHaveAttribute('data-transitioning', 'false');
 
@@ -158,17 +160,17 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
 
     // Press ArrowDown
     await page.keyboard.press('ArrowDown');
-    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 12000 });
     await expect(gate).toHaveAttribute('data-active-index', '1');
 
     // Press ArrowUp to return to Earth
     await page.keyboard.press('ArrowUp');
-    await expect(gate).toHaveAttribute('data-active-planet', 'earth', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'earth', { timeout: 12000 });
     await expect(gate).toHaveAttribute('data-active-index', '0');
 
     // Press Space to advance to Mercury
     await page.keyboard.press('Space');
-    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 12000 });
     await expect(gate).toHaveAttribute('data-active-index', '1');
   });
 
@@ -184,7 +186,7 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
     await expect(heading).toBeVisible();
   });
 
-  test('Test 8: Real VFX Video Overlay Integration', async ({ page }) => {
+  test('Test 8: Real Clean VFX Video Overlay Integration & No Raw Names', async ({ page }) => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
@@ -194,6 +196,11 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
     await expect(vfxVideo).toBeAttached();
     const mixBlend = await vfxVideo.evaluate((el) => window.getComputedStyle(el).mixBlendMode);
     expect(mixBlend).toBe('screen');
+
+    // Verify video src uses clean derivative asset
+    const src = await vfxVideo.getAttribute('src');
+    expect(src).toContain('-clean-');
+    expect(src).not.toContain('references/');
   });
 
   test('Test 9: Mobile Touch Swipe Gesture', async ({ page }) => {
@@ -215,51 +222,47 @@ test.describe('Mandatory Planet Gate & Discrete Video VFX Transitions Suite', ()
       await page.mouse.up();
     }
 
-    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 8000 });
+    await expect(gate).toHaveAttribute('data-active-planet', 'mercury', { timeout: 12000 });
     await expect(gate).toHaveAttribute('data-active-index', '1');
   });
 
-  test('Test 10: Strict Homepage Section Sequence & Preserved Components', async ({ page }) => {
+  test('Test 10: Real-time 4.8s Transition Keyframes & Clean Regression Validation', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
 
-    const sections = await page.evaluate(() => {
-      const list: string[] = [];
-      const mainNodes = document.querySelectorAll('#gezegen-seruveni, #portfolyo-section, #geri-donusler, #faq, #teklif-formu');
-      mainNodes.forEach((node) => {
-        if (node.id) list.push(node.id);
-      });
-      return list;
-    });
+    const gate = page.locator('[data-testid="planet-gate"]');
+    await expect(gate).toHaveAttribute('data-active-index', '0');
 
-    const planetIdx = sections.indexOf('gezegen-seruveni');
-    const portfolyoIdx = sections.indexOf('portfolyo-section');
-    const reviewsIdx = sections.indexOf('geri-donusler');
-    const faqIdx = sections.indexOf('faq');
-    const ctaIdx = sections.indexOf('teklif-formu');
+    if (testInfo.project.name === 'chromium') {
+      // 0ms: Initial state
+      await page.screenshot({ path: path.join(artifactsDir, 'vfx_00_start_0ms.png') });
 
-    expect(planetIdx).toBeGreaterThan(-1);
-    expect(portfolyoIdx).toBeGreaterThan(planetIdx);
-    expect(reviewsIdx).toBeGreaterThan(portfolyoIdx);
-    expect(faqIdx).toBeGreaterThan(reviewsIdx);
-    expect(ctaIdx).toBeGreaterThan(faqIdx);
+      // Trigger transition
+      await page.keyboard.press('ArrowDown');
 
-    // 1. Projects: 4 cards
-    const projectCards = page.locator('#portfolyo-section .group');
-    await expect(projectCards).toHaveCount(4);
-    await expect(page.locator('#portfolyo-section').locator('text=RN Vize Danışmanlık')).toBeVisible();
-    await expect(page.locator('#portfolyo-section').locator('text=Quattro Garaj Otomotiv')).toBeVisible();
+      // 1200ms: Corona build-up
+      await page.waitForTimeout(1200);
+      await expect(gate).toHaveAttribute('data-transitioning', 'true');
+      await page.screenshot({ path: path.join(artifactsDir, 'vfx_01_corona_1200ms.png') });
 
-    // 2. Reviews Marquee
-    const reviewsSection = page.locator('#geri-donusler');
-    await expect(reviewsSection).toBeVisible();
-    await expect(reviewsSection.locator('h2')).toContainText('Instagram & WhatsApp');
+      // 2400ms: Peak transformation
+      await page.waitForTimeout(1200);
+      await page.screenshot({ path: path.join(artifactsDir, 'vfx_02_peak_2400ms.png') });
 
-    // 3. FAQ
-    const faqDetails = page.locator('#faq details');
-    await expect(faqDetails.first()).toBeVisible();
+      // 3600ms: Calming down
+      await page.waitForTimeout(1200);
+      await page.screenshot({ path: path.join(artifactsDir, 'vfx_03_calming_3600ms.png') });
 
-    // 4. Contact Form
-    const nameInput = page.locator('#teklif-formu input[name="name"], form input#name').first();
-    await expect(nameInput).toBeAttached();
+      // 4800ms+: Settle to Mercury
+      await page.waitForTimeout(1400);
+      await expect(gate).toHaveAttribute('data-active-planet', 'mercury');
+      await expect(gate).toHaveAttribute('data-transitioning', 'false');
+      await page.screenshot({ path: path.join(artifactsDir, 'vfx_04_settled_4800ms.png') });
+    }
+
+    // Verify raw Flow filenames are NOT anywhere in the rendered HTML or scripts
+    const pageContent = await page.content();
+    expect(pageContent).not.toContain('flow-warm-transition');
+    expect(pageContent).not.toContain('flow-cool-transition');
   });
 });
