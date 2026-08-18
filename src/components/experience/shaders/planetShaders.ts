@@ -319,17 +319,17 @@ export function createMarsTexture(): THREE.CanvasTexture {
   canvas.height = 1024;
   const ctx = canvas.getContext('2d')!;
 
-  // Base Red Martian terrain
-  ctx.fillStyle = '#C84C1C';
+  // Base Deep Red Martian terrain
+  ctx.fillStyle = '#8B2500';
   ctx.fillRect(0, 0, 2048, 1024);
 
   const imgData = ctx.getImageData(0, 0, 2048, 1024);
   const data = imgData.data;
   for (let i = 0; i < data.length; i += 4) {
-    const n = (Math.random() - 0.5) * 45;
-    data[i] = Math.min(255, Math.max(0, 205 + n));     // High Red
-    data[i + 1] = Math.min(255, Math.max(0, 75 + n * 0.6));  // Low Green
-    data[i + 2] = Math.min(255, Math.max(0, 30 + n * 0.4));  // Low Blue
+    const n = (Math.random() - 0.5) * 35;
+    data[i] = Math.min(255, Math.max(0, 165 + n));     // Rich Red
+    data[i + 1] = Math.min(255, Math.max(0, 48 + n * 0.4));  // Low Green
+    data[i + 2] = Math.min(255, Math.max(0, 18 + n * 0.2));  // Low Blue
   }
   ctx.putImageData(imgData, 0, 0);
 
@@ -341,9 +341,9 @@ export function createMarsTexture(): THREE.CanvasTexture {
     const ry = Math.random() * 90 + 30;
 
     const grad = ctx.createRadialGradient(x, y, 0, x, y, rx);
-    grad.addColorStop(0, 'rgba(65, 22, 8, 0.65)');
-    grad.addColorStop(0.7, 'rgba(110, 35, 12, 0.40)');
-    grad.addColorStop(1, 'rgba(200, 76, 28, 0.0)');
+    grad.addColorStop(0, 'rgba(40, 12, 4, 0.75)');
+    grad.addColorStop(0.7, 'rgba(75, 20, 8, 0.45)');
+    grad.addColorStop(1, 'rgba(140, 37, 0, 0.0)');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.ellipse(x, y, rx, ry, Math.random() * Math.PI, 0, Math.PI * 2);
@@ -358,7 +358,7 @@ export function createMarsTexture(): THREE.CanvasTexture {
 
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(70, 24, 8, 0.35)';
+    ctx.fillStyle = 'rgba(45, 14, 4, 0.45)';
     ctx.fill();
   }
 
@@ -366,14 +366,14 @@ export function createMarsTexture(): THREE.CanvasTexture {
   const northCap = ctx.createLinearGradient(0, 0, 0, 110);
   northCap.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
   northCap.addColorStop(0.7, 'rgba(240, 245, 255, 0.60)');
-  northCap.addColorStop(1, 'rgba(200, 76, 28, 0.0)');
+  northCap.addColorStop(1, 'rgba(140, 37, 0, 0.0)');
   ctx.fillStyle = northCap;
   ctx.fillRect(0, 0, 2048, 110);
 
   const southCap = ctx.createLinearGradient(0, 1024, 0, 920);
   southCap.addColorStop(0, 'rgba(255, 255, 255, 0.90)');
   southCap.addColorStop(0.7, 'rgba(240, 245, 255, 0.50)');
-  southCap.addColorStop(1, 'rgba(200, 76, 28, 0.0)');
+  southCap.addColorStop(1, 'rgba(140, 37, 0, 0.0)');
   ctx.fillStyle = southCap;
   ctx.fillRect(0, 914, 2048, 110);
 
@@ -393,25 +393,25 @@ export function createNeptuneTexture(): THREE.CanvasTexture {
 
   // Deep oceanic blue gradient base
   const grad = ctx.createLinearGradient(0, 0, 0, 1024);
-  grad.addColorStop(0.0, '#102554');
-  grad.addColorStop(0.3, '#1E4598');
-  grad.addColorStop(0.5, '#2A5ECE');
-  grad.addColorStop(0.7, '#1B4292');
-  grad.addColorStop(1.0, '#0E1F46');
+  grad.addColorStop(0.0, '#0B1B3D');
+  grad.addColorStop(0.3, '#143675');
+  grad.addColorStop(0.5, '#1B4CA0');
+  grad.addColorStop(0.7, '#133572');
+  grad.addColorStop(1.0, '#091530');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 2048, 1024);
 
   // Atmospheric bands and cirrus streaks
   for (let y = 80; y < 950; y += 12) {
-    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.18})`;
-    ctx.fillRect(0, y, 2048, Math.random() * 4 + 1);
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.16})`;
+    ctx.fillRect(0, y, 2048, Math.random() * 3 + 1);
   }
 
   // Great Dark Spot (Storm)
   const spotGrad = ctx.createRadialGradient(850, 480, 0, 850, 480, 120);
-  spotGrad.addColorStop(0, 'rgba(10, 20, 55, 0.90)');
-  spotGrad.addColorStop(0.7, 'rgba(18, 38, 90, 0.65)');
-  spotGrad.addColorStop(1, 'rgba(42, 94, 206, 0.0)');
+  spotGrad.addColorStop(0, 'rgba(5, 10, 30, 0.95)');
+  spotGrad.addColorStop(0.7, 'rgba(10, 22, 60, 0.70)');
+  spotGrad.addColorStop(1, 'rgba(27, 76, 160, 0.0)');
   ctx.fillStyle = spotGrad;
   ctx.beginPath();
   ctx.ellipse(850, 480, 140, 75, 0.15, 0, Math.PI * 2);
