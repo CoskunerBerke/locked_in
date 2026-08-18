@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/hero/HeroSection.astro';
 import PlanetServicesExperience from '../components/experience/PlanetServicesExperience.react';
 import PortfolioShowcase from '../components/sections/PortfolioShowcase.astro';
 import GoogleMapsReviewsMarquee from '../components/sections/GoogleMapsReviewsMarquee.astro';
@@ -14,7 +13,6 @@ import brandConfig from '../config/brand';
   description="Rent Yazılım; Ankara web tasarım, kurumsal web sitesi, teknik SEO hizmeti, Google Maps harita optimizasyonu ve yemek platformu panel danışmanlığı sunmaktadır."
   activePage="/"
 >
-  <HeroSection />
   <PlanetServicesExperience client:load />
   <PortfolioShowcase />
   <GoogleMapsReviewsMarquee />
