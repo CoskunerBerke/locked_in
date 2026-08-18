@@ -11,15 +11,17 @@ interface Props {
   image?: string;
   customSchema?: Record<string, unknown>;
   activePage?: string;
+  hideFooter?: boolean;
+  robots?: string;
 }
 
-const { title, description, image, customSchema, activePage } = Astro.props;
+const { title, description, image, customSchema, activePage, hideFooter = false, robots } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="tr" class="h-full">
   <head>
-    <SEO title={title} description={description} image={image} />
+    <SEO title={title} description={description} image={image} robots={robots} />
     <SchemaOrg customSchema={customSchema} />
 
     <!-- Google Fonts Inter -->
@@ -28,13 +30,13 @@ const { title, description, image, customSchema, activePage } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
 
-  <body class="min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+  <body class="min-h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
     <Header activePage={activePage} />
 
     <main id="main-content" class="flex-1">
       <slot />
     </main>
 
-    <Footer />
+    {!hideFooter && <Footer />}
   </body>
 </html>

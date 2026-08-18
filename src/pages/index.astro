@@ -1,10 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PlanetServicesExperience from '../components/experience/PlanetServicesExperience.react';
-import PortfolioShowcase from '../components/sections/PortfolioShowcase.astro';
-import GoogleMapsReviewsMarquee from '../components/sections/GoogleMapsReviewsMarquee.astro';
-import FAQSection from '../components/sections/FAQSection.astro';
-import FinalCTA from '../components/sections/FinalCTA.astro';
 import brandConfig from '../config/brand';
 ---
 
@@ -12,10 +8,7 @@ import brandConfig from '../config/brand';
   title={`${brandConfig.brandName} — Ankara Web Tasarım, SEO & Dijital Hizmetler`}
   description="Rent Yazılım; Ankara web tasarım, kurumsal web sitesi, teknik SEO hizmeti, Google Maps harita optimizasyonu ve yemek platformu panel danışmanlığı sunmaktadır."
   activePage="/"
+  hideFooter={true}
 >
   <PlanetServicesExperience client:load />
-  <PortfolioShowcase />
-  <GoogleMapsReviewsMarquee />
-  <FAQSection />
-  <FinalCTA />
 </Layout>

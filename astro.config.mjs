@@ -15,7 +15,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     sitemap({
-      filter: (page) => !page.includes('/404') && !page.includes('/test') && !page.includes('/dev'),
+      filter: (page) => !page.includes('/404') && !page.includes('/test') && !page.includes('/dev') && !page.includes('/vfx-lab'),
     }),
   ],
   vite: {

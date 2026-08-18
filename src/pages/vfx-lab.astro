@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { VFXLab } from '../components/experience/VFXLab.react';
+---
+
+<Layout
+  title="VFX Transition Lab — Rent Yazılım (Dev Only)"
+  description="Internal shader development lab for WebGL planet wavefront transition"
+  robots="noindex, nofollow"
+  activePage="/vfx-lab/"
+>
+  <VFXLab client:only="react" />
+</Layout>
