@@ -1,39 +1,36 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import {
   Globe,
+  Zap,
+  RefreshCw,
   Search,
   Smartphone,
   MapPin,
   Utensils,
-  ChevronDown,
-  ChevronUp,
-  ArrowRight,
-  CheckCircle2,
-  Sparkles,
   Megaphone,
-  Zap,
-  RefreshCw,
-  Star,
-  MessageCircle,
+  CheckCircle2,
+  ArrowRight,
+  ChevronDown,
   HelpCircle,
+  MessageCircle,
   RotateCcw
 } from 'lucide-react';
+import brandConfig from '../../config/brand';
 import {
-  PlanetTransitionWaveShader,
-  PlanetCoronaShader,
   createMercuryTexture,
   createMarsTexture,
+  createSaturnTexture,
   createUranusTexture,
   createNeptuneTexture,
   createSaturnRingTexture,
   createGlowParticleTexture
 } from './shaders/planetShaders';
 
-export interface PlanetServiceStage {
+export interface PlanetStage {
   id: string;
   sequence: number;
   planetName: string;
@@ -48,7 +45,8 @@ export interface PlanetServiceStage {
   fallbackImage: string;
 }
 
-export const planetServicesData: PlanetServiceStage[] = [
+// 8 Primary Planetary Service Stages
+export const planetServicesData: PlanetStage[] = [
   {
     id: 'earth',
     sequence: 1,
@@ -64,7 +62,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ],
     ctaLabel: 'Web Sitesi Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
-    accentColor: '#0284c7',
+    accentColor: '#38bdf8',
     texture: '/images/planets/earth.jpg',
     fallbackImage: '/images/planets/earth.jpg'
   },
@@ -83,9 +81,9 @@ export const planetServicesData: PlanetServiceStage[] = [
     ],
     ctaLabel: 'Landing Page Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
-    accentColor: '#94a3b8',
-    texture: '/images/planets/earth.jpg', // Procedural Mercury canvas texture used in WebGL
-    fallbackImage: '/images/planets/earth.jpg'
+    accentColor: '#0ea5e9',
+    texture: '/images/planets/mercury.jpg',
+    fallbackImage: '/images/planets/mercury.jpg'
   },
   {
     id: 'venus',
@@ -102,7 +100,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ],
     ctaLabel: 'Site Yenileme Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
-    accentColor: '#eab308',
+    accentColor: '#f59e0b',
     texture: '/images/planets/venus.jpg',
     fallbackImage: '/images/planets/venus.jpg'
   },
@@ -121,7 +119,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ],
     ctaLabel: 'SEO Hizmetini İncele',
     href: '/hizmetler/seo/',
-    accentColor: '#ea580c',
+    accentColor: '#ef4444',
     texture: '/images/planets/mars.jpg',
     fallbackImage: '/images/planets/mars.jpg'
   },
@@ -140,7 +138,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ],
     ctaLabel: 'Özel Yazılım Hizmetini İncele',
     href: '/hizmetler/mobil-uygulama/',
-    accentColor: '#d97706',
+    accentColor: '#f97316',
     texture: '/images/planets/jupiter.jpg',
     fallbackImage: '/images/planets/jupiter.jpg'
   },
@@ -179,7 +177,7 @@ export const planetServicesData: PlanetServiceStage[] = [
     ctaLabel: 'Yemek Platformu Hizmetini İncele',
     href: '/hizmetler/yemeksepeti-trendyol-yemek/',
     accentColor: '#06b6d4',
-    texture: '/images/planets/neptune.jpg', // Procedural Uranus texture used in WebGL
+    texture: '/images/planets/neptune.jpg',
     fallbackImage: '/images/planets/neptune.jpg'
   },
   {
@@ -214,49 +212,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   neptune: Megaphone
 };
 
-// Transition variant: true = Warm Flame (Solar Plasma), false = Cool Fluid (Cyan Energy)
-const TRANSITION_VARIANTS: boolean[] = [
-  false, // 0 -> 1: Dünya -> Merkür (Cool Fluid)
-  true,  // 1 -> 2: Merkür -> Venüs (Warm Flame)
-  true,  // 2 -> 3: Venüs -> Mars (Warm Flame)
-  false, // 3 -> 4: Mars -> Jüpiter (Cool Fluid)
-  true,  // 4 -> 5: Jüpiter -> Satürn (Warm Flame)
-  false, // 5 -> 6: Satürn -> Uranüs (Cool Fluid)
-  false  // 6 -> 7: Uranüs -> Neptün (Cool Fluid)
-];
-
-// Customer Reviews Data for Screen 09
-const customerReviewsData = [
-  {
-    id: 1,
-    name: 'Murat K.',
-    role: 'Quattro Garaj Otomotiv — Şaşmaz / Ankara',
-    platform: 'WhatsApp',
-    platformColor: 'text-emerald-400 bg-emerald-950/80 border-emerald-500/30',
-    stars: 5,
-    text: 'Sitemiz açıldıktan sonra Google Haritalar üzerinden gelen müşteri sayımız neredeyse üç katına çıktı. Hem hız hem de tasarım olarak çok memnun kaldık, elinize sağlık.'
-  },
-  {
-    id: 2,
-    name: 'Elif S.',
-    role: 'RN Vize Danışmanlık — Çankaya / Ankara',
-    platform: 'Instagram',
-    platformColor: 'text-purple-400 bg-purple-950/80 border-purple-500/30',
-    stars: 5,
-    text: 'Vize başvuru formlarımız ve WhatsApp yönlendirmelerimiz kusursuz çalışıyor. Reklamlardan gelen dönüşüm oranı beklentimizin çok üzerinde gerçekleşti.'
-  },
-  {
-    id: 3,
-    name: 'Dt. Hakan S.',
-    role: 'Özel Diş Kliniği — Kızılay / Ankara',
-    platform: 'Google Maps',
-    platformColor: 'text-sky-400 bg-sky-950/80 border-sky-500/30',
-    stars: 5,
-    text: 'Kliniğimiz için hazırladıkları web sitesi hem hastalarımızdan çok olumlu geri dönüş aldı hem de randevu taleplerimizi çok düzenli hale getirdi.'
-  }
-];
-
-// FAQ Data for Screen 10
+// FAQ Data for Final Stage
 const faqItemsData = [
   {
     q: 'Web sitem ne kadar sürede tamamlanır ve yayına alınır?',
@@ -264,157 +220,159 @@ const faqItemsData = [
   },
   {
     q: 'Sitem mobil cihazlarda ve Google aramalarında nasıl görünür?',
-    a: 'Tüm sitelerimiz %100 mobil uyumlu, Google Core Web Vitals ve teknik SEO standartlarına tam uyumlu olarak inşa edilir.'
+    a: 'Tüm projelerimiz %100 mobil uyumlu, yüksek hız puanlı ve teknik SEO altyapısı hazır olarak teslim edilir. Google arama sonuçlarında hızlı indeksleme sağlanır.'
   },
   {
     q: 'Yemeksepeti ve Trendyol Yemek panel süreçlerinde destek veriyor musunuz?',
-    a: 'Evet, restoran ve kafeler için platform başvurularından dijital menü görsel düzenine, fiyatlandırmadan panel yönetimine kadar tam kapsamlı kurulum yapıyoruz.'
+    a: 'Evet. Restoran başvurularınız, menü ve kategori yüklemeleriniz, görsel düzenlemeleriniz ve panel onay süreçleriniz ekibimiz tarafından anahtar teslim yönetilir.'
   },
   {
     q: 'Proje sonrası teknik destek ve güncelleme hizmeti sağlıyor musunuz?',
-    a: 'Evet, teslim ettiğimiz tüm projelerde teknik bakım, güvenlik güncellemeleri ve içerik revizyon desteğini kesintisiz sürdürüyoruz.'
+    a: 'Evet. Web sitelerinizin sunucu güvenliği, SSL sertifikaları, yedekleme işlemleri ve düzenli teknik desteği kesintisiz olarak tarafımızdan sağlanmaktadır.'
   }
 ];
 
 export const PlanetServicesExperience: React.FC = () => {
-  // Screen Index: 0 to 9 (0..7: Planets, 8: Reviews, 9: FAQ)
   const [activeScreenIndex, setActiveScreenIndex] = useState<number>(0);
-  const activeScreenIndexRef = useRef<number>(0);
-
-  // Transition Lock State
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [cardFade, setCardFade] = useState<boolean>(false);
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const activeScreenIndexRef = useRef<number>(0);
   const isTransitioningRef = useRef<boolean>(false);
-
-  // Selected Review Carousel Index for Screen 09
-  const [activeReviewIdx, setActiveReviewIdx] = useState<number>(0);
-  // Open FAQ Item Index for Screen 10
-  const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
-
-  // Gesture refs
-  const wheelAccumulatorRef = useRef<number>(0);
   const wheelCooldownUntilRef = useRef<number>(0);
   const touchStartYRef = useRef<number>(0);
+  const pointerStartYRef = useRef<number>(0);
+  const wheelAccumulatorRef = useRef<number>(0);
 
-  // Three.js Scene Refs
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const waveMaterialRef = useRef<THREE.ShaderMaterial | null>(null);
-  const coronaMaterialRef = useRef<THREE.ShaderMaterial | null>(null);
-  const planetMeshRef = useRef<THREE.Mesh | null>(null);
-  const ringMeshRef = useRef<THREE.Mesh | null>(null);
-  const particleSystemRef = useRef<THREE.Points | null>(null);
+  // Three.js Scene References
   const texturesRef = useRef<THREE.Texture[]>([]);
+  const currentPlanetMeshRef = useRef<THREE.Mesh | null>(null);
+  const nextPlanetMeshRef = useRef<THREE.Mesh | null>(null);
+  const currentRingMeshRef = useRef<THREE.Mesh | null>(null);
+  const nextRingMeshRef = useRef<THREE.Mesh | null>(null);
+  const starfieldPointsRef = useRef<THREE.Points | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
 
-  // Transition Animation Ref (4600ms discrete)
   const transitionAnimRef = useRef<{
     fromIndex: number;
     toIndex: number;
+    direction: 1 | -1;
     startTime: number;
     duration: number;
   } | null>(null);
 
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
-
+  // Check reduced motion preference
   useEffect(() => {
-    activeScreenIndexRef.current = activeScreenIndex;
-  }, [activeScreenIndex]);
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(media.matches);
+    const listener = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
 
+  // Lock body scroll on homepage
   useEffect(() => {
-    isTransitioningRef.current = isTransitioning;
-  }, [isTransitioning]);
-
-  // Lock body scroll on homepage mount and cleanup on unmount
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    const originalHeight = document.body.style.height;
     document.body.style.overflow = 'hidden';
-    document.body.style.height = '100dvh';
-
     return () => {
-      document.body.style.overflow = originalOverflow;
-      document.body.style.height = originalHeight;
+      document.body.style.overflow = '';
     };
   }, []);
 
-  // Reduced motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  // Active Planet Data
+  const totalScreensCount = 9; // 8 Planets (0..7) + 1 FAQ (8)
   const isPlanetScreen = activeScreenIndex <= 7;
-  const activePlanetStage = isPlanetScreen ? planetServicesData[activeScreenIndex] : planetServicesData[0];
+  const activePlanetStage = planetServicesData[Math.min(activeScreenIndex, 7)];
+
   const IconComponent = useMemo(() => {
     return ICON_MAP[activePlanetStage.id] || Globe;
   }, [activePlanetStage.id]);
 
-  // Discrete 4600ms Single-Shot Transition
+  // 3D Hyperspace Fly-By & Warp Transition Controller
   const startTransitionTo = useCallback((targetIndex: number) => {
     if (isTransitioningRef.current || targetIndex === activeScreenIndexRef.current) return;
-    if (targetIndex < 0 || targetIndex > 9) return;
+    if (targetIndex < 0 || targetIndex >= totalScreensCount) return;
 
     isTransitioningRef.current = true;
     setIsTransitioning(true);
+    setCardFade(true);
 
     const fromIdx = activeScreenIndexRef.current;
-    const duration = prefersReducedMotion ? 300 : 4800;
-    wheelCooldownUntilRef.current = performance.now() + duration + 350;
+    const direction = targetIndex > fromIdx ? 1 : -1;
+    const duration = prefersReducedMotion ? 300 : 1500;
+    wheelCooldownUntilRef.current = performance.now() + duration + 200;
 
     const fromPlanetIdx = Math.min(fromIdx, 7);
     const toPlanetIdx = Math.min(targetIndex, 7);
-    const isWarm = TRANSITION_VARIANTS[Math.min(fromPlanetIdx, toPlanetIdx)] ?? false;
 
-    // Configure WebGL Transition Wavefront
-    if (waveMaterialRef.current && texturesRef.current.length > 0) {
-      waveMaterialRef.current.uniforms.uTexFrom.value = texturesRef.current[fromPlanetIdx];
-      waveMaterialRef.current.uniforms.uTexTo.value = texturesRef.current[toPlanetIdx];
-      waveMaterialRef.current.uniforms.uVariant.value = isWarm ? 1 : 0;
-      waveMaterialRef.current.uniforms.uProgress.value = 0.0;
-      waveMaterialRef.current.uniforms.uWaveIntensity.value = 0.0;
-    }
+    // Setup 3D mesh textures
+    if (currentPlanetMeshRef.current && nextPlanetMeshRef.current && texturesRef.current.length > 0) {
+      const fromTex = texturesRef.current[fromPlanetIdx] || texturesRef.current[0];
+      const toTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
 
-    if (coronaMaterialRef.current) {
-      coronaMaterialRef.current.uniforms.uVariant.value = isWarm ? 1 : 0;
-      coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
-      coronaMaterialRef.current.uniforms.uCoronaIntensity.value = 0.0;
+      (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).map = fromTex;
+      (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).needsUpdate = true;
+
+      (nextPlanetMeshRef.current.material as THREE.MeshStandardMaterial).map = toTex;
+      (nextPlanetMeshRef.current.material as THREE.MeshStandardMaterial).needsUpdate = true;
+
+      // Handle Saturn Rings for current and next
+      if (currentRingMeshRef.current) {
+        currentRingMeshRef.current.visible = fromPlanetIdx === 5;
+      }
+      if (nextRingMeshRef.current) {
+        nextRingMeshRef.current.visible = toPlanetIdx === 5;
+      }
     }
 
     transitionAnimRef.current = {
       fromIndex: fromIdx,
       toIndex: targetIndex,
+      direction,
       startTime: performance.now(),
       duration,
     };
 
-    // Safety fallback timer
+    // Swap text content at midpoint of fly-by
+    setTimeout(() => {
+      setActiveScreenIndex(targetIndex);
+      activeScreenIndexRef.current = targetIndex;
+      setCardFade(false);
+    }, duration * 0.45);
+
+    // Finalize transition
     setTimeout(() => {
       if (isTransitioningRef.current && transitionAnimRef.current?.toIndex === targetIndex) {
         try {
           setActiveScreenIndex(targetIndex);
           activeScreenIndexRef.current = targetIndex;
-          if (waveMaterialRef.current && texturesRef.current.length > 0) {
+
+          if (currentPlanetMeshRef.current && texturesRef.current.length > 0) {
             const finalTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
-            waveMaterialRef.current.uniforms.uTexFrom.value = finalTex;
-            waveMaterialRef.current.uniforms.uTexTo.value = finalTex;
-            waveMaterialRef.current.uniforms.uProgress.value = 0.0;
-            waveMaterialRef.current.uniforms.uWaveIntensity.value = 0.0;
+            (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).map = finalTex;
+            (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).opacity = 1.0;
+            (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).needsUpdate = true;
           }
-          if (coronaMaterialRef.current) {
-            coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
-            coronaMaterialRef.current.uniforms.uCoronaIntensity.value = 0.0;
+          if (currentRingMeshRef.current) {
+            currentRingMeshRef.current.visible = toPlanetIdx === 5;
+          }
+          if (nextPlanetMeshRef.current) {
+            nextPlanetMeshRef.current.visible = false;
+          }
+          if (nextRingMeshRef.current) {
+            nextRingMeshRef.current.visible = false;
           }
         } finally {
           transitionAnimRef.current = null;
           isTransitioningRef.current = false;
           setIsTransitioning(false);
-          wheelCooldownUntilRef.current = performance.now() + 350;
+          setCardFade(false);
+          wheelCooldownUntilRef.current = performance.now() + 200;
         }
       }
-    }, duration + 80);
-  }, [prefersReducedMotion]);
+    }, duration + 50);
+  }, [prefersReducedMotion, totalScreensCount]);
 
   const handlePrev = useCallback(() => {
     if (isTransitioningRef.current) return;
@@ -427,28 +385,25 @@ export const PlanetServicesExperience: React.FC = () => {
   const handleNext = useCallback(() => {
     if (isTransitioningRef.current) return;
     const cur = activeScreenIndexRef.current;
-    if (cur < 9) {
+    if (cur < totalScreensCount - 1) {
       startTransitionTo(cur + 1);
     }
-  }, [startTransitionTo]);
+  }, [startTransitionTo, totalScreensCount]);
 
-  // Input Controllers: Wheel, Touch Swipe, Pointer, Keyboard
+  // Input Listeners: Wheel, Touch, Keyboard
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       const now = performance.now();
-      if (now < wheelCooldownUntilRef.current || isTransitioningRef.current) {
-        wheelAccumulatorRef.current = 0;
-        return;
-      }
+      if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
+
       wheelAccumulatorRef.current += e.deltaY;
-      if (Math.abs(wheelAccumulatorRef.current) > 50) {
-        if (wheelAccumulatorRef.current > 0) {
-          handleNext();
-        } else {
-          handlePrev();
-        }
+      if (wheelAccumulatorRef.current > 45) {
         wheelAccumulatorRef.current = 0;
+        handleNext();
+      } else if (wheelAccumulatorRef.current < -45) {
+        wheelAccumulatorRef.current = 0;
+        handlePrev();
       }
     };
 
@@ -458,47 +413,39 @@ export const PlanetServicesExperience: React.FC = () => {
       }
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
-    };
-
     const handleTouchEnd = (e: TouchEvent) => {
-      if (isTransitioningRef.current) return;
+      const now = performance.now();
+      if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
       if (e.changedTouches.length > 0) {
-        const touchEndY = e.changedTouches[0].clientY;
-        const deltaY = touchStartYRef.current - touchEndY;
-        if (Math.abs(deltaY) > 40) {
-          if (deltaY > 0) {
-            handleNext();
-          } else {
-            handlePrev();
-          }
-        }
-      }
-    };
-
-    let pointerStartY = 0;
-    const handlePointerDown = (e: PointerEvent) => {
-      pointerStartY = e.clientY;
-    };
-
-    const handlePointerUp = (e: PointerEvent) => {
-      if (isTransitioningRef.current) return;
-      const deltaY = pointerStartY - e.clientY;
-      if (Math.abs(deltaY) > 40) {
-        if (deltaY > 0) {
+        const deltaY = touchStartYRef.current - e.changedTouches[0].clientY;
+        if (deltaY > 35) {
           handleNext();
-        } else {
+        } else if (deltaY < -35) {
           handlePrev();
         }
       }
     };
 
+    const handlePointerDown = (e: PointerEvent) => {
+      pointerStartYRef.current = e.clientY;
+    };
+
+    const handlePointerUp = (e: PointerEvent) => {
+      const now = performance.now();
+      if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
+      const deltaY = pointerStartYRef.current - e.clientY;
+      if (deltaY > 35) {
+        handleNext();
+      } else if (deltaY < -35) {
+        handlePrev();
+      }
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         handleNext();
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
         handlePrev();
       }
@@ -506,16 +453,14 @@ export const PlanetServicesExperience: React.FC = () => {
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
-    window.addEventListener('pointerdown', handlePointerDown);
-    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('pointerdown', handlePointerDown, { passive: true });
+    window.addEventListener('pointerup', handlePointerUp, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointerup', handlePointerUp);
@@ -523,39 +468,52 @@ export const PlanetServicesExperience: React.FC = () => {
     };
   }, [handleNext, handlePrev]);
 
-  // Initialize Three.js WebGL Procedural Scene
+  // Three.js WebGL Scene Setup with 3D Hyperspace Fly-By Architecture
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    let renderer: THREE.WebGLRenderer | null = null;
-    let composer: EffectComposer | null = null;
-
-    try {
-      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
-    } catch {
-      return;
-    }
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance',
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, (canvas.clientWidth || 800) / (canvas.clientHeight || 600), 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(45, (canvas.clientWidth || 800) / (canvas.clientHeight || 600), 0.1, 150);
     camera.position.z = 6.0;
+    cameraRef.current = camera;
 
+    // Direct and ambient lighting for rich spherical volume
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xfffaed, 2.2);
+    sunLight.position.set(5.0, 3.0, 4.0);
+    scene.add(sunLight);
+
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.2);
+    rimLight.position.set(-5.0, -2.0, -3.0);
+    scene.add(rimLight);
+
+    let composer: EffectComposer | null = null;
     try {
       const renderPass = new RenderPass(scene, camera);
       const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(canvas.clientWidth || 800, canvas.clientHeight || 600),
-        0.24, // Refined Bloom Strength
-        0.22, // Bloom Radius
-        0.90  // Bloom Threshold
+        0.22,
+        0.20,
+        0.90
       );
       composer = new EffectComposer(renderer);
       composer.addPass(renderPass);
       composer.addPass(bloomPass);
-    } catch (err) {
-      console.warn('Bloom fallback:', err);
+    } catch {
       composer = null;
     }
 
@@ -569,6 +527,8 @@ export const PlanetServicesExperience: React.FC = () => {
         tex = createMercuryTexture();
       } else if (stage.id === 'mars') {
         tex = createMarsTexture();
+      } else if (stage.id === 'saturn') {
+        tex = createSaturnTexture();
       } else if (stage.id === 'uranus') {
         tex = createUranusTexture();
       } else if (stage.id === 'neptune') {
@@ -582,29 +542,21 @@ export const PlanetServicesExperience: React.FC = () => {
     });
     texturesRef.current = textures;
 
-    // 1. Base Planet Mesh (with Sweeping Wavefront Shader)
     const sphereGeo = new THREE.SphereGeometry(1.85, 64, 64);
-    const waveMat = new THREE.ShaderMaterial({
-      vertexShader: PlanetTransitionWaveShader.vertexShader,
-      fragmentShader: PlanetTransitionWaveShader.fragmentShader,
-      uniforms: {
-        uTexFrom: { value: textures[0] || null },
-        uTexTo: { value: textures[0] || null },
-        uProgress: { value: 0.0 },
-        uWaveIntensity: { value: 0.0 },
-        uTime: { value: 0.0 },
-        uUvOffset: { value: 0.0 },
-        uVariant: { value: 0 },
-        uLightDir: { value: new THREE.Vector3(1.2, 0.8, 1.5).normalize() },
-      },
+
+    // 1. Current Planet Mesh & Material
+    const currentMat = new THREE.MeshStandardMaterial({
+      map: textures[0] || null,
+      roughness: 0.65,
+      metalness: 0.05,
+      transparent: true,
+      opacity: 1.0,
     });
-    waveMaterialRef.current = waveMat;
+    const currentPlanetMesh = new THREE.Mesh(sphereGeo, currentMat);
+    currentPlanetMeshRef.current = currentPlanetMesh;
+    scene.add(currentPlanetMesh);
 
-    const planetMesh = new THREE.Mesh(sphereGeo, waveMat);
-    planetMeshRef.current = planetMesh;
-    scene.add(planetMesh);
-
-    // 2. Saturn Ring Mesh (with Cassini Division)
+    // Saturn Ring for Current
     const ringGeo = new THREE.RingGeometry(2.25, 3.6, 64);
     const ringMat = new THREE.MeshStandardMaterial({
       map: createSaturnRingTexture(),
@@ -613,57 +565,59 @@ export const PlanetServicesExperience: React.FC = () => {
       opacity: 0.95,
       roughness: 0.7,
     });
-    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-    ringMesh.rotation.x = Math.PI / 2.6;
-    ringMesh.rotation.y = 0.15;
-    ringMesh.visible = false;
-    ringMeshRef.current = ringMesh;
-    scene.add(ringMesh);
+    const currentRingMesh = new THREE.Mesh(ringGeo, ringMat);
+    currentRingMesh.rotation.x = Math.PI / 2.6;
+    currentRingMesh.rotation.y = 0.15;
+    currentRingMesh.visible = false;
+    currentRingMeshRef.current = currentRingMesh;
+    currentPlanetMesh.add(currentRingMesh);
 
-    // 3. Volumetric Corona Shell (Slightly larger sphere)
-    const coronaGeo = new THREE.SphereGeometry(2.12, 48, 48);
-    const coronaMat = new THREE.ShaderMaterial({
-      vertexShader: PlanetCoronaShader.vertexShader,
-      fragmentShader: PlanetCoronaShader.fragmentShader,
-      uniforms: {
-        uProgress: { value: 0.0 },
-        uCoronaIntensity: { value: 0.0 },
-        uTime: { value: 0.0 },
-        uVariant: { value: 0 },
-      },
+    // 2. Next Planet Mesh (Incoming from Hyperspace)
+    const nextMat = new THREE.MeshStandardMaterial({
+      map: textures[1] || null,
+      roughness: 0.65,
+      metalness: 0.05,
       transparent: true,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-      depthWrite: false,
+      opacity: 0.0,
     });
-    coronaMaterialRef.current = coronaMat;
-    const coronaMesh = new THREE.Mesh(coronaGeo, coronaMat);
-    scene.add(coronaMesh);
+    const nextPlanetMesh = new THREE.Mesh(sphereGeo, nextMat);
+    nextPlanetMesh.visible = false;
+    nextPlanetMeshRef.current = nextPlanetMesh;
+    scene.add(nextPlanetMesh);
 
-    // 4. Soft Round Energy Particles
-    const particleCount = 200;
-    const particleGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      const r = 2.0 + Math.random() * 2.2;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      positions[i] = r * Math.sin(phi) * Math.cos(theta);
-      positions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
-      positions[i + 2] = r * Math.cos(phi);
+    // Saturn Ring for Next
+    const nextRingMesh = new THREE.Mesh(ringGeo, ringMat.clone());
+    nextRingMesh.rotation.x = Math.PI / 2.6;
+    nextRingMesh.rotation.y = 0.15;
+    nextRingMesh.visible = false;
+    nextRingMeshRef.current = nextRingMesh;
+    nextPlanetMesh.add(nextRingMesh);
+
+    // 3. Dynamic Warp Starfield (600 3D Star Particles)
+    const starCount = 600;
+    const starGeo = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3);
+    const starBaseZ = new Float32Array(starCount);
+
+    for (let i = 0; i < starCount; i++) {
+      starPositions[i * 3] = (Math.random() - 0.5) * 30;
+      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      const z = (Math.random() - 0.5) * 30;
+      starPositions[i * 3 + 2] = z;
+      starBaseZ[i] = z;
     }
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const particleMat = new THREE.PointsMaterial({
-      size: 0.08,
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMat = new THREE.PointsMaterial({
+      size: 0.09,
       map: createGlowParticleTexture(),
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
-    const particleSystem = new THREE.Points(particleGeo, particleMat);
-    particleSystemRef.current = particleSystem;
-    scene.add(particleSystem);
+    const starfield = new THREE.Points(starGeo, starMat);
+    starfieldPointsRef.current = starfield;
+    scene.add(starfield);
 
     const handleResize = () => {
       if (!renderer || !camera || !canvas) return;
@@ -676,10 +630,7 @@ export const PlanetServicesExperience: React.FC = () => {
 
       const isDesktop = width >= 1024;
       const offsetX = isDesktop ? 1.5 : 0.0;
-      if (planetMesh) planetMesh.position.x = offsetX;
-      if (ringMesh) ringMesh.position.x = offsetX;
-      if (coronaMesh) coronaMesh.position.x = offsetX;
-      if (particleSystem) particleSystem.position.x = offsetX;
+      currentPlanetMesh.position.x = offsetX;
     };
 
     handleResize();
@@ -688,115 +639,94 @@ export const PlanetServicesExperience: React.FC = () => {
     // Animation Loop
     let animationFrameId: number;
     let lastTime = performance.now();
-    let uvOffset = 0;
     let totalTime = 0;
 
     const render = (now: number) => {
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
       totalTime += dt;
-      uvOffset = (uvOffset + dt * 0.015) % 1.0;
 
-      let currentProgress = 0.0;
-      let currentWaveIntensity = 0.0;
-      let currentCoronaIntensity = 0.0;
+      const isDesktop = (canvas.clientWidth || window.innerWidth) >= 1024;
+      const restOffsetX = isDesktop ? 1.5 : 0.0;
       const anim = transitionAnimRef.current;
 
+      // Ambient Planet Rotation
+      currentPlanetMesh.rotation.y += dt * 0.15;
+      nextPlanetMesh.rotation.y += dt * 0.20;
+
+      // Dynamic Starfield Warp Animation
+      let warpSpeed = 0.03;
       if (anim) {
         const elapsed = now - anim.startTime;
-        const totalDuration = anim.duration;
+        const t = Math.min(Math.max(elapsed / anim.duration, 0.0), 1.0);
+        // Warp peaks in the middle of transition
+        warpSpeed = 0.03 + Math.sin(t * Math.PI) * 4.5;
 
-        if (prefersReducedMotion) {
-          const t = Math.min(Math.max(elapsed / totalDuration, 0.0), 1.0);
-          currentProgress = t;
-          currentWaveIntensity = 0.0;
-          currentCoronaIntensity = 0.0;
+        // Smooth quintic easing
+        const smoothT = t < 0.5 ? 16 * Math.pow(t, 5) : 1 - Math.pow(-2 * t + 2, 5) / 2;
+
+        if (anim.direction === 1) {
+          // FORWARD (Next Planet): Current planet swings left/foreground and zooms past camera
+          currentPlanetMesh.position.x = restOffsetX - smoothT * 5.0;
+          currentPlanetMesh.position.z = smoothT * 3.5;
+          currentPlanetMesh.scale.setScalar(1.0 + smoothT * 0.35);
+          currentMat.opacity = Math.max(0.0, 1.0 - smoothT * 1.5);
+
+          // Next planet zooms in from deep space on the right
+          nextPlanetMesh.visible = true;
+          nextPlanetMesh.position.x = (restOffsetX + 4.5) - smoothT * 4.5;
+          nextPlanetMesh.position.z = -7.0 + smoothT * 7.0;
+          nextPlanetMesh.scale.setScalar(0.2 + smoothT * 0.8);
+          nextMat.opacity = Math.min(1.0, smoothT * 1.6);
         } else {
-          // 5-Phase Cinematic WebGL Timeline (Target 4800ms)
-          // Phase 1: 0 - 700ms (t: 0 - 0.146) -> Anticipation & rim energy buildup
-          // Phase 2: 700 - 1800ms (t: 0.146 - 0.375) -> Wavefront emerges on right edge & corona flares
-          // Phase 3: 1800 - 3200ms (t: 0.375 - 0.667) -> Main organic wavefront sweep across sphere
-          // Phase 4: 3200 - 4200ms (t: 0.667 - 0.875) -> New planet stabilizes, energy calms
-          // Phase 5: 4200 - 4800ms (t: 0.875 - 1.0) -> Final VFX decay & peaceful settle
-          if (elapsed < 700) {
-            const p1 = Math.max(0.0, elapsed / 700);
-            currentProgress = 0.0;
-            currentWaveIntensity = (p1 * p1) * 0.30;
-            currentCoronaIntensity = (p1 * p1) * 0.40;
-          } else if (elapsed < 1800) {
-            const p2 = (elapsed - 700) / 1100;
-            const smooth2 = p2 * p2 * (3 - 2 * p2);
-            currentProgress = smooth2 * 0.20;
-            currentWaveIntensity = 0.30 + smooth2 * 0.70;
-            currentCoronaIntensity = 0.40 + smooth2 * 0.50;
-          } else if (elapsed < 3200) {
-            const p3 = (elapsed - 1800) / 1400;
-            const smooth3 = 0.5 - 0.5 * Math.cos(p3 * Math.PI);
-            currentProgress = 0.20 + smooth3 * 0.65;
-            currentWaveIntensity = 1.0;
-            currentCoronaIntensity = 0.90;
-          } else if (elapsed < 4200) {
-            const p4 = (elapsed - 3200) / 1000;
-            const smooth4 = 0.5 - 0.5 * Math.cos(p4 * Math.PI);
-            currentProgress = 0.85 + smooth4 * 0.15;
-            currentWaveIntensity = 1.0 - smooth4 * 0.70;
-            currentCoronaIntensity = 0.90 - smooth4 * 0.70;
-          } else if (elapsed < totalDuration) {
-            const p5 = (elapsed - 4200) / Math.max(1, totalDuration - 4200);
-            currentProgress = 1.0;
-            currentWaveIntensity = 0.30 * (1.0 - p5);
-            currentCoronaIntensity = 0.20 * (1.0 - p5);
-          } else {
-            currentProgress = 1.0;
-            currentWaveIntensity = 0.0;
-            currentCoronaIntensity = 0.0;
-          }
+          // BACKWARD (Prev Planet): Current planet recedes into deep space
+          currentPlanetMesh.position.x = restOffsetX + smoothT * 4.5;
+          currentPlanetMesh.position.z = -smoothT * 7.0;
+          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.8);
+          currentMat.opacity = Math.max(0.0, 1.0 - smoothT * 1.5);
+
+          // Prev planet swoops in from near foreground
+          nextPlanetMesh.visible = true;
+          nextPlanetMesh.position.x = (restOffsetX - 5.0) + smoothT * 5.0;
+          nextPlanetMesh.position.z = 3.5 - smoothT * 3.5;
+          nextPlanetMesh.scale.setScalar(1.35 - smoothT * 0.35);
+          nextMat.opacity = Math.min(1.0, smoothT * 1.6);
         }
 
-        if (elapsed >= totalDuration) {
-          try {
-            const targetIdx = anim.toIndex;
-            setActiveScreenIndex(targetIdx);
-            activeScreenIndexRef.current = targetIdx;
-            if (waveMaterialRef.current && texturesRef.current.length > 0) {
-              const toPlanetIdx = Math.min(targetIdx, 7);
-              const finalTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
-              waveMaterialRef.current.uniforms.uTexFrom.value = finalTex;
-              waveMaterialRef.current.uniforms.uTexTo.value = finalTex;
-              waveMaterialRef.current.uniforms.uProgress.value = 0.0;
-              waveMaterialRef.current.uniforms.uWaveIntensity.value = 0.0;
-            }
-            if (coronaMaterialRef.current) {
-              coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
-              coronaMaterialRef.current.uniforms.uCoronaIntensity.value = 0.0;
-            }
-          } finally {
-            transitionAnimRef.current = null;
-            isTransitioningRef.current = false;
-            setIsTransitioning(false);
-            wheelCooldownUntilRef.current = performance.now() + 350;
-          }
+        // Camera FOV Warp
+        if (cameraRef.current) {
+          cameraRef.current.fov = 45 + Math.sin(t * Math.PI) * 7.0;
+          cameraRef.current.updateProjectionMatrix();
+        }
+      } else {
+        // Resting State: Align perfectly at focal position
+        currentPlanetMesh.position.x = restOffsetX;
+        currentPlanetMesh.position.y = 0.0;
+        currentPlanetMesh.position.z = 0.0;
+        currentPlanetMesh.scale.setScalar(1.0);
+        currentMat.opacity = 1.0;
+
+        nextPlanetMesh.visible = false;
+        nextMat.opacity = 0.0;
+
+        if (cameraRef.current && cameraRef.current.fov !== 45) {
+          cameraRef.current.fov = 45;
+          cameraRef.current.updateProjectionMatrix();
         }
       }
 
-      // Update Uniforms
-      waveMat.uniforms.uProgress.value = currentProgress;
-      waveMat.uniforms.uWaveIntensity.value = currentWaveIntensity;
-      waveMat.uniforms.uTime.value = totalTime;
-      waveMat.uniforms.uUvOffset.value = uvOffset;
+      // Update Starfield Positions (Warp Stream)
+      const positions = starGeo.attributes.position.array as Float32Array;
+      for (let i = 0; i < starCount; i++) {
+        positions[i * 3 + 2] += warpSpeed;
+        if (positions[i * 3 + 2] > 10.0) {
+          positions[i * 3 + 2] = -20.0;
+        }
+      }
+      starGeo.attributes.position.needsUpdate = true;
+      starfield.rotation.y = totalTime * 0.02;
 
-      coronaMat.uniforms.uProgress.value = currentProgress;
-      coronaMat.uniforms.uCoronaIntensity.value = currentCoronaIntensity;
-      coronaMat.uniforms.uTime.value = totalTime;
-
-      // Rotate planet and particles
-      planetMesh.rotation.y = uvOffset * Math.PI * 2 * 0.2;
-      particleSystem.rotation.y = totalTime * 0.05;
-
-      // Saturn Ring Visibility: Only on Saturn stage (idx 5)
-      const currentActiveIdx = activeScreenIndexRef.current;
-      ringMesh.visible = Boolean((currentActiveIdx === 5 && !anim) || (anim && (anim.toIndex === 5 || anim.fromIndex === 5)));
-
+      // Render Frame
       if (composer) {
         composer.render();
       } else {
@@ -811,61 +741,53 @@ export const PlanetServicesExperience: React.FC = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
-      renderer?.dispose();
+      renderer.dispose();
     };
   }, []);
 
   return (
     <main
-      id="gezegen-seruveni"
       data-testid="home-experience"
-      data-active-index={activeScreenIndex}
-      data-active-scene={activeScreenIndex <= 7 ? activePlanetStage.id : activeScreenIndex === 8 ? 'reviews' : 'faq'}
-      data-transitioning={isTransitioning}
-      aria-label="Rent Yazılım - Tam Ekran Dijital Hizmet Serüveni"
-      className="relative w-full bg-slate-950 text-slate-100 flex flex-col justify-between p-4 sm:p-6 lg:p-10 select-none overflow-hidden"
-      style={{
-        height: 'calc(100dvh - 5rem)',
-        minHeight: 'calc(100svh - 5rem)',
-      }}
+      data-active-index={String(activeScreenIndex)}
+      data-active-scene={isPlanetScreen ? activePlanetStage.id : 'faq'}
+      data-transitioning={String(isTransitioning)}
+      className="relative w-full h-[calc(100vh-5rem)] sm:h-[calc(100vh-5.5rem)] overflow-hidden bg-slate-950 text-slate-100 flex flex-col select-none"
     >
-      {/* 3D WebGL Canvas Layer (Pure Three.js Procedural Engine - ZERO <video> tags!) */}
+      {/* 3D Hyperspace Three.js Canvas Viewport */}
       <canvas
         ref={canvasRef}
         data-testid="active-planet"
-        data-planet-id={activeScreenIndex <= 7 ? activePlanetStage.id : 'none'}
-        aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        className="absolute inset-0 w-full h-full pointer-events-none z-10"
       />
 
-      {/* Top Header Bar: Screen Progress Counter */}
-      <header className="relative z-20 flex items-center justify-between max-w-7xl mx-auto w-full pt-1">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
-          <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-sky-950/90 border border-sky-400/30 text-sky-300 backdrop-blur-md shadow-lg w-fit">
-            <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-            <span>DİJİTAL HİZMET SERÜVENİ</span>
+      {/* Top Experience Sub-Bar */}
+      <header className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 flex items-center justify-between">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 backdrop-blur-md text-xs font-semibold text-slate-300 shadow-md">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500" />
           </span>
-          <span className="text-[11px] sm:text-xs font-bold text-slate-400 tracking-wide hidden sm:inline">
+          <span className="text-sky-400 font-extrabold uppercase tracking-wider">
+            DİJİTAL HİZMET SERÜVENİ
+          </span>
+          <span className="text-slate-500 hidden sm:inline">•</span>
+          <span className="text-slate-400 hidden sm:inline">
             Tasarım, Yazılım ve Büyüme Tek Ekipte
           </span>
         </div>
 
-        {/* 01 / 10 Screen Counter */}
+        {/* Global Sequence Tracker */}
         <div
-          aria-live="polite"
-          className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full backdrop-blur-md shadow-xl"
+          data-testid="experience-progress-badge"
+          className="flex items-center gap-1 bg-slate-900/80 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-full text-xs font-mono shadow-md"
         >
           <span className="text-xs font-black tracking-wider text-sky-400">
             0{activeScreenIndex + 1}
           </span>
           <span className="text-xs font-bold text-slate-600">/</span>
-          <span className="text-xs font-bold text-slate-400">10</span>
+          <span className="text-xs font-bold text-slate-400">09</span>
           <span className="ml-2 pl-2 border-l border-slate-800 text-xs font-extrabold text-slate-200">
-            {activeScreenIndex <= 7
-              ? activePlanetStage.planetName
-              : activeScreenIndex === 8
-              ? 'Yorumlarımız'
-              : 'Sık Sorulan Sorular'}
+            {isPlanetScreen ? activePlanetStage.planetName : 'Sık Sorulan Sorular'}
           </span>
         </div>
       </header>
@@ -878,7 +800,9 @@ export const PlanetServicesExperience: React.FC = () => {
           <article
             data-testid="active-service-card"
             key={activePlanetStage.id}
-            className="lg:col-span-6 xl:col-span-5 bg-slate-950/85 backdrop-blur-xl border border-slate-800/90 p-6 sm:p-8 rounded-3xl shadow-2xl shadow-slate-950/90 space-y-4 sm:space-y-5 transition-all duration-500 ease-out"
+            className={`lg:col-span-6 xl:col-span-5 bg-slate-950/85 backdrop-blur-xl border border-slate-800/90 p-6 sm:p-8 rounded-3xl shadow-2xl shadow-slate-950/90 space-y-4 sm:space-y-5 transition-all duration-300 ease-out ${
+              cardFade ? 'opacity-0 -translate-y-3 blur-xs' : 'opacity-100 translate-y-0 blur-none'
+            }`}
           >
             {/* Category & Planet Badge */}
             <div className="flex items-center justify-between gap-4">
@@ -891,7 +815,7 @@ export const PlanetServicesExperience: React.FC = () => {
               </span>
             </div>
 
-            {/* H1 for Screen 01 (Earth), H2 for all subsequent screens */}
+            {/* H1 for Screen 01 (Earth), H2 for subsequent screens */}
             {activeScreenIndex === 0 ? (
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
                 {activePlanetStage.serviceName}
@@ -937,91 +861,16 @@ export const PlanetServicesExperience: React.FC = () => {
           </article>
         )}
 
-        {/* SCREEN 09: CUSTOMER REVIEWS */}
+        {/* SCREEN 09: FAQ ACCORDION */}
         {activeScreenIndex === 8 && (
           <article
-            data-testid="reviews-screen"
+            data-testid="faq-screen"
             className="lg:col-span-8 xl:col-span-7 bg-slate-950/90 backdrop-blur-2xl border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6"
           >
             <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
               <div>
                 <span className="text-xs font-black uppercase tracking-widest text-sky-400">
-                  09. EKRAN • MÜŞTERİ GERİ DÖNÜŞLERİ
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
-                  Yeni Yorumlarımız
-                </h2>
-              </div>
-              <span className="text-xs font-bold text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
-                Instagram & WhatsApp
-              </span>
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              İşletmelerini dijitale taşıdığımız mutlu müşterilerimizin Instagram ve WhatsApp üzerinden ilettiği gerçek 5 yıldızlı geri dönüşler.
-            </p>
-
-            {/* Selected Review Card */}
-            <div className="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex text-amber-400">
-                    {[...Array(customerReviewsData[activeReviewIdx].stars)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <span className="text-xs font-black text-white">5.0 / 5.0</span>
-                </div>
-                <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border ${customerReviewsData[activeReviewIdx].platformColor}`}>
-                  {customerReviewsData[activeReviewIdx].platform} Doğrulandı
-                </span>
-              </div>
-
-              <blockquote className="text-sm sm:text-base text-slate-100 italic font-medium leading-relaxed">
-                “{customerReviewsData[activeReviewIdx].text}”
-              </blockquote>
-
-              <div className="flex items-center justify-between pt-2 border-t border-slate-800/60">
-                <div>
-                  <div className="text-xs font-black text-white">{customerReviewsData[activeReviewIdx].name}</div>
-                  <div className="text-[11px] text-slate-400">{customerReviewsData[activeReviewIdx].role}</div>
-                </div>
-
-                {/* Review Carousel Buttons */}
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setActiveReviewIdx((prev) => (prev > 0 ? prev - 1 : customerReviewsData.length - 1))}
-                    aria-label="Önceki Yorum"
-                    className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center cursor-pointer transition-all"
-                  >
-                    ←
-                  </button>
-                  <span className="text-xs font-mono text-slate-400">{activeReviewIdx + 1}/{customerReviewsData.length}</span>
-                  <button
-                    type="button"
-                    onClick={() => setActiveReviewIdx((prev) => (prev < customerReviewsData.length - 1 ? prev + 1 : 0))}
-                    aria-label="Sonraki Yorum"
-                    className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center cursor-pointer transition-all"
-                  >
-                    →
-                  </button>
-                </div>
-              </div>
-            </div>
-          </article>
-        )}
-
-        {/* SCREEN 10: FREQUENTLY ASKED QUESTIONS (FAQ) & MINIMAL LEGAL FOOTER */}
-        {activeScreenIndex === 9 && (
-          <article
-            data-testid="faq-screen"
-            className="lg:col-span-9 xl:col-span-8 bg-slate-950/90 backdrop-blur-2xl border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5"
-          >
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
-              <div>
-                <span className="text-xs font-black uppercase tracking-widest text-sky-400">
-                  10. EKRAN • SIKÇA SORULAN SORULAR
+                  09. EKRAN • SIKÇA SORULAN SORULAR
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
                   Aklınıza Takılan Soruların Yanıtları
@@ -1030,26 +879,30 @@ export const PlanetServicesExperience: React.FC = () => {
               <HelpCircle className="w-6 h-6 text-sky-400" />
             </div>
 
-            {/* Accordion FAQ Items */}
-            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+            {/* Accordion List */}
+            <div className="space-y-3">
               {faqItemsData.map((item, idx) => {
-                const isOpen = openFaqIdx === idx;
+                const isOpen = openFaqIndex === idx;
                 return (
                   <div
                     key={idx}
-                    className="bg-slate-900/80 border border-slate-800 rounded-xl overflow-hidden transition-all"
+                    className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/80 transition-all"
                   >
                     <button
                       type="button"
-                      onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
+                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                      className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-white cursor-pointer hover:bg-slate-800/50 transition-colors"
                       aria-expanded={isOpen}
-                      className="w-full text-left p-3.5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-slate-100 hover:text-sky-300 transition-colors cursor-pointer"
                     >
                       <span>{item.q}</span>
-                      <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180 text-sky-400' : ''}`} />
+                      <ChevronDown
+                        className={`w-4 h-4 text-sky-400 shrink-0 transition-transform duration-200 ${
+                          isOpen ? 'rotate-180' : ''
+                        }`}
+                      />
                     </button>
                     {isOpen && (
-                      <div className="px-3.5 pb-3.5 text-xs text-slate-300 leading-relaxed border-t border-slate-800/60 pt-2.5">
+                      <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 pt-3">
                         {item.a}
                       </div>
                     )}
@@ -1058,126 +911,135 @@ export const PlanetServicesExperience: React.FC = () => {
               })}
             </div>
 
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <a
-                href="/iletisim/"
-                className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-2"
-              >
-                <span>Ücretsiz Ön Görüşme</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+            {/* CTAs on FAQ Screen */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-5">
+                Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1" />
               </a>
-
               <a
-                href="https://wa.me/905303498845"
+                href={`https://wa.me/${brandConfig.whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs text-white inline-flex items-center gap-2 transition-all"
+                className="btn-secondary text-xs sm:text-sm py-2.5 px-5"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>WhatsApp’tan Görüş</span>
+                <MessageCircle className="w-4 h-4 mr-1.5" />
+                WhatsApp'tan Görüş
               </a>
-
               <button
                 type="button"
+                data-testid="restart-experience"
                 onClick={() => startTransitionTo(0)}
-                className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-xs text-slate-300 hover:text-white inline-flex items-center gap-2 transition-all cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 inline-flex items-center gap-1.5 cursor-pointer transition-all"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Hizmetleri Yeniden İncele</span>
+                Hizmetleri Yeniden İncele
               </button>
             </div>
 
-            {/* Minimal Legal Footer Bar */}
-            <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
-              <div>© 2026 Rent Yazılım. Tüm hakları saklıdır.</div>
+            {/* Legal Links Footer */}
+            <div className="pt-4 border-t border-slate-800/60 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-3">
+              <span>© {new Date().getFullYear()} Rent Yazılım. Tüm hakları saklıdır.</span>
               <div className="flex items-center gap-3">
-                <a href="/gizlilik-politikasi/" className="hover:text-slate-300 transition-colors">Gizlilik Politikası</a>
+                <a href="/gizlilik-politikasi/" className="hover:text-sky-400">Gizlilik Politikası</a>
                 <span>•</span>
-                <a href="/kvkk-aydinlatma-metni/" className="hover:text-slate-300 transition-colors">KVKK</a>
+                <a href="/kvkk-aydinlatma-metni/" className="hover:text-sky-400">KVKK</a>
                 <span>•</span>
-                <a href="/kullanim-kosullari/" className="hover:text-slate-300 transition-colors">Kullanım Koşulları</a>
+                <a href="/kullanim-kosullari/" className="hover:text-sky-400">Kullanım Koşulları</a>
                 <span>•</span>
-                <a href="/iletisim/" className="hover:text-slate-300 transition-colors">İletişim</a>
+                <a href="/iletisim/" className="hover:text-sky-400">İletişim</a>
               </div>
             </div>
           </article>
         )}
-
-        {/* Reserved Clearance for 3D Planet on Desktop */}
-        <div className="hidden lg:block lg:col-span-6 xl:col-span-7 pointer-events-none" aria-hidden="true" />
       </div>
 
-      {/* Bottom Navigation Controls: Read-only Progress Pills on Left, Directional Controls on Right */}
-      <footer className="relative z-20 max-w-7xl mx-auto w-full pb-1 flex flex-col sm:flex-row items-center justify-between gap-3">
-        
-        {/* Read-only Progress Indicators (Non-skipping) */}
-        <div
-          aria-label="Gezegen Hizmet İlerleme Durumu"
-          className="flex items-center gap-1 sm:gap-1.5 bg-slate-900/90 border border-slate-800 p-1.5 rounded-full backdrop-blur-md overflow-x-auto max-w-full"
-        >
-          {Array.from({ length: 10 }).map((_, idx) => {
-            const isActive = idx === activeScreenIndex;
-            const isCompleted = idx < activeScreenIndex;
-            const label = idx <= 7 ? planetServicesData[idx].planetName : idx === 8 ? 'Yorumlar' : 'SSS';
-            return (
-              <div
-                key={idx}
-                data-testid={`screen-indicator-${idx}`}
-                aria-current={isActive ? 'step' : undefined}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap select-none ${
-                  isActive
-                    ? 'bg-sky-500 text-slate-950 font-black shadow-md shadow-sky-500/40 scale-105'
-                    : isCompleted
-                    ? 'bg-sky-950/60 text-sky-400 border border-sky-500/20'
-                    : 'bg-slate-900/60 text-slate-500'
-                }`}
-              >
-                <span className="font-mono text-[10px] opacity-80">0{idx + 1}</span>
-                <span className={isActive ? 'inline' : 'hidden md:inline'}>{label}</span>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Directional Controls (Prev / Next Buttons & Scroll Hint) */}
-        <div className="flex items-center gap-3">
-          <span className="hidden xl:inline-block text-[11px] font-bold text-slate-400">
-            Aşağı Kaydırın veya Ok Tuşlarını Kullanın
-          </span>
-
-          {/* Previous Button (Up Arrow) */}
-          <button
-            type="button"
-            data-testid="planet-prev"
-            disabled={activeScreenIndex === 0 || isTransitioning}
-            onClick={handlePrev}
-            aria-label="Önceki Ekran"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-lg cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-slate-900/90 focus-visible:ring-2 focus-visible:ring-sky-400 focus:outline-none active:scale-95"
+      {/* Bottom Sticky Navigation Bar */}
+      <footer className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-950/90 backdrop-blur-xl border border-slate-800/90 p-2.5 sm:p-3 rounded-2xl shadow-xl">
+          
+          {/* Planet Pills Navigator */}
+          <div
+            role="tablist"
+            aria-label="Gezegen ve Hizmet Seçici"
+            className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none"
           >
-            <ChevronUp className="w-5 h-5" />
-          </button>
+            {planetServicesData.map((stage, idx) => {
+              const isActive = activeScreenIndex === idx;
+              return (
+                <button
+                  key={stage.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  type="button"
+                  disabled={isTransitioning}
+                  onClick={() => startTransitionTo(idx)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed ${
+                    isActive
+                      ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/30 scale-105'
+                      : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  <span className="font-mono text-[10px] opacity-70 mr-1">0{idx + 1}</span>
+                  <span>{stage.planetName}</span>
+                </button>
+              );
+            })}
 
-          {/* Next Button (Down Arrow) */}
-          <button
-            type="button"
-            data-testid="planet-next"
-            disabled={activeScreenIndex === 9 || isTransitioning}
-            onClick={handleNext}
-            aria-label="Sonraki Ekran"
-            className="h-11 min-h-[44px] px-5 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-lg shadow-sky-500/25 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-sky-400 focus:outline-none active:scale-95"
-          >
-            <span>
-              {activeScreenIndex < 7
-                ? `Sonraki: ${planetServicesData[activeScreenIndex + 1]?.planetName}`
-                : activeScreenIndex === 7
-                ? 'Sonraki: Yorumlarımız'
-                : activeScreenIndex === 8
-                ? 'Sonraki: Sık Sorulan Sorular'
-                : 'Tamamlandı'}
+            {/* FAQ Pill */}
+            <button
+              role="tab"
+              aria-selected={activeScreenIndex === 8}
+              type="button"
+              disabled={isTransitioning}
+              onClick={() => startTransitionTo(8)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed ${
+                activeScreenIndex === 8
+                  ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/30 scale-105'
+                  : 'bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <span className="font-mono text-[10px] opacity-70 mr-1">09</span>
+              <span>SSS</span>
+            </button>
+          </div>
+
+          {/* Directional Prev / Next Navigation Buttons */}
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <span className="text-[11px] text-slate-400 font-medium hidden md:inline-block mr-2">
+              Aşağı Kaydırın veya Ok Tuşlarını Kullanın
             </span>
-            <ChevronDown className="w-4 h-4" />
-          </button>
+
+            {/* Prev Button */}
+            <button
+              data-testid="planet-prev"
+              type="button"
+              onClick={handlePrev}
+              disabled={activeScreenIndex === 0 || isTransitioning}
+              aria-label="Önceki Gezegen"
+              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-sm"
+            >
+              <ChevronDown className="w-4 h-4 rotate-180" />
+            </button>
+
+            {/* Next Button */}
+            <button
+              data-testid="planet-next"
+              type="button"
+              onClick={handleNext}
+              disabled={activeScreenIndex === totalScreensCount - 1 || isTransitioning}
+              aria-label="Sonraki Gezegen"
+              className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <span>
+                {activeScreenIndex < 7
+                  ? `Sonraki: ${planetServicesData[activeScreenIndex + 1]?.planetName}`
+                  : activeScreenIndex === 7
+                  ? 'Sonraki: SSS'
+                  : 'Tamamlandı'}
+              </span>
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </footer>
     </main>

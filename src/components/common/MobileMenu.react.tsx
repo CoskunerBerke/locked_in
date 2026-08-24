@@ -196,6 +196,20 @@ export const MobileMenu: React.FC = () => {
                   Projeler
                 </a>
 
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setTimeout(() => window.dispatchEvent(new CustomEvent('open-reviews-modal')), 150);
+                  }}
+                  className="w-full text-left py-2.5 px-3 text-base font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors min-h-[44px] flex items-center justify-between cursor-pointer"
+                >
+                  <span>Müşteri Yorumları</span>
+                  <span className="text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full">
+                    ★ 5.0 Onaylı
+                  </span>
+                </button>
+
                 <a
                   href="/akademi/"
                   onClick={() => setIsOpen(false)}

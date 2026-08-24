@@ -2,6 +2,7 @@
 import brandConfig from '../../config/brand';
 import MegaMenu from './MegaMenu.react';
 import MobileMenu from './MobileMenu.react';
+import { ReviewsModal } from './ReviewsModal.react';
 
 interface Props {
   activePage?: string;
@@ -59,6 +60,9 @@ const { activePage } = Astro.props;
         >
           Projeler
         </a>
+
+        {/* Müşteri Yorumları Modal Trigger */}
+        <ReviewsModal client:load />
 
         <a
           href="/akademi/"

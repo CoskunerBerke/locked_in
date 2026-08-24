@@ -110,7 +110,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     await expect(homeExp).toHaveAttribute('data-transitioning', 'false');
   });
 
-  test('Test 5: Full 10-Screen Sequential Experience (8 Planets -> Reviews -> FAQ)', async ({ page }, testInfo) => {
+  test('Test 5: Full 9-Screen Sequential Experience (8 Planets -> FAQ) & Header Reviews Modal', async ({ page }, testInfo) => {
     await page.goto('/');
     const homeExp = page.locator('[data-testid="home-experience"]');
     await expect(homeExp).toBeVisible();
@@ -134,7 +134,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
 
     // Step through planets 1 to 7
     for (let i = 1; i <= 7; i++) {
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(400);
       await page.evaluate(() => {
         const btn = document.querySelector('[data-testid="planet-next"]') as HTMLButtonElement;
         btn?.click();
@@ -157,41 +157,41 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
       }
     }
 
-    // Step to Screen 09: Customer Reviews
-    await page.waitForTimeout(500);
+    // Step to Screen 09: FAQ
+    await page.waitForTimeout(400);
     await page.evaluate(() => {
       const btn = document.querySelector('[data-testid="planet-next"]') as HTMLButtonElement;
       btn?.click();
     });
     await expect(homeExp).toHaveAttribute('data-active-index', '8', { timeout: 15000 });
-    await expect(homeExp).toHaveAttribute('data-active-scene', 'reviews');
-    await expect(page.locator('[data-testid="reviews-screen"]')).toBeVisible();
-    if (testInfo.project.name === 'chromium') {
-      await page.screenshot({ path: path.join(artifactsDir, 'v3_09_reviews_scene.png') });
-    }
-
-    // Step to Screen 10: FAQ
-    await page.waitForTimeout(500);
-    await page.evaluate(() => {
-      const btn = document.querySelector('[data-testid="planet-next"]') as HTMLButtonElement;
-      btn?.click();
-    });
-    await expect(homeExp).toHaveAttribute('data-active-index', '9', { timeout: 15000 });
     await expect(homeExp).toHaveAttribute('data-active-scene', 'faq');
     await expect(page.locator('[data-testid="faq-screen"]')).toBeVisible();
     if (testInfo.project.name === 'chromium') {
-      await page.screenshot({ path: path.join(artifactsDir, 'v3_10_faq_scene.png') });
+      await page.screenshot({ path: path.join(artifactsDir, 'v3_09_faq_scene.png') });
     }
 
     // Verify FAQ content
     await expect(page.locator('[data-testid="faq-screen"]')).toContainText('Web sitem ne kadar sürede tamamlanır');
     await expect(page.locator('[data-testid="faq-screen"]')).toContainText('3 ile 7 iş günü');
+    await expect(homeExp).toHaveAttribute('data-transitioning', 'false', { timeout: 15000 });
 
     // Test "Hizmetleri Yeniden İncele" button returns to Screen 01 (Earth)
-    const restartBtn = page.locator('[data-testid="faq-screen"] button:has-text("Hizmetleri Yeniden İncele")');
-    await restartBtn.click();
+    await page.evaluate(() => {
+      const btn = document.querySelector('[data-testid="restart-experience"]') as HTMLButtonElement;
+      btn?.click();
+    });
     await expect(homeExp).toHaveAttribute('data-active-index', '0', { timeout: 15000 });
     await expect(homeExp).toHaveAttribute('data-active-scene', 'earth');
+
+    // Test Header Reviews Modal opens and displays customer reviews (on desktop)
+    if (testInfo.project.name === 'chromium') {
+      const reviewsBtn = page.locator('button[aria-label="Müşteri Yorumlarını Aç"]');
+      await reviewsBtn.click();
+      await expect(page.locator('#reviews-title')).toBeVisible();
+      await expect(page.locator('text=Quattro Garaj Otomotiv')).toBeVisible();
+      const closeBtn = page.locator('button[aria-label="Kapat"]');
+      await closeBtn.click();
+    }
   });
 
   test('Test 6: Body Scroll Lock on Home & Clean Restoration on Navigation', async ({ page }) => {

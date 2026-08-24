@@ -428,6 +428,39 @@ export function createNeptuneTexture(): THREE.CanvasTexture {
   return texture;
 }
 
+// Procedural Saturn Body Texture (Golden Ochre Gaseous Bands)
+export function createSaturnTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 2048;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d')!;
+
+  // Base warm golden ochre gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, 1024);
+  grad.addColorStop(0.00, '#d4a359');
+  grad.addColorStop(0.18, '#ecd599');
+  grad.addColorStop(0.35, '#c8924b');
+  grad.addColorStop(0.50, '#eedbb2');
+  grad.addColorStop(0.68, '#c28740');
+  grad.addColorStop(0.85, '#e4ca90');
+  grad.addColorStop(1.00, '#b67a32');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 2048, 1024);
+
+  // Atmospheric micro-bands
+  for (let y = 0; y < 1024; y += 4) {
+    const opacity = (Math.sin(y * 0.08) * 0.5 + 0.5) * 0.18 + Math.random() * 0.08;
+    ctx.fillStyle = y % 8 === 0 ? `rgba(255, 245, 215, ${opacity})` : `rgba(130, 80, 25, ${opacity * 0.8})`;
+    ctx.fillRect(0, y, 2048, Math.random() * 3 + 1);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 // Procedural Saturn Ring Texture (Cassini division + golden dust bands)
 export function createSaturnRingTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
