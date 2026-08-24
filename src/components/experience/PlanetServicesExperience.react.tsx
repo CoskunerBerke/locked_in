@@ -20,15 +20,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import brandConfig from '../../config/brand';
-import {
-  createMercuryTexture,
-  createMarsTexture,
-  createSaturnTexture,
-  createUranusTexture,
-  createNeptuneTexture,
-  createSaturnRingTexture,
-  createGlowParticleTexture
-} from './shaders/planetShaders';
+import { createGlowParticleTexture } from './shaders/planetShaders';
 
 export interface PlanetStage {
   id: string;
@@ -177,8 +169,8 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Yemek Platformu Hizmetini İncele',
     href: '/hizmetler/yemeksepeti-trendyol-yemek/',
     accentColor: '#06b6d4',
-    texture: '/images/planets/neptune.jpg',
-    fallbackImage: '/images/planets/neptune.jpg'
+    texture: '/images/planets/uranus.jpg',
+    fallbackImage: '/images/planets/uranus.jpg'
   },
   {
     id: 'neptune',
@@ -251,8 +243,6 @@ export const PlanetServicesExperience: React.FC = () => {
   const texturesRef = useRef<THREE.Texture[]>([]);
   const currentPlanetMeshRef = useRef<THREE.Mesh | null>(null);
   const nextPlanetMeshRef = useRef<THREE.Mesh | null>(null);
-  const currentRingMeshRef = useRef<THREE.Mesh | null>(null);
-  const nextRingMeshRef = useRef<THREE.Mesh | null>(null);
   const starfieldPointsRef = useRef<THREE.Points | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
 
@@ -311,19 +301,11 @@ export const PlanetServicesExperience: React.FC = () => {
       const fromTex = texturesRef.current[fromPlanetIdx] || texturesRef.current[0];
       const toTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
 
-      (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).map = fromTex;
-      (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).needsUpdate = true;
+      (currentPlanetMeshRef.current.material as THREE.MeshBasicMaterial).map = fromTex;
+      (currentPlanetMeshRef.current.material as THREE.MeshBasicMaterial).needsUpdate = true;
 
-      (nextPlanetMeshRef.current.material as THREE.MeshStandardMaterial).map = toTex;
-      (nextPlanetMeshRef.current.material as THREE.MeshStandardMaterial).needsUpdate = true;
-
-      // Handle Saturn Rings for current and next
-      if (currentRingMeshRef.current) {
-        currentRingMeshRef.current.visible = fromPlanetIdx === 5;
-      }
-      if (nextRingMeshRef.current) {
-        nextRingMeshRef.current.visible = toPlanetIdx === 5;
-      }
+      (nextPlanetMeshRef.current.material as THREE.MeshBasicMaterial).map = toTex;
+      (nextPlanetMeshRef.current.material as THREE.MeshBasicMaterial).needsUpdate = true;
     }
 
     transitionAnimRef.current = {
@@ -350,18 +332,12 @@ export const PlanetServicesExperience: React.FC = () => {
 
           if (currentPlanetMeshRef.current && texturesRef.current.length > 0) {
             const finalTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
-            (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).map = finalTex;
-            (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).opacity = 1.0;
-            (currentPlanetMeshRef.current.material as THREE.MeshStandardMaterial).needsUpdate = true;
-          }
-          if (currentRingMeshRef.current) {
-            currentRingMeshRef.current.visible = toPlanetIdx === 5;
+            (currentPlanetMeshRef.current.material as THREE.MeshBasicMaterial).map = finalTex;
+            (currentPlanetMeshRef.current.material as THREE.MeshBasicMaterial).opacity = 1.0;
+            (currentPlanetMeshRef.current.material as THREE.MeshBasicMaterial).needsUpdate = true;
           }
           if (nextPlanetMeshRef.current) {
             nextPlanetMeshRef.current.visible = false;
-          }
-          if (nextRingMeshRef.current) {
-            nextRingMeshRef.current.visible = false;
           }
         } finally {
           transitionAnimRef.current = null;
@@ -522,76 +498,40 @@ export const PlanetServicesExperience: React.FC = () => {
     const textures: THREE.Texture[] = [];
 
     planetServicesData.forEach((stage) => {
-      let tex: THREE.Texture;
-      if (stage.id === 'mercury') {
-        tex = createMercuryTexture();
-      } else if (stage.id === 'mars') {
-        tex = createMarsTexture();
-      } else if (stage.id === 'saturn') {
-        tex = createSaturnTexture();
-      } else if (stage.id === 'uranus') {
-        tex = createUranusTexture();
-      } else if (stage.id === 'neptune') {
-        tex = createNeptuneTexture();
-      } else {
-        tex = textureLoader.load(stage.texture);
-        tex.wrapS = THREE.RepeatWrapping;
-        tex.wrapT = THREE.ClampToEdgeWrapping;
-      }
+      const tex = textureLoader.load(stage.texture, () => {
+        if (currentPlanetMeshRef.current) {
+          (currentPlanetMeshRef.current.material as THREE.MeshBasicMaterial).needsUpdate = true;
+        }
+      });
+      tex.colorSpace = THREE.SRGBColorSpace;
       textures.push(tex);
     });
     texturesRef.current = textures;
 
-    const sphereGeo = new THREE.SphereGeometry(1.85, 64, 64);
+    const planeGeo = new THREE.PlaneGeometry(4.2, 4.2);
 
-    // 1. Current Planet Mesh & Material
-    const currentMat = new THREE.MeshStandardMaterial({
+    // 1. Current Planet Mesh & Material (1:1 High Fidelity Google Flow Render)
+    const currentMat = new THREE.MeshBasicMaterial({
       map: textures[0] || null,
-      roughness: 0.65,
-      metalness: 0.05,
       transparent: true,
       opacity: 1.0,
+      depthWrite: false,
     });
-    const currentPlanetMesh = new THREE.Mesh(sphereGeo, currentMat);
+    const currentPlanetMesh = new THREE.Mesh(planeGeo, currentMat);
     currentPlanetMeshRef.current = currentPlanetMesh;
     scene.add(currentPlanetMesh);
 
-    // Saturn Ring for Current
-    const ringGeo = new THREE.RingGeometry(2.25, 3.6, 64);
-    const ringMat = new THREE.MeshStandardMaterial({
-      map: createSaturnRingTexture(),
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.95,
-      roughness: 0.7,
-    });
-    const currentRingMesh = new THREE.Mesh(ringGeo, ringMat);
-    currentRingMesh.rotation.x = Math.PI / 2.6;
-    currentRingMesh.rotation.y = 0.15;
-    currentRingMesh.visible = false;
-    currentRingMeshRef.current = currentRingMesh;
-    currentPlanetMesh.add(currentRingMesh);
-
-    // 2. Next Planet Mesh (Incoming from Hyperspace)
-    const nextMat = new THREE.MeshStandardMaterial({
+    // 2. Next Planet Mesh (Incoming from 3D Hyperspace)
+    const nextMat = new THREE.MeshBasicMaterial({
       map: textures[1] || null,
-      roughness: 0.65,
-      metalness: 0.05,
       transparent: true,
       opacity: 0.0,
+      depthWrite: false,
     });
-    const nextPlanetMesh = new THREE.Mesh(sphereGeo, nextMat);
+    const nextPlanetMesh = new THREE.Mesh(planeGeo, nextMat);
     nextPlanetMesh.visible = false;
     nextPlanetMeshRef.current = nextPlanetMesh;
     scene.add(nextPlanetMesh);
-
-    // Saturn Ring for Next
-    const nextRingMesh = new THREE.Mesh(ringGeo, ringMat.clone());
-    nextRingMesh.rotation.x = Math.PI / 2.6;
-    nextRingMesh.rotation.y = 0.15;
-    nextRingMesh.visible = false;
-    nextRingMeshRef.current = nextRingMesh;
-    nextPlanetMesh.add(nextRingMesh);
 
     // 3. Dynamic Warp Starfield (600 3D Star Particles)
     const starCount = 600;
@@ -650,9 +590,14 @@ export const PlanetServicesExperience: React.FC = () => {
       const restOffsetX = isDesktop ? 1.5 : 0.0;
       const anim = transitionAnimRef.current;
 
-      // Ambient Planet Rotation
-      currentPlanetMesh.rotation.y += dt * 0.15;
-      nextPlanetMesh.rotation.y += dt * 0.20;
+      // Ambient Planet Subtle Roll
+      currentPlanetMesh.rotation.x = 0;
+      currentPlanetMesh.rotation.y = 0;
+      currentPlanetMesh.rotation.z += dt * 0.03;
+
+      nextPlanetMesh.rotation.x = 0;
+      nextPlanetMesh.rotation.y = 0;
+      nextPlanetMesh.rotation.z += dt * 0.04;
 
       // Dynamic Starfield Warp Animation
       let warpSpeed = 0.03;

@@ -236,7 +236,8 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     const homeExp = page.locator('[data-testid="home-experience"]');
     await expect(homeExp).toBeVisible();
     await expect(homeExp).toHaveAttribute('data-active-index', '0');
-    await page.waitForTimeout(600);
+    await expect(homeExp).toHaveAttribute('data-transitioning', 'false');
+    await page.waitForTimeout(800);
 
     // Simulate pointer swipe up
     await page.evaluate(() => {
