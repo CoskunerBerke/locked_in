@@ -102,7 +102,8 @@ export const PlanetTransitionWaveShader = {
 
     uniform sampler2D uTexFrom;
     uniform sampler2D uTexTo;
-    uniform float uProgress;          // 0.0 to 1.0
+    uniform float uProgress;          // 0.0 to 1.0 (wavefront position)
+    uniform float uWaveIntensity;     // 0.0 to 1.0 (energy activity)
     uniform float uTime;
     uniform float uUvOffset;
     uniform int uVariant;             // 0 = Cool Fluid, 1 = Warm Flame
@@ -120,7 +121,7 @@ export const PlanetTransitionWaveShader = {
       vec3 normal = normalize(vNormal);
       vec3 lightDir = normalize(uLightDir);
       float diff = max(dot(normal, lightDir), 0.0);
-      float ambient = 0.35;
+      float ambient = 0.38;
       float lighting = ambient + (1.0 - ambient) * diff;
 
       // Sample Diffuse Textures
@@ -128,25 +129,25 @@ export const PlanetTransitionWaveShader = {
       vec4 texTo = texture2D(uTexTo, uv);
 
       // Smooth Wavefront Coordinates with 3D FBM Domain Warping
-      // The wave travels organically across the sphere from (x: 1.0 -> -1.0)
-      vec3 noiseCoord = vPosition * 1.8 + vec3(uTime * 0.4, uTime * 0.3, uTime * 0.2);
+      // The wave travels organically across the sphere from right (1.0) to left (-1.0)
+      vec3 noiseCoord = vPosition * 2.2 + vec3(uTime * 0.45, uTime * 0.35, uTime * 0.25);
       float noiseVal = fbm(noiseCoord);
       
       // Normalized wave progress coordinate along sphere (-1.8 to +1.8)
-      float waveCoord = (vPosition.x + vPosition.y * 0.35) / 2.2;
-      // Remap progress to sweep across entire sphere [-1.3, 1.3]
-      float sweepThreshold = mix(1.4, -1.4, uProgress);
+      float waveCoord = (vPosition.x + vPosition.y * 0.30) / 2.2;
+      // Remap progress to sweep across entire sphere [-1.35, 1.35]
+      float sweepThreshold = mix(1.35, -1.35, uProgress);
       
       // Distance from the turbulent wavefront
-      float distToFront = waveCoord - (sweepThreshold + noiseVal * 0.35);
+      float distToFront = waveCoord - (sweepThreshold + noiseVal * 0.28);
 
-      // Three-layer energy edge:
-      // 1. White-hot sharp core
+      // Multi-layer high-contrast energetic edge:
+      // 1. Crisp white-hot core
       // 2. Saturated plasma/flame band
-      // 3. Soft outer corona glow
-      float coreEdge = 1.0 - smoothstep(0.0, 0.04, abs(distToFront));
-      float flameBand = 1.0 - smoothstep(0.0, 0.22, abs(distToFront));
-      float outerGlow = 1.0 - smoothstep(0.0, 0.45, abs(distToFront));
+      // 3. Ambient corona glow
+      float coreEdge = 1.0 - smoothstep(0.0, 0.025, abs(distToFront));
+      float flameBand = 1.0 - smoothstep(0.0, 0.09, abs(distToFront));
+      float outerGlow = 1.0 - smoothstep(0.0, 0.22, abs(distToFront));
 
       // Color Palettes
       vec3 coreColor = vec3(1.0, 1.0, 1.0); // White-hot core
@@ -159,22 +160,21 @@ export const PlanetTransitionWaveShader = {
         : vec3(0.02, 0.40, 0.90);  // Oceanic Deep Blue Fluid
 
       // Transition Blend Mask: Behind the wavefront is New Planet (texTo), ahead is Old Planet (texFrom)
-      float blendFactor = smoothstep(-0.12, 0.12, -distToFront);
+      float blendFactor = smoothstep(-0.06, 0.06, -distToFront);
       vec4 basePlanetTex = mix(texFrom, texTo, blendFactor);
 
       // Fresnel Rim Atmosphere
       vec3 viewDir = normalize(-vPosition);
       float fresnel = 1.0 - max(dot(viewDir, normal), 0.0);
-      float rim = pow(fresnel, 3.2);
+      float rim = pow(fresnel, 3.5);
 
-      // Intensity modulation based on transition progress
-      float waveIntensity = sin(uProgress * 3.14159265);
-      
       // Energy Wavefront Emission
-      vec3 energyEmission = (coreColor * coreEdge * 1.8 + midColor * flameBand * 1.4 + glowColor * outerGlow * 0.9) * waveIntensity;
+      vec3 energyEmission = (coreColor * coreEdge * 1.35 + midColor * flameBand * 1.10 + glowColor * outerGlow * 0.60) * uWaveIntensity;
 
-      // Base planet color with lighting and subtle atmospheric rim
-      vec3 planetColor = basePlanetTex.rgb * lighting + rim * midColor * (0.25 + waveIntensity * 0.5);
+      // Base planet color with lighting and natural texture-matched atmospheric rim at idle
+      vec3 naturalRim = rim * basePlanetTex.rgb * 0.22;
+      vec3 activePlasmaRim = rim * midColor * 0.50 * uWaveIntensity;
+      vec3 planetColor = basePlanetTex.rgb * lighting + naturalRim + activePlasmaRim;
 
       // Final Composited Pixel
       vec3 finalColor = planetColor + energyEmission;
@@ -204,6 +204,7 @@ export const PlanetCoronaShader = {
     ${glslNoiseFunctions}
 
     uniform float uProgress;
+    uniform float uCoronaIntensity;   // 0.0 to 1.0
     uniform float uTime;
     uniform int uVariant;
 
@@ -221,18 +222,15 @@ export const PlanetCoronaShader = {
 
       // Pure rim corona (invisible in center, peaks outside silhouette)
       float rim = 1.0 - max(dot(viewDir, normal), 0.0);
-      float corona = pow(rim, 2.5) * (0.8 + noiseVal * 0.5);
-
-      // Transition envelope: peaks in middle (t ~ 0.5), 0 at start and end
-      float intensity = sin(uProgress * 3.14159265);
+      float corona = pow(rim, 2.8) * (0.8 + noiseVal * 0.4);
 
       vec3 coronaColor = (uVariant == 1)
         ? mix(vec3(1.0, 0.45, 0.05), vec3(1.0, 0.85, 0.2), noiseVal * 0.5 + 0.5)
         : mix(vec3(0.05, 0.75, 1.0), vec3(0.6, 0.95, 1.0), noiseVal * 0.5 + 0.5);
 
-      float alpha = corona * intensity * 0.85;
+      float alpha = corona * uCoronaIntensity * 0.55;
 
-      gl_FragColor = vec4(coronaColor * 1.5, alpha);
+      gl_FragColor = vec4(coronaColor * 1.2, alpha);
     }
   `,
 };

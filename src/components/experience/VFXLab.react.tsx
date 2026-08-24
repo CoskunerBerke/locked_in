@@ -25,12 +25,15 @@ export const VFXLab: React.FC = () => {
 
   useEffect(() => {
     progressRef.current = progress;
+    const waveInt = Math.sin(Math.min(Math.max(progress, 0.0), 1.0) * Math.PI);
     if (waveMaterialRef.current) {
       waveMaterialRef.current.uniforms.uProgress.value = progress;
+      waveMaterialRef.current.uniforms.uWaveIntensity.value = waveInt;
       waveMaterialRef.current.uniforms.uVariant.value = variant === 'warm' ? 1 : 0;
     }
     if (coronaMaterialRef.current) {
       coronaMaterialRef.current.uniforms.uProgress.value = progress;
+      coronaMaterialRef.current.uniforms.uCoronaIntensity.value = waveInt;
       coronaMaterialRef.current.uniforms.uVariant.value = variant === 'warm' ? 1 : 0;
     }
   }, [progress, variant]);
@@ -72,6 +75,7 @@ export const VFXLab: React.FC = () => {
         uTexFrom: { value: texEarth },
         uTexTo: { value: texMercury },
         uProgress: { value: 0.0 },
+        uWaveIntensity: { value: 0.0 },
         uTime: { value: 0.0 },
         uUvOffset: { value: 0.0 },
         uVariant: { value: 1 },
@@ -89,6 +93,7 @@ export const VFXLab: React.FC = () => {
       fragmentShader: PlanetCoronaShader.fragmentShader,
       uniforms: {
         uProgress: { value: 0.0 },
+        uCoronaIntensity: { value: 0.0 },
         uTime: { value: 0.0 },
         uVariant: { value: 1 },
       },

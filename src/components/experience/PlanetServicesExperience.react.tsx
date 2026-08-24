@@ -360,7 +360,7 @@ export const PlanetServicesExperience: React.FC = () => {
     setIsTransitioning(true);
 
     const fromIdx = activeScreenIndexRef.current;
-    const duration = prefersReducedMotion ? 300 : 4600;
+    const duration = prefersReducedMotion ? 300 : 4800;
     wheelCooldownUntilRef.current = performance.now() + duration + 350;
 
     const fromPlanetIdx = Math.min(fromIdx, 7);
@@ -373,11 +373,13 @@ export const PlanetServicesExperience: React.FC = () => {
       waveMaterialRef.current.uniforms.uTexTo.value = texturesRef.current[toPlanetIdx];
       waveMaterialRef.current.uniforms.uVariant.value = isWarm ? 1 : 0;
       waveMaterialRef.current.uniforms.uProgress.value = 0.0;
+      waveMaterialRef.current.uniforms.uWaveIntensity.value = 0.0;
     }
 
     if (coronaMaterialRef.current) {
       coronaMaterialRef.current.uniforms.uVariant.value = isWarm ? 1 : 0;
       coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
+      coronaMaterialRef.current.uniforms.uCoronaIntensity.value = 0.0;
     }
 
     transitionAnimRef.current = {
@@ -398,9 +400,11 @@ export const PlanetServicesExperience: React.FC = () => {
             waveMaterialRef.current.uniforms.uTexFrom.value = finalTex;
             waveMaterialRef.current.uniforms.uTexTo.value = finalTex;
             waveMaterialRef.current.uniforms.uProgress.value = 0.0;
+            waveMaterialRef.current.uniforms.uWaveIntensity.value = 0.0;
           }
           if (coronaMaterialRef.current) {
             coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
+            coronaMaterialRef.current.uniforms.uCoronaIntensity.value = 0.0;
           }
         } finally {
           transitionAnimRef.current = null;
@@ -543,9 +547,9 @@ export const PlanetServicesExperience: React.FC = () => {
       const renderPass = new RenderPass(scene, camera);
       const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(canvas.clientWidth || 800, canvas.clientHeight || 600),
-        0.30, // Controlled Bloom Strength
-        0.20, // Bloom Radius
-        0.92  // Bloom Threshold
+        0.24, // Refined Bloom Strength
+        0.22, // Bloom Radius
+        0.90  // Bloom Threshold
       );
       composer = new EffectComposer(renderer);
       composer.addPass(renderPass);
@@ -587,6 +591,7 @@ export const PlanetServicesExperience: React.FC = () => {
         uTexFrom: { value: textures[0] || null },
         uTexTo: { value: textures[0] || null },
         uProgress: { value: 0.0 },
+        uWaveIntensity: { value: 0.0 },
         uTime: { value: 0.0 },
         uUvOffset: { value: 0.0 },
         uVariant: { value: 0 },
@@ -622,6 +627,7 @@ export const PlanetServicesExperience: React.FC = () => {
       fragmentShader: PlanetCoronaShader.fragmentShader,
       uniforms: {
         uProgress: { value: 0.0 },
+        uCoronaIntensity: { value: 0.0 },
         uTime: { value: 0.0 },
         uVariant: { value: 0 },
       },
@@ -692,14 +698,62 @@ export const PlanetServicesExperience: React.FC = () => {
       uvOffset = (uvOffset + dt * 0.015) % 1.0;
 
       let currentProgress = 0.0;
+      let currentWaveIntensity = 0.0;
+      let currentCoronaIntensity = 0.0;
       const anim = transitionAnimRef.current;
 
       if (anim) {
         const elapsed = now - anim.startTime;
-        const t = Math.min(Math.max(elapsed / anim.duration, 0.0), 1.0);
-        currentProgress = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const totalDuration = anim.duration;
 
-        if (t >= 1.0) {
+        if (prefersReducedMotion) {
+          const t = Math.min(Math.max(elapsed / totalDuration, 0.0), 1.0);
+          currentProgress = t;
+          currentWaveIntensity = 0.0;
+          currentCoronaIntensity = 0.0;
+        } else {
+          // 5-Phase Cinematic WebGL Timeline (Target 4800ms)
+          // Phase 1: 0 - 700ms (t: 0 - 0.146) -> Anticipation & rim energy buildup
+          // Phase 2: 700 - 1800ms (t: 0.146 - 0.375) -> Wavefront emerges on right edge & corona flares
+          // Phase 3: 1800 - 3200ms (t: 0.375 - 0.667) -> Main organic wavefront sweep across sphere
+          // Phase 4: 3200 - 4200ms (t: 0.667 - 0.875) -> New planet stabilizes, energy calms
+          // Phase 5: 4200 - 4800ms (t: 0.875 - 1.0) -> Final VFX decay & peaceful settle
+          if (elapsed < 700) {
+            const p1 = Math.max(0.0, elapsed / 700);
+            currentProgress = 0.0;
+            currentWaveIntensity = (p1 * p1) * 0.30;
+            currentCoronaIntensity = (p1 * p1) * 0.40;
+          } else if (elapsed < 1800) {
+            const p2 = (elapsed - 700) / 1100;
+            const smooth2 = p2 * p2 * (3 - 2 * p2);
+            currentProgress = smooth2 * 0.20;
+            currentWaveIntensity = 0.30 + smooth2 * 0.70;
+            currentCoronaIntensity = 0.40 + smooth2 * 0.50;
+          } else if (elapsed < 3200) {
+            const p3 = (elapsed - 1800) / 1400;
+            const smooth3 = 0.5 - 0.5 * Math.cos(p3 * Math.PI);
+            currentProgress = 0.20 + smooth3 * 0.65;
+            currentWaveIntensity = 1.0;
+            currentCoronaIntensity = 0.90;
+          } else if (elapsed < 4200) {
+            const p4 = (elapsed - 3200) / 1000;
+            const smooth4 = 0.5 - 0.5 * Math.cos(p4 * Math.PI);
+            currentProgress = 0.85 + smooth4 * 0.15;
+            currentWaveIntensity = 1.0 - smooth4 * 0.70;
+            currentCoronaIntensity = 0.90 - smooth4 * 0.70;
+          } else if (elapsed < totalDuration) {
+            const p5 = (elapsed - 4200) / Math.max(1, totalDuration - 4200);
+            currentProgress = 1.0;
+            currentWaveIntensity = 0.30 * (1.0 - p5);
+            currentCoronaIntensity = 0.20 * (1.0 - p5);
+          } else {
+            currentProgress = 1.0;
+            currentWaveIntensity = 0.0;
+            currentCoronaIntensity = 0.0;
+          }
+        }
+
+        if (elapsed >= totalDuration) {
           try {
             const targetIdx = anim.toIndex;
             setActiveScreenIndex(targetIdx);
@@ -710,9 +764,11 @@ export const PlanetServicesExperience: React.FC = () => {
               waveMaterialRef.current.uniforms.uTexFrom.value = finalTex;
               waveMaterialRef.current.uniforms.uTexTo.value = finalTex;
               waveMaterialRef.current.uniforms.uProgress.value = 0.0;
+              waveMaterialRef.current.uniforms.uWaveIntensity.value = 0.0;
             }
             if (coronaMaterialRef.current) {
               coronaMaterialRef.current.uniforms.uProgress.value = 0.0;
+              coronaMaterialRef.current.uniforms.uCoronaIntensity.value = 0.0;
             }
           } finally {
             transitionAnimRef.current = null;
@@ -725,10 +781,12 @@ export const PlanetServicesExperience: React.FC = () => {
 
       // Update Uniforms
       waveMat.uniforms.uProgress.value = currentProgress;
+      waveMat.uniforms.uWaveIntensity.value = currentWaveIntensity;
       waveMat.uniforms.uTime.value = totalTime;
       waveMat.uniforms.uUvOffset.value = uvOffset;
 
       coronaMat.uniforms.uProgress.value = currentProgress;
+      coronaMat.uniforms.uCoronaIntensity.value = currentCoronaIntensity;
       coronaMat.uniforms.uTime.value = totalTime;
 
       // Rotate planet and particles
