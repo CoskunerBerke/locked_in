@@ -32,11 +32,13 @@ export interface PlanetStage {
   href: string;
   accentColor: string;
   glowColor: string;
+  bgGradient: string;
+  starColorHex: number;
   texture: string;
   fallbackImage: string;
 }
 
-// 8 Primary Planetary Service Stages
+// 8 Primary Planetary Service Stages with Rich, Bespoke Cosmic Atmospheres
 export const planetServicesData: PlanetStage[] = [
   {
     id: 'earth',
@@ -54,7 +56,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Web Sitesi Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
     accentColor: '#0284c7',
-    glowColor: 'rgba(56, 189, 248, 0.28)',
+    glowColor: 'rgba(2, 132, 199, 0.45)',
+    bgGradient: 'linear-gradient(135deg, #021226 0%, #06284f 50%, #02142b 100%)',
+    starColorHex: 0x38bdf8,
     texture: '/images/planets/earth.jpg',
     fallbackImage: '/images/planets/earth.jpg'
   },
@@ -73,8 +77,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'Landing Page Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
-    accentColor: '#0369a1',
-    glowColor: 'rgba(14, 165, 233, 0.25)',
+    accentColor: '#38bdf8',
+    glowColor: 'rgba(148, 163, 184, 0.35)',
+    bgGradient: 'linear-gradient(135deg, #0d1117 0%, #1a2230 50%, #0e1218 100%)',
+    starColorHex: 0xe2e8f0,
     texture: '/images/planets/mercury.jpg',
     fallbackImage: '/images/planets/mercury.jpg'
   },
@@ -93,8 +99,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'Site Yenileme Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
-    accentColor: '#d97706',
-    glowColor: 'rgba(245, 158, 11, 0.25)',
+    accentColor: '#f59e0b',
+    glowColor: 'rgba(245, 158, 11, 0.45)',
+    bgGradient: 'linear-gradient(135deg, #1f1003 0%, #3d1b04 50%, #201104 100%)',
+    starColorHex: 0xfbbf24,
     texture: '/images/planets/venus.jpg',
     fallbackImage: '/images/planets/venus.jpg'
   },
@@ -113,8 +121,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'SEO Hizmetini İncele',
     href: '/hizmetler/seo/',
-    accentColor: '#dc2626',
-    glowColor: 'rgba(239, 68, 68, 0.25)',
+    accentColor: '#ef4444',
+    glowColor: 'rgba(239, 68, 68, 0.50)',
+    bgGradient: 'linear-gradient(135deg, #240606 0%, #4a0e0e 50%, #260707 100%)',
+    starColorHex: 0xf87171,
     texture: '/images/planets/mars.jpg',
     fallbackImage: '/images/planets/mars.jpg'
   },
@@ -133,8 +143,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'Özel Yazılım Hizmetini İncele',
     href: '/hizmetler/mobil-uygulama/',
-    accentColor: '#ea580c',
-    glowColor: 'rgba(249, 115, 22, 0.25)',
+    accentColor: '#f97316',
+    glowColor: 'rgba(249, 115, 22, 0.45)',
+    bgGradient: 'linear-gradient(135deg, #1e1106 0%, #442208 50%, #221206 100%)',
+    starColorHex: 0xfb923c,
     texture: '/images/planets/jupiter.jpg',
     fallbackImage: '/images/planets/jupiter.jpg'
   },
@@ -153,8 +165,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'Harita Optimizasyonu Hizmetini İncele',
     href: '/hizmetler/google-maps/',
-    accentColor: '#b45309',
-    glowColor: 'rgba(202, 138, 4, 0.25)',
+    accentColor: '#eab308',
+    glowColor: 'rgba(234, 179, 8, 0.45)',
+    bgGradient: 'linear-gradient(135deg, #1a1608 0%, #3a2e0e 50%, #1e1809 100%)',
+    starColorHex: 0xfde047,
     texture: '/images/planets/saturn.jpg',
     fallbackImage: '/images/planets/saturn.jpg'
   },
@@ -173,8 +187,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'Yemek Platformu Hizmetini İncele',
     href: '/hizmetler/yemeksepeti-trendyol-yemek/',
-    accentColor: '#0891b2',
-    glowColor: 'rgba(6, 182, 212, 0.25)',
+    accentColor: '#06b6d4',
+    glowColor: 'rgba(6, 182, 212, 0.45)',
+    bgGradient: 'linear-gradient(135deg, #02171e 0%, #063442 50%, #031b22 100%)',
+    starColorHex: 0x22d3ee,
     texture: '/images/planets/uranus.jpg',
     fallbackImage: '/images/planets/uranus.jpg'
   },
@@ -193,8 +209,10 @@ export const planetServicesData: PlanetStage[] = [
     ],
     ctaLabel: 'Sosyal Medya Hizmetini İncele',
     href: '/hizmetler/instagram-reklamlari/',
-    accentColor: '#1d4ed8',
-    glowColor: 'rgba(37, 99, 235, 0.28)',
+    accentColor: '#2563eb',
+    glowColor: 'rgba(37, 99, 235, 0.55)',
+    bgGradient: 'linear-gradient(135deg, #010d29 0%, #052668 50%, #021338 100%)',
+    starColorHex: 0x60a5fa,
     texture: '/images/planets/neptune.jpg',
     fallbackImage: '/images/planets/neptune.jpg'
   }
@@ -231,13 +249,19 @@ const faqItemsData = [
   }
 ];
 
-// Custom Transparent Shader Material that masks square borders and blends planet sphere onto light canvas
-function createPlanetShader(texture: THREE.Texture | null, isRingPlanet: boolean, initialOpacity = 1.0) {
+// Custom Shader with Smooth Feathered Alpha & Soft Atmospheric Rim Glow
+function createPlanetShader(
+  texture: THREE.Texture | null,
+  isRingPlanet: boolean,
+  atmosphereColor: THREE.Color,
+  initialOpacity = 1.0
+) {
   return new THREE.ShaderMaterial({
     uniforms: {
       uTexture: { value: texture },
       uOpacity: { value: initialOpacity },
       uIsRingPlanet: { value: isRingPlanet },
+      uAtmosphereColor: { value: atmosphereColor },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -250,6 +274,7 @@ function createPlanetShader(texture: THREE.Texture | null, isRingPlanet: boolean
       uniform sampler2D uTexture;
       uniform float uOpacity;
       uniform bool uIsRingPlanet;
+      uniform vec3 uAtmosphereColor;
       varying vec2 vUv;
 
       void main() {
@@ -258,12 +283,14 @@ function createPlanetShader(texture: THREE.Texture | null, isRingPlanet: boolean
         
         float mask = 1.0;
         if (!uIsRingPlanet) {
-          mask = 1.0 - smoothstep(0.485, 0.498, dist);
+          // Seamless soft edge feathering on spherical planets
+          mask = 1.0 - smoothstep(0.478, 0.495, dist);
         } else {
+          // Saturn / Uranus rings: luminance feathering
           vec4 tex = texture2D(uTexture, vUv);
           float lum = max(tex.r, max(tex.g, tex.b));
           float edgeDist = max(abs(center.x), abs(center.y));
-          float edgeMask = 1.0 - smoothstep(0.465, 0.498, edgeDist);
+          float edgeMask = 1.0 - smoothstep(0.465, 0.495, edgeDist);
           mask = smoothstep(0.015, 0.08, lum) * edgeMask;
         }
 
@@ -274,12 +301,29 @@ function createPlanetShader(texture: THREE.Texture | null, isRingPlanet: boolean
           discard;
         }
 
-        gl_FragColor = vec4(texColor.rgb, alpha);
+        // Soft atmospheric rim illumination
+        float rim = smoothstep(0.35, 0.485, dist) * (1.0 - smoothstep(0.485, 0.495, dist)) * 0.35;
+        vec3 finalColor = texColor.rgb + uAtmosphereColor * rim;
+
+        gl_FragColor = vec4(finalColor, alpha);
       }
     `,
     transparent: true,
     depthWrite: false,
   });
+}
+
+// Shooting Star Class for dynamic meteor trails
+interface ShootingStar {
+  line: THREE.Line;
+  geometry: THREE.BufferGeometry;
+  material: THREE.LineBasicMaterial;
+  headPos: THREE.Vector3;
+  velocity: THREE.Vector3;
+  length: number;
+  active: boolean;
+  spawnTime: number;
+  lifetime: number;
 }
 
 export const PlanetServicesExperience: React.FC = () => {
@@ -333,6 +377,14 @@ export const PlanetServicesExperience: React.FC = () => {
   const isPlanetScreen = activeScreenIndex <= 7;
   const activePlanetStage = planetServicesData[Math.min(activeScreenIndex, 7)];
 
+  const currentBgGradient = isPlanetScreen
+    ? activePlanetStage.bgGradient
+    : 'linear-gradient(135deg, #070b14 0%, #0f182a 50%, #090e1a 100%)';
+
+  const currentGlowColor = isPlanetScreen
+    ? activePlanetStage.glowColor
+    : 'rgba(56, 189, 248, 0.25)';
+
   const IconComponent = useMemo(() => {
     return ICON_MAP[activePlanetStage.id] || Globe;
   }, [activePlanetStage.id]);
@@ -358,11 +410,14 @@ export const PlanetServicesExperience: React.FC = () => {
     if (currentPlanetMeshRef.current && nextPlanetMeshRef.current && texturesRef.current.length > 0) {
       const fromTex = texturesRef.current[fromPlanetIdx] || texturesRef.current[0];
       const toTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
+      const fromStage = planetServicesData[fromPlanetIdx];
+      const toStage = planetServicesData[toPlanetIdx];
 
       const currMat = currentPlanetMeshRef.current.material as THREE.ShaderMaterial;
       if (currMat.uniforms) {
         currMat.uniforms.uTexture.value = fromTex;
         currMat.uniforms.uIsRingPlanet.value = fromPlanetIdx === 5 || fromPlanetIdx === 6;
+        currMat.uniforms.uAtmosphereColor.value = new THREE.Color(fromStage.starColorHex);
         currMat.uniforms.uOpacity.value = 1.0;
       }
 
@@ -370,7 +425,14 @@ export const PlanetServicesExperience: React.FC = () => {
       if (nextMat.uniforms) {
         nextMat.uniforms.uTexture.value = toTex;
         nextMat.uniforms.uIsRingPlanet.value = toPlanetIdx === 5 || toPlanetIdx === 6;
+        nextMat.uniforms.uAtmosphereColor.value = new THREE.Color(toStage.starColorHex);
         nextMat.uniforms.uOpacity.value = 0.0;
+      }
+
+      // Update Starfield color tint
+      if (starfieldPointsRef.current) {
+        const starMat = starfieldPointsRef.current.material as THREE.PointsMaterial;
+        starMat.color.setHex(toStage.starColorHex);
       }
     }
 
@@ -398,10 +460,12 @@ export const PlanetServicesExperience: React.FC = () => {
 
           if (currentPlanetMeshRef.current && texturesRef.current.length > 0) {
             const finalTex = texturesRef.current[toPlanetIdx] || texturesRef.current[0];
+            const finalStage = planetServicesData[toPlanetIdx];
             const currMat = currentPlanetMeshRef.current.material as THREE.ShaderMaterial;
             if (currMat.uniforms) {
               currMat.uniforms.uTexture.value = finalTex;
               currMat.uniforms.uIsRingPlanet.value = toPlanetIdx === 5 || toPlanetIdx === 6;
+              currMat.uniforms.uAtmosphereColor.value = new THREE.Color(finalStage.starColorHex);
               currMat.uniforms.uOpacity.value = 1.0;
             }
           }
@@ -515,7 +579,7 @@ export const PlanetServicesExperience: React.FC = () => {
     };
   }, [handleNext, handlePrev]);
 
-  // Three.js WebGL Scene Setup with 100% Transparent Background & Smooth Orbital Choreography
+  // Three.js WebGL Scene with Rich Starfield, Shooting Stars (Kayan Yıldızlar) & 100% Seamless Mesh
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -530,7 +594,7 @@ export const PlanetServicesExperience: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.1;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, (canvas.clientWidth || 800) / (canvas.clientHeight || 600), 0.1, 150);
@@ -556,41 +620,98 @@ export const PlanetServicesExperience: React.FC = () => {
     const planeGeo = new THREE.PlaneGeometry(4.2, 4.2);
 
     // 1. Current Planet Mesh & Custom Transparent Shader
-    const currentMat = createPlanetShader(textures[0] || null, false, 1.0);
+    const initialAtmosphereColor = new THREE.Color(planetServicesData[0].starColorHex);
+    const currentMat = createPlanetShader(textures[0] || null, false, initialAtmosphereColor, 1.0);
     const currentPlanetMesh = new THREE.Mesh(planeGeo, currentMat);
     currentPlanetMeshRef.current = currentPlanetMesh;
     scene.add(currentPlanetMesh);
 
     // 2. Next Planet Mesh (Incoming from 3D Orbital Arc)
-    const nextMat = createPlanetShader(textures[1] || null, false, 0.0);
+    const nextMat = createPlanetShader(textures[1] || null, false, initialAtmosphereColor, 0.0);
     const nextPlanetMesh = new THREE.Mesh(planeGeo, nextMat);
     nextPlanetMesh.visible = false;
     nextPlanetMeshRef.current = nextPlanetMesh;
     scene.add(nextPlanetMesh);
 
-    // 3. Dynamic Luminous Starlight Dust (250 Soft Luminous Blue/White Particles)
-    const starCount = 250;
+    // 3. Rich Dynamic Background Starfield (550 Luminous Stars)
+    const starCount = 550;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
 
     for (let i = 0; i < starCount; i++) {
-      starPositions[i * 3] = (Math.random() - 0.5) * 32;
-      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 25;
+      starPositions[i * 3] = (Math.random() - 0.5) * 36;
+      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 22;
+      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 25 - 2;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     const starMat = new THREE.PointsMaterial({
-      size: 0.05,
+      size: 0.065,
       map: createGlowParticleTexture(),
       transparent: true,
-      opacity: 0.35,
-      blending: THREE.NormalBlending,
+      opacity: 0.75,
+      blending: THREE.AdditiveBlending,
       depthWrite: false,
-      color: 0x0284c7,
+      color: planetServicesData[0].starColorHex,
     });
     const starfield = new THREE.Points(starGeo, starMat);
     starfieldPointsRef.current = starfield;
     scene.add(starfield);
+
+    // 4. Dynamic Shooting Stars (Kayan Yıldızlar) System
+    const shootingStarsCount = 6;
+    const shootingStars: ShootingStar[] = [];
+
+    for (let i = 0; i < shootingStarsCount; i++) {
+      const lineGeo = new THREE.BufferGeometry();
+      const linePositions = new Float32Array(6); // 2 vertices: head and tail
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.0,
+        blending: THREE.AdditiveBlending,
+        linewidth: 2,
+      });
+
+      const line = new THREE.Line(lineGeo, lineMat);
+      scene.add(line);
+
+      shootingStars.push({
+        line,
+        geometry: lineGeo,
+        material: lineMat,
+        headPos: new THREE.Vector3(),
+        velocity: new THREE.Vector3(),
+        length: 1.8 + Math.random() * 1.5,
+        active: false,
+        spawnTime: 0,
+        lifetime: 800 + Math.random() * 600,
+      });
+    }
+
+    const spawnShootingStar = (star: ShootingStar, now: number) => {
+      star.active = true;
+      star.spawnTime = now;
+      star.lifetime = 650 + Math.random() * 550;
+      star.length = 2.0 + Math.random() * 1.8;
+
+      // Spawn from top-right or deep space background
+      const startX = 2.0 + Math.random() * 10.0;
+      const startY = 3.0 + Math.random() * 6.0;
+      const startZ = -4.0 - Math.random() * 8.0;
+
+      star.headPos.set(startX, startY, startZ);
+
+      // Trajectory: fast diagonal sweep downwards to the left
+      const speed = 0.022 + Math.random() * 0.018;
+      star.velocity.set(-speed * 1.6, -speed * 0.9, speed * 0.3);
+
+      const colorHex = planetServicesData[activeScreenIndexRef.current % 8]?.starColorHex || 0x60a5fa;
+      star.material.color.setHex(colorHex);
+    };
+
+    let lastMeteorSpawnTime = 0;
 
     const handleResize = () => {
       if (!renderer || !camera || !canvas) return;
@@ -709,6 +830,45 @@ export const PlanetServicesExperience: React.FC = () => {
       // Gentle ambient drift for background starlight
       starfield.rotation.y = totalTime * 0.015;
 
+      // Shooting Stars (Kayan Yıldızlar) Update Loop
+      if (now - lastMeteorSpawnTime > 1400) {
+        lastMeteorSpawnTime = now;
+        const inactiveStar = shootingStars.find((s) => !s.active);
+        if (inactiveStar) {
+          spawnShootingStar(inactiveStar, now);
+        }
+      }
+
+      shootingStars.forEach((star) => {
+        if (!star.active) return;
+        const starAge = now - star.spawnTime;
+        if (starAge > star.lifetime) {
+          star.active = false;
+          star.material.opacity = 0.0;
+          return;
+        }
+
+        // Update position
+        star.headPos.add(star.velocity);
+
+        // Calculate tail position
+        const dir = star.velocity.clone().normalize();
+        const tailPos = star.headPos.clone().sub(dir.multiplyScalar(star.length));
+
+        const positions = star.geometry.attributes.position.array as Float32Array;
+        positions[0] = star.headPos.x;
+        positions[1] = star.headPos.y;
+        positions[2] = star.headPos.z;
+        positions[3] = tailPos.x;
+        positions[4] = tailPos.y;
+        positions[5] = tailPos.z;
+        star.geometry.attributes.position.needsUpdate = true;
+
+        // Fade in and out
+        const lifeRatio = starAge / star.lifetime;
+        star.material.opacity = Math.sin(lifeRatio * Math.PI) * 0.95;
+      });
+
       // Render Frame on Transparent Canvas
       renderer.render(scene, camera);
 
@@ -730,17 +890,20 @@ export const PlanetServicesExperience: React.FC = () => {
       data-active-index={String(activeScreenIndex)}
       data-active-scene={isPlanetScreen ? activePlanetStage.id : 'faq'}
       data-transitioning={String(isTransitioning)}
-      className="relative w-full h-[calc(100vh-5rem)] sm:h-[calc(100vh-5.5rem)] overflow-hidden bg-gradient-to-br from-slate-50 via-sky-50/50 to-blue-50/30 text-slate-900 flex flex-col select-none"
+      className="relative w-full h-[calc(100vh-5rem)] sm:h-[calc(100vh-5.5rem)] overflow-hidden text-white flex flex-col justify-between select-none transition-colors duration-1000 ease-out"
+      style={{
+        background: currentBgGradient,
+      }}
     >
       {/* Dynamic Luminous Celestial Glow (Planet Aura) */}
       <div
-        className="absolute inset-0 pointer-events-none transition-all duration-700 ease-out z-0"
+        className="absolute inset-0 pointer-events-none transition-all duration-1000 ease-out z-0"
         style={{
           background: isPlanetScreen
             ? `radial-gradient(circle at ${
                 typeof window !== 'undefined' && window.innerWidth >= 1024 ? '68%' : '50%'
-              } 50%, ${activePlanetStage.glowColor} 0%, rgba(248, 250, 252, 0) 65%)`
-            : 'radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.15) 0%, rgba(248, 250, 252, 0) 65%)',
+              } 50%, ${currentGlowColor} 0%, rgba(0, 0, 0, 0) 65%)`
+            : 'radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.20) 0%, rgba(0, 0, 0, 0) 65%)',
         }}
       />
 
@@ -753,16 +916,16 @@ export const PlanetServicesExperience: React.FC = () => {
 
       {/* Top Experience Sub-Bar */}
       <header className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1 flex items-center justify-between shrink-0">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200/80 backdrop-blur-md text-xs font-semibold text-slate-700 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs font-semibold text-white shadow-sm">
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-600" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-400" />
           </span>
-          <span className="text-sky-600 font-extrabold uppercase tracking-wider">
+          <span className="text-sky-300 font-extrabold uppercase tracking-wider">
             DİJİTAL HİZMET SERÜVENİ
           </span>
-          <span className="text-slate-300 hidden sm:inline">•</span>
-          <span className="text-slate-500 hidden sm:inline">
+          <span className="text-white/40 hidden sm:inline">•</span>
+          <span className="text-slate-300 hidden sm:inline">
             Tasarım, Yazılım ve Büyüme Tek Ekipte
           </span>
         </div>
@@ -770,14 +933,14 @@ export const PlanetServicesExperience: React.FC = () => {
         {/* Global Sequence Tracker */}
         <div
           data-testid="experience-progress-badge"
-          className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md border border-slate-200/80 px-3.5 py-1.5 rounded-full text-xs font-mono shadow-sm text-slate-700"
+          className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-full text-xs font-mono shadow-sm text-white"
         >
-          <span className="text-xs font-black tracking-wider text-sky-600">
+          <span className="text-xs font-black tracking-wider text-sky-300">
             0{activeScreenIndex + 1}
           </span>
-          <span className="text-xs font-bold text-slate-400">/</span>
-          <span className="text-xs font-bold text-slate-500">09</span>
-          <span className="ml-2 pl-2 border-l border-slate-200 text-xs font-extrabold text-slate-800">
+          <span className="text-xs font-bold text-white/40">/</span>
+          <span className="text-xs font-bold text-slate-400">09</span>
+          <span className="ml-2 pl-2 border-l border-white/20 text-xs font-extrabold text-white">
             {isPlanetScreen ? activePlanetStage.planetName : 'Sık Sorulan Sorular'}
           </span>
         </div>
@@ -786,169 +949,180 @@ export const PlanetServicesExperience: React.FC = () => {
       {/* Main Interactive Screen Viewport */}
       <div className="relative z-20 max-w-7xl mx-auto w-full flex-1 flex items-center px-4 sm:px-6 lg:px-8 py-1 min-h-0">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          
           {/* SCREENS 01 to 08: PLANET SERVICE CARDS */}
           {isPlanetScreen && (
             <article
               data-testid="active-service-card"
               key={activePlanetStage.id}
-              className={`lg:col-span-6 xl:col-span-5 bg-white/95 backdrop-blur-2xl border border-slate-200/90 p-5 sm:p-7 rounded-3xl shadow-2xl shadow-sky-950/5 space-y-3.5 sm:space-y-4 transition-all duration-300 ease-out text-slate-900 ${
+              className={`lg:col-span-6 xl:col-span-5 bg-slate-900/80 backdrop-blur-2xl border border-white/15 p-5 sm:p-7 rounded-3xl shadow-2xl shadow-black/60 space-y-3.5 sm:space-y-4 transition-all duration-300 ease-out text-white ${
                 cardFade ? 'opacity-0 -translate-y-2.5 blur-xs' : 'opacity-100 translate-y-0 blur-none'
               }`}
             >
-            {/* Category & Planet Badge */}
-            <div className="flex items-center justify-between gap-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-sky-50 border border-sky-200/80 text-sky-700 font-bold text-xs">
-                <IconComponent className="w-4 h-4 text-sky-600" />
-                <span>{activePlanetStage.category}</span>
-              </div>
-              <span className="text-xs font-black tracking-widest uppercase text-slate-500 bg-slate-100/90 px-3 py-1 rounded-full border border-slate-200/80">
-                {activePlanetStage.planetName} SAHNESİ
-              </span>
-            </div>
-
-            {/* H1 for Screen 01 (Earth), H2 for subsequent screens */}
-            {activeScreenIndex === 0 ? (
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                {activePlanetStage.serviceName}
-              </h1>
-            ) : (
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                {activePlanetStage.serviceName}
-              </h2>
-            )}
-
-            {/* Description */}
-            <p className="text-xs sm:text-sm md:text-base font-medium text-slate-600 leading-relaxed">
-              {activePlanetStage.description}
-            </p>
-
-            {/* 2x2 Benefits Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
-              {activePlanetStage.benefits.map((benefit, idx) => (
+              {/* Category & Planet Badge */}
+              <div className="flex items-center justify-between gap-4">
                 <div
-                  key={idx}
-                  className="flex items-start gap-2.5 text-xs text-slate-700 font-semibold p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/80 shadow-xs"
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-lg font-bold text-xs border"
+                  style={{
+                    backgroundColor: `${activePlanetStage.accentColor}25`,
+                    borderColor: `${activePlanetStage.accentColor}60`,
+                    color: '#ffffff',
+                  }}
                 >
-                  <CheckCircle2 className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
-                  <span>{benefit}</span>
+                  <IconComponent className="w-4 h-4 text-white" />
+                  <span>{activePlanetStage.category}</span>
                 </div>
-              ))}
-            </div>
-
-            {/* Action CTA Button */}
-            <div className="pt-2 sm:pt-3 flex items-center justify-between gap-4">
-              <a
-                href={activePlanetStage.href}
-                className="btn-primary text-xs sm:text-sm py-3 px-6 inline-flex items-center gap-2 shadow-lg shadow-sky-600/20"
-              >
-                <span>{activePlanetStage.ctaLabel}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-
-              <span className="text-[11px] font-bold text-slate-500 hidden sm:inline-flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5 text-sky-600" />
-                Rent Yazılım Standartları
-              </span>
-            </div>
-          </article>
-        )}
-
-        {/* SCREEN 09: FAQ ACCORDION */}
-        {activeScreenIndex === 8 && (
-          <article
-            data-testid="faq-screen"
-            className="lg:col-span-8 xl:col-span-7 bg-white/95 backdrop-blur-2xl border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-slate-900"
-          >
-            <div className="flex items-center justify-between border-b border-slate-200/80 pb-4">
-              <div>
-                <span className="text-xs font-black uppercase tracking-widest text-sky-600">
-                  09. EKRAN • SIKÇA SORULAN SORULAR
+                <span className="text-xs font-black tracking-widest uppercase text-slate-300 bg-white/10 px-3 py-1 rounded-full border border-white/10">
+                  {activePlanetStage.planetName} SAHNESİ
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-                  Aklınıza Takılan Soruların Yanıtları
-                </h2>
               </div>
-              <HelpCircle className="w-6 h-6 text-sky-600" />
-            </div>
 
-            {/* Accordion List */}
-            <div className="space-y-3">
-              {faqItemsData.map((item, idx) => {
-                const isOpen = openFaqIndex === idx;
-                return (
+              {/* H1 for Screen 01 (Earth), H2 for subsequent screens */}
+              {activeScreenIndex === 0 ? (
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
+                  {activePlanetStage.serviceName}
+                </h1>
+              ) : (
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
+                  {activePlanetStage.serviceName}
+                </h2>
+              )}
+
+              {/* Description */}
+              <p className="text-xs sm:text-sm md:text-base font-medium text-slate-300 leading-relaxed">
+                {activePlanetStage.description}
+              </p>
+
+              {/* 2x2 Benefits Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
+                {activePlanetStage.benefits.map((benefit, idx) => (
                   <div
                     key={idx}
-                    className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/80 hover:bg-slate-100/60 transition-all"
+                    className="flex items-start gap-2.5 text-xs text-slate-200 font-semibold p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 shadow-xs backdrop-blur-md"
                   >
-                    <button
-                      type="button"
-                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                      className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-slate-900 cursor-pointer hover:bg-slate-100/80 transition-colors"
-                      aria-expanded={isOpen}
-                    >
-                      <span>{item.q}</span>
-                      <ChevronDown
-                        className={`w-4 h-4 text-sky-600 shrink-0 transition-transform duration-200 ${
-                          isOpen ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    {isOpen && (
-                      <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200 pt-3">
-                        {item.a}
-                      </div>
-                    )}
+                    <CheckCircle2
+                      className="w-4 h-4 shrink-0 mt-0.5"
+                      style={{ color: activePlanetStage.accentColor }}
+                    />
+                    <span>{benefit}</span>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* CTAs on FAQ Screen */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-5 shadow-md shadow-sky-600/20">
-                Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1" />
-              </a>
-              <a
-                href={`https://wa.me/${brandConfig.whatsappNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary text-xs sm:text-sm py-2.5 px-5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs"
-              >
-                <MessageCircle className="w-4 h-4 mr-1.5 text-emerald-600" />
-                WhatsApp'tan Görüş
-              </a>
-              <button
-                type="button"
-                data-testid="restart-experience"
-                onClick={() => startTransitionTo(0)}
-                className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 inline-flex items-center gap-1.5 cursor-pointer transition-all border border-slate-200"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Hizmetleri Yeniden İncele
-              </button>
-            </div>
-
-            {/* Legal Links Footer */}
-            <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between text-[11px] text-slate-500 gap-3">
-              <span>© {new Date().getFullYear()} Rent Yazılım. Tüm hakları saklıdır.</span>
-              <div className="flex items-center gap-3">
-                <a href="/gizlilik-politikasi/" className="hover:text-sky-600">Gizlilik Politikası</a>
-                <span>•</span>
-                <a href="/kvkk-aydinlatma-metni/" className="hover:text-sky-600">KVKK</a>
-                <span>•</span>
-                <a href="/kullanim-kosullari/" className="hover:text-sky-600">Kullanım Koşulları</a>
-                <span>•</span>
-                <a href="/iletisim/" className="hover:text-sky-600">İletişim</a>
+                ))}
               </div>
-            </div>
-          </article>
-        )}
+
+              {/* Action CTA Button */}
+              <div className="pt-2 sm:pt-3 flex items-center justify-between gap-4">
+                <a
+                  href={activePlanetStage.href}
+                  className="btn-primary text-xs sm:text-sm py-3 px-6 inline-flex items-center gap-2 shadow-lg shadow-sky-600/30"
+                >
+                  <span>{activePlanetStage.ctaLabel}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+
+                <span className="text-[11px] font-bold text-slate-400 hidden sm:inline-flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+                  Rent Yazılım Standartları
+                </span>
+              </div>
+            </article>
+          )}
+
+          {/* SCREEN 09: FAQ ACCORDION */}
+          {activeScreenIndex === 8 && (
+            <article
+              data-testid="faq-screen"
+              className="lg:col-span-8 xl:col-span-7 bg-slate-900/85 backdrop-blur-2xl border border-white/15 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div>
+                  <span className="text-xs font-black uppercase tracking-widest text-sky-400">
+                    09. EKRAN • SIKÇA SORULAN SORULAR
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
+                    Aklınıza Takılan Soruların Yanıtları
+                  </h2>
+                </div>
+                <HelpCircle className="w-6 h-6 text-sky-400" />
+              </div>
+
+              {/* Accordion List */}
+              <div className="space-y-3">
+                {faqItemsData.map((item, idx) => {
+                  const isOpen = openFaqIndex === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className="border border-white/10 rounded-2xl overflow-hidden bg-white/5 hover:bg-white/10 transition-all"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                        className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-white cursor-pointer hover:bg-white/5 transition-colors"
+                        aria-expanded={isOpen}
+                      >
+                        <span>{item.q}</span>
+                        <ChevronDown
+                          className={`w-4 h-4 text-sky-400 shrink-0 transition-transform duration-200 ${
+                            isOpen ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                      {isOpen && (
+                        <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/10 pt-3">
+                          {item.a}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* CTAs on FAQ Screen */}
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-5 shadow-md shadow-sky-600/30">
+                  Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1" />
+                </a>
+                <a
+                  href={`https://wa.me/${brandConfig.whatsappNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary text-xs sm:text-sm py-2.5 px-5 bg-white/10 border border-white/15 text-white hover:bg-white/20 shadow-xs"
+                >
+                  <MessageCircle className="w-4 h-4 mr-1.5 text-emerald-400" />
+                  WhatsApp'tan Görüş
+                </a>
+                <button
+                  type="button"
+                  data-testid="restart-experience"
+                  onClick={() => startTransitionTo(0)}
+                  className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer transition-all border border-white/15"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Hizmetleri Yeniden İncele
+                </button>
+              </div>
+
+              {/* Legal Links Footer */}
+              <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-3">
+                <span>© {new Date().getFullYear()} Rent Yazılım. Tüm hakları saklıdır.</span>
+                <div className="flex items-center gap-3">
+                  <a href="/gizlilik-politikasi/" className="hover:text-sky-400">Gizlilik Politikası</a>
+                  <span>•</span>
+                  <a href="/kvkk-aydinlatma-metni/" className="hover:text-sky-400">KVKK</a>
+                  <span>•</span>
+                  <a href="/kullanim-kosullari/" className="hover:text-sky-400">Kullanım Koşulları</a>
+                  <span>•</span>
+                  <a href="/iletisim/" className="hover:text-sky-400">İletişim</a>
+                </div>
+              </div>
+            </article>
+          )}
         </div>
       </div>
 
       {/* Bottom Sticky Navigation Bar */}
       <footer className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-3 pt-1 shrink-0">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white/92 backdrop-blur-xl border border-slate-200/90 p-2.5 sm:p-3 rounded-2xl shadow-xl shadow-slate-300/30">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/85 backdrop-blur-xl border border-white/15 p-2.5 sm:p-3 rounded-2xl shadow-2xl shadow-black/60">
           
           {/* Planet Pills Navigator */}
           <div
@@ -968,11 +1142,11 @@ export const PlanetServicesExperience: React.FC = () => {
                   onClick={() => startTransitionTo(idx)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed ${
                     isActive
-                      ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105'
-                      : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200/80'
+                      ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/40 scale-105'
+                      : 'bg-white/10 text-slate-300 hover:text-white hover:bg-white/20'
                   }`}
                 >
-                  <span className="font-mono text-[10px] opacity-70 mr-1">0{idx + 1}</span>
+                  <span className="font-mono text-[10px] opacity-75 mr-1">0{idx + 1}</span>
                   <span>{stage.planetName}</span>
                 </button>
               );
@@ -987,18 +1161,18 @@ export const PlanetServicesExperience: React.FC = () => {
               onClick={() => startTransitionTo(8)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed ${
                 activeScreenIndex === 8
-                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200/80'
+                  ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/40 scale-105'
+                  : 'bg-white/10 text-slate-300 hover:text-white hover:bg-white/20'
               }`}
             >
-              <span className="font-mono text-[10px] opacity-70 mr-1">09</span>
+              <span className="font-mono text-[10px] opacity-75 mr-1">09</span>
               <span>SSS</span>
             </button>
           </div>
 
           {/* Directional Prev / Next Navigation Buttons */}
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <span className="text-[11px] text-slate-500 font-medium hidden md:inline-block mr-2">
+            <span className="text-[11px] text-slate-400 font-medium hidden md:inline-block mr-2">
               Aşağı Kaydırın veya Ok Tuşlarını Kullanın
             </span>
 
@@ -1009,7 +1183,7 @@ export const PlanetServicesExperience: React.FC = () => {
               onClick={handlePrev}
               disabled={activeScreenIndex === 0 || isTransitioning}
               aria-label="Önceki Gezegen"
-              className="p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 hover:text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-xs"
+              className="p-2.5 rounded-xl bg-white/10 border border-white/15 text-slate-300 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-xs"
             >
               <ChevronDown className="w-4 h-4 rotate-180" />
             </button>
@@ -1021,7 +1195,7 @@ export const PlanetServicesExperience: React.FC = () => {
               onClick={handleNext}
               disabled={activeScreenIndex === totalScreensCount - 1 || isTransitioning}
               aria-label="Sonraki Gezegen"
-              className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-sky-600/20"
+              className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-sky-600/30"
             >
               <span>
                 {activeScreenIndex < 7
