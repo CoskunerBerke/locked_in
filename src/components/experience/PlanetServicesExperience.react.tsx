@@ -166,8 +166,8 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Harita Optimizasyonu Hizmetini İncele',
     href: '/hizmetler/google-maps/',
     accentColor: '#eab308',
-    glowColor: 'rgba(234, 179, 8, 0.45)',
-    bgGradient: 'linear-gradient(135deg, #1a1608 0%, #3a2e0e 50%, #1e1809 100%)',
+    glowColor: 'rgba(234, 179, 8, 0.35)',
+    bgGradient: 'linear-gradient(135deg, #100d05 0%, #241c08 50%, #0d0a04 100%)',
     starColorHex: 0xfde047,
     texture: '/images/planets/saturn.jpg',
     fallbackImage: '/images/planets/saturn.jpg'
@@ -188,8 +188,8 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Yemek Platformu Hizmetini İncele',
     href: '/hizmetler/yemeksepeti-trendyol-yemek/',
     accentColor: '#06b6d4',
-    glowColor: 'rgba(6, 182, 212, 0.45)',
-    bgGradient: 'linear-gradient(135deg, #02171e 0%, #063442 50%, #031b22 100%)',
+    glowColor: 'rgba(6, 182, 212, 0.40)',
+    bgGradient: 'linear-gradient(135deg, #010f14 0%, #04242e 50%, #010c10 100%)',
     starColorHex: 0x22d3ee,
     texture: '/images/planets/uranus.jpg',
     fallbackImage: '/images/planets/uranus.jpg'
@@ -249,7 +249,7 @@ const faqItemsData = [
   }
 ];
 
-// Custom Shader with Smooth Feathered Alpha & Soft Atmospheric Rim Glow
+// Custom Planet Shader: Preserves 100% of Planet Sphere, Rings & Shadows with Zero Square Artifacts
 function createPlanetShader(
   texture: THREE.Texture | null,
   isRingPlanet: boolean,
@@ -280,29 +280,38 @@ function createPlanetShader(
       void main() {
         vec2 center = vUv - vec2(0.5);
         float dist = length(center);
+        vec4 texColor = texture2D(uTexture, vUv);
         
         float mask = 1.0;
         if (!uIsRingPlanet) {
           // Seamless soft edge feathering on spherical planets
-          mask = 1.0 - smoothstep(0.478, 0.495, dist);
+          mask = 1.0 - smoothstep(0.482, 0.496, dist);
         } else {
-          // Saturn / Uranus rings: luminance feathering
-          vec4 tex = texture2D(uTexture, vUv);
-          float lum = max(tex.r, max(tex.g, tex.b));
-          float edgeDist = max(abs(center.x), abs(center.y));
-          float edgeMask = 1.0 - smoothstep(0.465, 0.495, edgeDist);
-          mask = smoothstep(0.015, 0.08, lum) * edgeMask;
+          // Ring Planet (Saturn / Uranus):
+          // Inside the planet sphere (dist < 0.27), sphere & shadows are 100% solid
+          // Outside the planet sphere, rings are preserved by luminance while black space is discarded
+          float lum = max(texColor.r, max(texColor.g, texColor.b));
+          float sphereCore = 1.0 - smoothstep(0.24, 0.27, dist);
+          float ringAlpha = smoothstep(0.015, 0.08, lum);
+          
+          float edgeX = 1.0 - smoothstep(0.470, 0.498, abs(center.x));
+          float edgeY = 1.0 - smoothstep(0.470, 0.498, abs(center.y));
+          float edgeMask = edgeX * edgeY;
+          
+          mask = max(sphereCore, ringAlpha) * edgeMask;
         }
 
-        vec4 texColor = texture2D(uTexture, vUv);
         float alpha = mask * uOpacity;
 
-        if (alpha <= 0.005) {
+        if (alpha <= 0.002) {
           discard;
         }
 
-        // Soft atmospheric rim illumination
-        float rim = smoothstep(0.35, 0.485, dist) * (1.0 - smoothstep(0.485, 0.495, dist)) * 0.35;
+        // Soft atmospheric rim illumination for spherical planets
+        float rim = 0.0;
+        if (!uIsRingPlanet) {
+          rim = smoothstep(0.35, 0.485, dist) * (1.0 - smoothstep(0.485, 0.496, dist)) * 0.25;
+        }
         vec3 finalColor = texColor.rgb + uAtmosphereColor * rim;
 
         gl_FragColor = vec4(finalColor, alpha);
@@ -389,7 +398,7 @@ export const PlanetServicesExperience: React.FC = () => {
     return ICON_MAP[activePlanetStage.id] || Globe;
   }, [activePlanetStage.id]);
 
-  // Apple-Grade Studio Orbital Transition Controller
+  // Hollywood / Cinema-Grade Fluid Orbital Transition Controller
   const startTransitionTo = useCallback((targetIndex: number) => {
     if (isTransitioningRef.current || targetIndex === activeScreenIndexRef.current) return;
     if (targetIndex < 0 || targetIndex >= totalScreensCount) return;
@@ -400,8 +409,8 @@ export const PlanetServicesExperience: React.FC = () => {
 
     const fromIdx = activeScreenIndexRef.current;
     const direction = targetIndex > fromIdx ? 1 : -1;
-    const duration = prefersReducedMotion ? 250 : 950;
-    wheelCooldownUntilRef.current = performance.now() + duration + 150;
+    const duration = prefersReducedMotion ? 250 : 1200; // Cinematic 1200ms transition
+    wheelCooldownUntilRef.current = performance.now() + duration + 200;
 
     const fromPlanetIdx = Math.min(fromIdx, 7);
     const toPlanetIdx = Math.min(targetIndex, 7);
@@ -429,7 +438,7 @@ export const PlanetServicesExperience: React.FC = () => {
         nextMat.uniforms.uOpacity.value = 0.0;
       }
 
-      // Update Starfield color tint
+      // Update Starfield color tint smoothly
       if (starfieldPointsRef.current) {
         const starMat = starfieldPointsRef.current.material as THREE.PointsMaterial;
         starMat.color.setHex(toStage.starColorHex);
@@ -444,12 +453,12 @@ export const PlanetServicesExperience: React.FC = () => {
       duration,
     };
 
-    // Swap text content at midpoint of orbital glide
+    // Swap text content at midpoint of cinematic glide
     setTimeout(() => {
       setActiveScreenIndex(targetIndex);
       activeScreenIndexRef.current = targetIndex;
       setCardFade(false);
-    }, duration * 0.40);
+    }, duration * 0.42);
 
     // Finalize transition smoothly
     setTimeout(() => {
@@ -472,12 +481,16 @@ export const PlanetServicesExperience: React.FC = () => {
           if (nextPlanetMeshRef.current) {
             nextPlanetMeshRef.current.visible = false;
           }
+          if (cameraRef.current) {
+            cameraRef.current.position.z = 6.0;
+            cameraRef.current.position.x = 0.0;
+          }
         } finally {
           transitionAnimRef.current = null;
           isTransitioningRef.current = false;
           setIsTransitioning(false);
           setCardFade(false);
-          wheelCooldownUntilRef.current = performance.now() + 150;
+          wheelCooldownUntilRef.current = performance.now() + 200;
         }
       }
     }, duration + 30);
@@ -499,7 +512,7 @@ export const PlanetServicesExperience: React.FC = () => {
     }
   }, [startTransitionTo, totalScreensCount]);
 
-  // Input Listeners: Wheel, Touch, Pointer, Keyboard
+  // Input Listeners: Smooth Inertia Wheel, Touch, Pointer, Keyboard
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -507,10 +520,10 @@ export const PlanetServicesExperience: React.FC = () => {
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
 
       wheelAccumulatorRef.current += e.deltaY;
-      if (wheelAccumulatorRef.current > 40) {
+      if (wheelAccumulatorRef.current > 50) {
         wheelAccumulatorRef.current = 0;
         handleNext();
-      } else if (wheelAccumulatorRef.current < -40) {
+      } else if (wheelAccumulatorRef.current < -50) {
         wheelAccumulatorRef.current = 0;
         handlePrev();
       }
@@ -527,9 +540,9 @@ export const PlanetServicesExperience: React.FC = () => {
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
       if (e.changedTouches.length > 0 && touchStartYRef.current !== 0) {
         const deltaY = touchStartYRef.current - e.changedTouches[0].clientY;
-        if (deltaY > 30) {
+        if (deltaY > 35) {
           handleNext();
-        } else if (deltaY < -30) {
+        } else if (deltaY < -35) {
           handlePrev();
         }
       }
@@ -544,9 +557,9 @@ export const PlanetServicesExperience: React.FC = () => {
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
       if (pointerStartYRef.current !== 0) {
         const deltaY = pointerStartYRef.current - e.clientY;
-        if (deltaY > 30) {
+        if (deltaY > 35) {
           handleNext();
-        } else if (deltaY < -30) {
+        } else if (deltaY < -35) {
           handlePrev();
         }
       }
@@ -579,7 +592,7 @@ export const PlanetServicesExperience: React.FC = () => {
     };
   }, [handleNext, handlePrev]);
 
-  // Three.js WebGL Scene with Rich Starfield, Shooting Stars (Kayan Yıldızlar) & 100% Seamless Mesh
+  // Three.js WebGL Scene with Cinematic Camera Dolly, Hyperspace Stars & Seamless Meshes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -759,51 +772,64 @@ export const PlanetServicesExperience: React.FC = () => {
         const elapsed = now - anim.startTime;
         const rawT = Math.min(Math.max(elapsed / anim.duration, 0.0), 1.0);
 
-        // Apple-style Signature Deceleration Curve: cubic-bezier(0.16, 1, 0.3, 1)
-        const smoothT = 1 - Math.pow(1 - rawT, 3.2);
+        // Hollywood / Cinema-Grade Quintic Ease Curve: cubic-bezier(0.22, 1, 0.36, 1)
+        const smoothT = 1.0 - Math.pow(1.0 - rawT, 3.5);
+        const dollyIntensity = Math.sin(rawT * Math.PI);
+
+        // 3D Cinematic Camera Dolly & Depth Breath
+        camera.position.z = 6.0 + dollyIntensity * 0.55;
+        camera.position.x = -anim.direction * dollyIntensity * 0.25;
+
+        // Hyperspace Starfield Acceleration during transition
+        starfield.rotation.y = totalTime * 0.015 + (anim.direction * dollyIntensity * 0.05);
+        starMat.size = 0.065 + dollyIntensity * 0.035;
 
         if (anim.direction === 1) {
-          // FORWARD (Next Planet): Current planet glides slightly left & into depth
-          currentPlanetMesh.position.x = restOffsetX - smoothT * 1.8;
-          currentPlanetMesh.position.y = smoothT * 0.3;
-          currentPlanetMesh.position.z = -smoothT * 1.5;
-          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.20);
+          // FORWARD: Exiting planet swoops left and deep into space
+          currentPlanetMesh.position.x = restOffsetX - smoothT * 2.8;
+          currentPlanetMesh.position.y = Math.sin(smoothT * Math.PI) * 0.4;
+          currentPlanetMesh.position.z = -smoothT * 2.5;
+          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.35);
+          currentPlanetMesh.rotation.y = -smoothT * 0.35;
           if (curShaderMat.uniforms) {
-            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - smoothT * 1.6);
+            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(smoothT, 1.2));
           }
 
           if (anim.toIndex < 8) {
-            // Next planet smoothly swoops in from the right foreground
+            // Next planet sweeps gracefully from right horizon into focus
             nextPlanetMesh.visible = true;
-            nextPlanetMesh.position.x = (restOffsetX + 2.4) - smoothT * 2.4;
-            nextPlanetMesh.position.y = -0.3 + smoothT * 0.3;
-            nextPlanetMesh.position.z = 0.8 - smoothT * 0.8;
-            nextPlanetMesh.scale.setScalar(1.18 - smoothT * 0.18);
+            nextPlanetMesh.position.x = (restOffsetX + 3.2) - smoothT * 3.2;
+            nextPlanetMesh.position.y = -(1.0 - smoothT) * 0.3;
+            nextPlanetMesh.position.z = -2.5 + smoothT * 2.5;
+            nextPlanetMesh.scale.setScalar(0.65 + smoothT * 0.35);
+            nextPlanetMesh.rotation.y = (1.0 - smoothT) * 0.35;
             if (nextShaderMat.uniforms) {
-              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, smoothT * 1.6);
+              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, Math.pow(smoothT, 0.8));
             }
           } else {
             nextPlanetMesh.visible = false;
           }
         } else {
-          // BACKWARD (Prev Planet): Current planet glides right & into depth
-          currentPlanetMesh.position.x = restOffsetX + smoothT * 1.8;
-          currentPlanetMesh.position.y = -smoothT * 0.3;
-          currentPlanetMesh.position.z = -smoothT * 1.5;
-          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.20);
+          // BACKWARD: Exiting planet sweeps right and deep into space
+          currentPlanetMesh.position.x = restOffsetX + smoothT * 2.8;
+          currentPlanetMesh.position.y = -Math.sin(smoothT * Math.PI) * 0.4;
+          currentPlanetMesh.position.z = -smoothT * 2.5;
+          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.35);
+          currentPlanetMesh.rotation.y = smoothT * 0.35;
           if (curShaderMat.uniforms) {
-            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - smoothT * 1.6);
+            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(smoothT, 1.2));
           }
 
           if (anim.toIndex < 8) {
-            // Prev planet swoops in from left foreground
+            // Prev planet sweeps gracefully from left horizon into focus
             nextPlanetMesh.visible = true;
-            nextPlanetMesh.position.x = (restOffsetX - 2.4) + smoothT * 2.4;
-            nextPlanetMesh.position.y = 0.3 - smoothT * 0.3;
-            nextPlanetMesh.position.z = 0.8 - smoothT * 0.8;
-            nextPlanetMesh.scale.setScalar(1.18 - smoothT * 0.18);
+            nextPlanetMesh.position.x = (restOffsetX - 3.2) + smoothT * 3.2;
+            nextPlanetMesh.position.y = (1.0 - smoothT) * 0.3;
+            nextPlanetMesh.position.z = -2.5 + smoothT * 2.5;
+            nextPlanetMesh.scale.setScalar(0.65 + smoothT * 0.35);
+            nextPlanetMesh.rotation.y = -(1.0 - smoothT) * 0.35;
             if (nextShaderMat.uniforms) {
-              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, smoothT * 1.6);
+              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, Math.pow(smoothT, 0.8));
             }
           } else {
             nextPlanetMesh.visible = false;
@@ -817,6 +843,11 @@ export const PlanetServicesExperience: React.FC = () => {
         currentPlanetMesh.position.y = 0.0;
         currentPlanetMesh.position.z = 0.0;
         currentPlanetMesh.scale.setScalar(1.0);
+        currentPlanetMesh.rotation.y = 0.0;
+        camera.position.z = 6.0;
+        camera.position.x = 0.0;
+        starMat.size = 0.065;
+
         if (curShaderMat.uniforms) {
           curShaderMat.uniforms.uOpacity.value = isFaq ? 0.0 : 1.0;
         }
@@ -955,8 +986,8 @@ export const PlanetServicesExperience: React.FC = () => {
             <article
               data-testid="active-service-card"
               key={activePlanetStage.id}
-              className={`lg:col-span-6 xl:col-span-5 bg-slate-900/80 backdrop-blur-2xl border border-white/15 p-5 sm:p-7 rounded-3xl shadow-2xl shadow-black/60 space-y-3.5 sm:space-y-4 transition-all duration-300 ease-out text-white ${
-                cardFade ? 'opacity-0 -translate-y-2.5 blur-xs' : 'opacity-100 translate-y-0 blur-none'
+              className={`lg:col-span-6 xl:col-span-5 bg-slate-900/80 backdrop-blur-2xl border border-white/15 p-5 sm:p-7 rounded-3xl shadow-2xl shadow-black/60 space-y-3.5 sm:space-y-4 transition-all duration-500 ease-out text-white ${
+                cardFade ? 'opacity-0 translate-y-3 blur-md scale-[0.98]' : 'opacity-100 translate-y-0 blur-none scale-100'
               }`}
             >
               {/* Category & Planet Badge */}
