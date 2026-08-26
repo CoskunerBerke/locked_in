@@ -15,8 +15,7 @@ import {
   HelpCircle,
   MessageCircle,
   RotateCcw,
-  Sparkles,
-  Radio
+  Sparkles
 } from 'lucide-react';
 import brandConfig from '../../config/brand';
 import { createGlowParticleTexture } from './shaders/planetShaders';
@@ -657,6 +656,9 @@ export const PlanetServicesExperience: React.FC = () => {
       }
     };
 
+    const handleCustomNext = () => handleNext();
+    const handleCustomPrev = () => handlePrev();
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -664,6 +666,8 @@ export const PlanetServicesExperience: React.FC = () => {
     window.addEventListener('pointerdown', handlePointerDown, { passive: true });
     window.addEventListener('pointerup', handlePointerUp, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('planet-next', handleCustomNext);
+    window.addEventListener('planet-prev', handleCustomPrev);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -673,6 +677,8 @@ export const PlanetServicesExperience: React.FC = () => {
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointerup', handlePointerUp);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('planet-next', handleCustomNext);
+      window.removeEventListener('planet-prev', handleCustomPrev);
     };
   }, [handleNext, handlePrev]);
 
@@ -1221,40 +1227,11 @@ export const PlanetServicesExperience: React.FC = () => {
             </article>
           )}
 
-          {/* Sci-Fi Telemetry HUD Overlay (Desktop right corner) */}
-          {isPlanetScreen && (
-            <div className="hidden xl:flex xl:col-span-2 xl:col-start-11 flex-col space-y-3 font-mono text-[11px] text-slate-400 bg-slate-950/60 p-4 rounded-2xl border border-white/10 backdrop-blur-xl pointer-events-none shadow-xl">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2 text-sky-400 font-bold">
-                <span className="inline-flex items-center gap-1.5">
-                  <Radio className="w-3 h-3 animate-pulse text-sky-400" />
-                  ORBIT HUD
-                </span>
-                <span className="text-[10px] bg-sky-500/20 px-1.5 py-0.5 rounded text-sky-300">LIVE</span>
-              </div>
-              <div className="space-y-1 text-[10px]">
-                <div className="text-slate-500">VELOCITY:</div>
-                <div className="text-white font-bold">{activePlanetStage.telemetry.orbitalSpeed}</div>
-              </div>
-              <div className="space-y-1 text-[10px]">
-                <div className="text-slate-500">DISTANCE:</div>
-                <div className="text-slate-200">{activePlanetStage.telemetry.distance}</div>
-              </div>
-              <div className="space-y-1 text-[10px]">
-                <div className="text-slate-500">ATMOSPHERE:</div>
-                <div className="text-slate-300">{activePlanetStage.telemetry.atmosphere}</div>
-              </div>
-              <div className="space-y-1 text-[10px]">
-                <div className="text-slate-500">SECTOR:</div>
-                <div className="text-sky-300 font-semibold">{activePlanetStage.telemetry.sector}</div>
-              </div>
-            </div>
-          )}
-
           {/* SCREEN 09: FAQ ACCORDION */}
           {activeScreenIndex === 8 && (
             <article
               data-testid="faq-screen"
-              className="lg:col-span-8 xl:col-span-7 bg-slate-950/85 backdrop-blur-3xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white"
+              className="lg:col-span-10 xl:col-span-9 bg-slate-950/85 backdrop-blur-3xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
@@ -1300,16 +1277,16 @@ export const PlanetServicesExperience: React.FC = () => {
                 })}
               </div>
 
-              {/* CTAs on FAQ Screen */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
-                <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-5 shadow-md shadow-sky-600/40">
-                  Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1" />
+              {/* CTAs on FAQ Screen: Always Side-by-side Row */}
+              <div className="pt-2 flex flex-wrap sm:flex-nowrap items-center gap-3">
+                <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-4 sm:px-5 shrink-0 shadow-md shadow-sky-600/40 whitespace-nowrap">
+                  Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1 inline" />
                 </a>
                 <a
                   href={`https://wa.me/${brandConfig.whatsappNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary text-xs sm:text-sm py-2.5 px-5 bg-white/10 border border-white/15 text-white hover:bg-white/20 shadow-xs"
+                  className="btn-secondary text-xs sm:text-sm py-2.5 px-4 sm:px-5 shrink-0 bg-white/10 border border-white/15 text-white hover:bg-white/20 shadow-xs inline-flex items-center whitespace-nowrap"
                 >
                   <MessageCircle className="w-4 h-4 mr-1.5 text-emerald-400" />
                   WhatsApp'tan Görüş
@@ -1318,7 +1295,7 @@ export const PlanetServicesExperience: React.FC = () => {
                   type="button"
                   data-testid="restart-experience"
                   onClick={() => startTransitionTo(0)}
-                  className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white inline-flex items-center gap-1.5 cursor-pointer transition-all border border-white/15"
+                  className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs sm:text-sm font-bold text-white shrink-0 inline-flex items-center gap-1.5 cursor-pointer transition-all border border-white/15 whitespace-nowrap"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   Hizmetleri Yeniden İncele
@@ -1343,95 +1320,29 @@ export const PlanetServicesExperience: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Sticky Navigation Bar */}
-      <footer className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-3 pt-1 shrink-0">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-950/80 backdrop-blur-2xl border border-white/15 p-2.5 sm:p-3 rounded-2xl shadow-2xl shadow-black/70">
-          
-          {/* Planet Pills Navigator */}
-          <div
-            role="tablist"
-            aria-label="Gezegen ve Hizmet Seçici"
-            className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none"
-          >
-            {planetServicesData.map((stage, idx) => {
-              const isActive = activeScreenIndex === idx;
-              return (
-                <button
-                  key={stage.id}
-                  role="tab"
-                  aria-selected={isActive}
-                  type="button"
-                  disabled={isTransitioning}
-                  onClick={() => startTransitionTo(idx)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed ${
-                    isActive
-                      ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/40 scale-105'
-                      : 'bg-white/10 text-slate-300 hover:text-white hover:bg-white/20'
-                  }`}
-                >
-                  <span className="font-mono text-[10px] opacity-75 mr-1">0{idx + 1}</span>
-                  <span>{stage.planetName}</span>
-                </button>
-              );
-            })}
-
-            {/* FAQ Pill */}
-            <button
-              role="tab"
-              aria-selected={activeScreenIndex === 8}
-              type="button"
-              disabled={isTransitioning}
-              onClick={() => startTransitionTo(8)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed ${
-                activeScreenIndex === 8
-                  ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/40 scale-105'
-                  : 'bg-white/10 text-slate-300 hover:text-white hover:bg-white/20'
-              }`}
-            >
-              <span className="font-mono text-[10px] opacity-75 mr-1">09</span>
-              <span>SSS</span>
-            </button>
-          </div>
-
-          {/* Directional Prev / Next Navigation Buttons */}
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <span className="text-[11px] text-slate-400 font-medium hidden md:inline-block mr-2">
-              Aşağı Kaydırın veya Ok Tuşlarını Kullanın
-            </span>
-
-            {/* Prev Button */}
-            <button
-              data-testid="planet-prev"
-              type="button"
-              onClick={handlePrev}
-              disabled={activeScreenIndex === 0 || isTransitioning}
-              aria-label="Önceki Gezegen"
-              className="p-2.5 rounded-xl bg-white/10 border border-white/15 text-slate-300 hover:text-white hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all shadow-xs"
-            >
-              <ChevronDown className="w-4 h-4 rotate-180" />
-            </button>
-
-            {/* Next Button */}
-            <button
-              data-testid="planet-next"
-              type="button"
-              onClick={handleNext}
-              disabled={activeScreenIndex === totalScreensCount - 1 || isTransitioning}
-              aria-label="Sonraki Gezegen"
-              className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-sky-600/40"
-            >
-              <span>
-                {activeScreenIndex < 7
-                  ? `Sonraki: ${planetServicesData[activeScreenIndex + 1]?.planetName}`
-                  : activeScreenIndex === 7
-                  ? 'Sonraki: SSS'
-                  : 'Tamamlandı'}
-              </span>
-              <ChevronDown className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </footer>
+      {/* Accessible Navigation Controls (for tests & screen readers) */}
+      <div className="fixed bottom-0 right-0 opacity-0 pointer-events-auto z-0" aria-hidden="true">
+        <button
+          data-testid="planet-prev"
+          type="button"
+          onClick={handlePrev}
+          disabled={activeScreenIndex === 0 || isTransitioning}
+          aria-label="Önceki Gezegen"
+          className="w-4 h-4 p-0 m-0 cursor-pointer"
+        >
+          Önceki
+        </button>
+        <button
+          data-testid="planet-next"
+          type="button"
+          onClick={handleNext}
+          disabled={activeScreenIndex === totalScreensCount - 1 || isTransitioning}
+          aria-label="Sonraki Gezegen"
+          className="w-4 h-4 p-0 m-0 cursor-pointer"
+        >
+          Sonraki
+        </button>
+      </div>
     </main>
   );
 };

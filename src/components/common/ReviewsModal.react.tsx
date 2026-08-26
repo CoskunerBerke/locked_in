@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Star, X, MessageCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 import brandConfig from '../../config/brand';
@@ -43,12 +43,41 @@ export const customerReviewsList = [
     stars: 5,
     text: 'Yemeksepeti ve Trendyol Yemek menülerimiz, ürün fotoğraflarımız ve kampanya ayarlarımız sayesinde ilk ay siparişlerimizde %45 artış yakaladık.',
     service: 'Yemeksepeti & Trendyol Kurulumu'
+  },
+  {
+    id: 5,
+    name: 'Av. Selin T.',
+    role: 'Turan Hukuk Bürosu — Söğütözü / Ankara',
+    platform: 'Google Maps',
+    platformColor: 'text-sky-400 bg-sky-950/80 border-sky-500/30',
+    stars: 5,
+    text: 'Kurumsal kimliğimize tam oturan prestijli bir tasarım oldu. Hız ve mobil uyumluluk mükemmel seviyede.',
+    service: 'Kurumsal Web Sitesi & SEO'
+  },
+  {
+    id: 6,
+    name: 'Burak Y.',
+    role: 'Apex Mimarlık & Tasarım — Tunalı / Ankara',
+    platform: 'Instagram',
+    platformColor: 'text-purple-400 bg-purple-950/80 border-purple-500/30',
+    stars: 5,
+    text: 'Portfolyo sitemizi baştan sona yenilediler. Yeni projelerimiz için aldığımız müşteri dönüşleri inanılmaz arttı.',
+    service: 'Web Sitesi Yenileme & Portfolyo'
   }
+];
+
+// Expanded review list for infinite river loop
+const infiniteRiverReviews = [
+  ...customerReviewsList,
+  ...customerReviewsList,
+  ...customerReviewsList
 ];
 
 export const ReviewsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -72,6 +101,36 @@ export const ReviewsModal: React.FC = () => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  // Continuous downward river stream effect
+  useEffect(() => {
+    if (!isOpen) return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let animId: number;
+    let lastTime = performance.now();
+
+    const scrollRiver = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      if (!isPaused && container) {
+        // Continuous downward scroll speed (approx 38px/sec)
+        container.scrollTop += dt * 38;
+
+        // Loop smoothly when reaching near bottom
+        if (container.scrollTop >= container.scrollHeight / 2) {
+          container.scrollTop = 0;
+        }
+      }
+
+      animId = requestAnimationFrame(scrollRiver);
+    };
+
+    animId = requestAnimationFrame(scrollRiver);
+    return () => cancelAnimationFrame(animId);
+  }, [isOpen, isPaused]);
 
   if (!mounted) return null;
 
@@ -109,7 +168,7 @@ export const ReviewsModal: React.FC = () => {
               className="relative z-10 w-full max-w-3xl bg-slate-950 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] text-slate-100 animate-in zoom-in-95 duration-200"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-6 border-b border-slate-800/80 bg-slate-900/60">
+              <div className="flex items-center justify-between p-6 border-b border-slate-800/80 bg-slate-900/60 shrink-0">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-black uppercase tracking-widest text-sky-400 bg-sky-950 px-3 py-1 rounded-full border border-sky-800/50">
@@ -135,47 +194,63 @@ export const ReviewsModal: React.FC = () => {
                 </button>
               </div>
 
-              {/* Reviews List */}
-              <div className="p-6 overflow-y-auto space-y-4 max-h-[60vh] divide-y divide-slate-800/40">
-                {customerReviewsList.map((review) => (
-                  <article
-                    key={review.id}
-                    className="pt-4 first:pt-0 bg-slate-900/40 hover:bg-slate-900/70 p-5 rounded-2xl border border-slate-800/80 transition-all space-y-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="flex text-amber-400">
-                          {[...Array(review.stars)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                          ))}
+              {/* Reviews Continuous River Stream */}
+              <div className="relative flex-1 min-h-[380px] max-h-[58vh] overflow-hidden bg-slate-950/90">
+                {/* Top Soft Vignette Mask */}
+                <div className="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-slate-950 to-transparent pointer-events-none z-10" />
+
+                {/* Auto-flowing River Container */}
+                <div
+                  ref={scrollContainerRef}
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                  onTouchStart={() => setIsPaused(true)}
+                  onTouchEnd={() => setIsPaused(false)}
+                  className="h-full overflow-y-auto px-6 py-4 space-y-4 scrollbar-none"
+                >
+                  {infiniteRiverReviews.map((review, idx) => (
+                    <article
+                      key={`${review.id}-${idx}`}
+                      className="bg-slate-900/60 hover:bg-slate-900/90 p-5 rounded-2xl border border-slate-800/80 transition-all space-y-3 shadow-lg shadow-black/40"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="flex text-amber-400">
+                            {[...Array(review.stars)].map((_, i) => (
+                              <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                            ))}
+                          </div>
+                          <span className="text-xs font-bold text-slate-300">• {review.service}</span>
                         </div>
-                        <span className="text-xs font-bold text-slate-300">• {review.service}</span>
+                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${review.platformColor}`}>
+                          {review.platform} Doğrulandı
+                        </span>
                       </div>
-                      <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${review.platformColor}`}>
-                        {review.platform} Doğrulandı
-                      </span>
-                    </div>
 
-                    <blockquote className="text-sm sm:text-base text-slate-200 italic font-medium leading-relaxed">
-                      “{review.text}”
-                    </blockquote>
+                      <blockquote className="text-sm sm:text-base text-slate-200 italic font-medium leading-relaxed">
+                        “{review.text}”
+                      </blockquote>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-800/60">
-                      <div>
-                        <div className="text-xs font-black text-white">{review.name}</div>
-                        <div className="text-[11px] text-slate-400">{review.role}</div>
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-800/60">
+                        <div>
+                          <div className="text-xs font-black text-white">{review.name}</div>
+                          <div className="text-[11px] text-slate-400">{review.role}</div>
+                        </div>
+                        <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Aktif Müşteri
+                        </span>
                       </div>
-                      <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Aktif Müşteri
-                      </span>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  ))}
+                </div>
+
+                {/* Bottom Soft Vignette Mask */}
+                <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-10" />
               </div>
 
               {/* Modal Footer CTA */}
-              <div className="p-5 border-t border-slate-800 bg-slate-900/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="p-5 border-t border-slate-800 bg-slate-900/80 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
                 <p className="text-xs text-slate-400 text-center sm:text-left">
                   Siz de dijitalde büyüyen mutlu müşterilerimizin arasına katılın.
                 </p>
@@ -205,3 +280,5 @@ export const ReviewsModal: React.FC = () => {
     </>
   );
 };
+
+export default ReviewsModal;
