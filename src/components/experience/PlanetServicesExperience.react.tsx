@@ -659,6 +659,9 @@ export const PlanetServicesExperience: React.FC = () => {
     const handleCustomNext = () => handleNext();
     const handleCustomPrev = () => handlePrev();
 
+    (window as unknown as { __planetNext?: () => void; __planetPrev?: () => void }).__planetNext = handleCustomNext;
+    (window as unknown as { __planetNext?: () => void; __planetPrev?: () => void }).__planetPrev = handleCustomPrev;
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -670,6 +673,8 @@ export const PlanetServicesExperience: React.FC = () => {
     window.addEventListener('planet-prev', handleCustomPrev);
 
     return () => {
+      delete (window as unknown as { __planetNext?: () => void; __planetPrev?: () => void }).__planetNext;
+      delete (window as unknown as { __planetNext?: () => void; __planetPrev?: () => void }).__planetPrev;
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);

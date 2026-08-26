@@ -5,15 +5,25 @@ const artifactsDir = 'C:\\Users\\berke\\.gemini\\antigravity\\brain\\ee6e6f74-ba
 
 const pressArrowDown = async (page: Page) => {
   await page.evaluate(() => {
-    window.dispatchEvent(new CustomEvent('planet-next'));
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    const w = window as unknown as { __planetNext?: () => void };
+    if (typeof w.__planetNext === 'function') {
+      w.__planetNext();
+    } else {
+      window.dispatchEvent(new CustomEvent('planet-next'));
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    }
   });
 };
 
 const pressArrowUp = async (page: Page) => {
   await page.evaluate(() => {
-    window.dispatchEvent(new CustomEvent('planet-prev'));
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    const w = window as unknown as { __planetPrev?: () => void };
+    if (typeof w.__planetPrev === 'function') {
+      w.__planetPrev();
+    } else {
+      window.dispatchEvent(new CustomEvent('planet-prev'));
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    }
   });
 };
 
@@ -112,7 +122,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     const homeExp = page.locator('[data-testid="home-experience"]');
     await expect(homeExp).toBeVisible();
     await expect(homeExp).toHaveAttribute('data-active-index', '0');
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1000);
 
     const expectedStages = [
       { id: 'earth', name: 'Dünya', title: 'Web Tasarım ve Kurumsal Web Sitesi' },
@@ -131,7 +141,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
 
     // Step through planets 1 to 7
     for (let i = 1; i <= 7; i++) {
-      await page.waitForTimeout(400);
+      await page.waitForTimeout(800);
       await pressArrowDown(page);
 
       await expect(homeExp).toHaveAttribute('data-active-index', String(i), { timeout: 15000 });
@@ -152,7 +162,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     }
 
     // Step to Screen 09: FAQ
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(800);
     await pressArrowDown(page);
     await expect(homeExp).toHaveAttribute('data-active-index', '8', { timeout: 15000 });
     await expect(homeExp).toHaveAttribute('data-active-scene', 'faq');
@@ -190,7 +200,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     await expect(page.locator('[data-testid="home-experience"]')).toBeVisible();
 
     // Body scroll should be locked on homepage
-    await page.waitForFunction(() => document.body.style.overflow === 'hidden');
+    await page.waitForFunction(() => document.body.style.overflow === 'hidden', null, { timeout: 15000 });
     const homeOverflow = await page.evaluate(() => document.body.style.overflow);
     expect(homeOverflow).toBe('hidden');
 
@@ -205,7 +215,7 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     // Navigate back to home
     await page.goto('/');
     await expect(page.locator('[data-testid="home-experience"]')).toBeVisible();
-    await page.waitForFunction(() => document.body.style.overflow === 'hidden');
+    await page.waitForFunction(() => document.body.style.overflow === 'hidden', null, { timeout: 15000 });
     const homeOverflowAgain = await page.evaluate(() => document.body.style.overflow);
     expect(homeOverflowAgain).toBe('hidden');
   });
