@@ -15,7 +15,8 @@ import {
   HelpCircle,
   MessageCircle,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  Radio
 } from 'lucide-react';
 import brandConfig from '../../config/brand';
 import { createGlowParticleTexture } from './shaders/planetShaders';
@@ -36,9 +37,16 @@ export interface PlanetStage {
   starColorHex: number;
   texture: string;
   fallbackImage: string;
+  telemetry: {
+    orbitalSpeed: string;
+    distance: string;
+    atmosphere: string;
+    sector: string;
+    coreTemp: string;
+  };
 }
 
-// 8 Primary Planetary Service Stages with Rich, Bespoke Cosmic Atmospheres
+// 8 Primary Planetary Service Stages with Rich, Bespoke Cosmic Atmospheres & Sci-Fi Telemetry
 export const planetServicesData: PlanetStage[] = [
   {
     id: 'earth',
@@ -60,7 +68,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #021226 0%, #06284f 50%, #02142b 100%)',
     starColorHex: 0x38bdf8,
     texture: '/images/planets/earth.jpg',
-    fallbackImage: '/images/planets/earth.jpg'
+    fallbackImage: '/images/planets/earth.jpg',
+    telemetry: {
+      orbitalSpeed: '29.78 KM/S',
+      distance: '149.6M KM',
+      atmosphere: 'N₂ / O₂ (1.0 ATM)',
+      sector: 'SECTOR-03 // BLUE CORE',
+      coreTemp: '5,700 K'
+    }
   },
   {
     id: 'mercury',
@@ -82,7 +97,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #0d1117 0%, #1a2230 50%, #0e1218 100%)',
     starColorHex: 0xe2e8f0,
     texture: '/images/planets/mercury.jpg',
-    fallbackImage: '/images/planets/mercury.jpg'
+    fallbackImage: '/images/planets/mercury.jpg',
+    telemetry: {
+      orbitalSpeed: '47.36 KM/S',
+      distance: '57.9M KM',
+      atmosphere: 'SOLAR EXOSPHERE',
+      sector: 'SECTOR-01 // TITAN CORE',
+      coreTemp: '700 K'
+    }
   },
   {
     id: 'venus',
@@ -104,7 +126,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #1f1003 0%, #3d1b04 50%, #201104 100%)',
     starColorHex: 0xfbbf24,
     texture: '/images/planets/venus.jpg',
-    fallbackImage: '/images/planets/venus.jpg'
+    fallbackImage: '/images/planets/venus.jpg',
+    telemetry: {
+      orbitalSpeed: '35.02 KM/S',
+      distance: '108.2M KM',
+      atmosphere: 'CO₂ / N₂ (92 ATM)',
+      sector: 'SECTOR-02 // AMBER DOME',
+      coreTemp: '737 K'
+    }
   },
   {
     id: 'mars',
@@ -126,7 +155,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #240606 0%, #4a0e0e 50%, #260707 100%)',
     starColorHex: 0xf87171,
     texture: '/images/planets/mars.jpg',
-    fallbackImage: '/images/planets/mars.jpg'
+    fallbackImage: '/images/planets/mars.jpg',
+    telemetry: {
+      orbitalSpeed: '24.07 KM/S',
+      distance: '227.9M KM',
+      atmosphere: 'CO₂ / AR / DUST',
+      sector: 'SECTOR-04 // RUBY VECTOR',
+      coreTemp: '210 K'
+    }
   },
   {
     id: 'jupiter',
@@ -148,7 +184,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #1e1106 0%, #442208 50%, #221206 100%)',
     starColorHex: 0xfb923c,
     texture: '/images/planets/jupiter.jpg',
-    fallbackImage: '/images/planets/jupiter.jpg'
+    fallbackImage: '/images/planets/jupiter.jpg',
+    telemetry: {
+      orbitalSpeed: '13.07 KM/S',
+      distance: '778.5M KM',
+      atmosphere: 'H₂ / HE / STORM',
+      sector: 'SECTOR-05 // BRONZE VORTEX',
+      coreTemp: '24,000 K'
+    }
   },
   {
     id: 'saturn',
@@ -170,7 +213,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #100d05 0%, #241c08 50%, #0d0a04 100%)',
     starColorHex: 0xfde047,
     texture: '/images/planets/saturn.jpg',
-    fallbackImage: '/images/planets/saturn.jpg'
+    fallbackImage: '/images/planets/saturn.jpg',
+    telemetry: {
+      orbitalSpeed: '9.68 KM/S',
+      distance: '1.43B KM',
+      atmosphere: 'H₂ / HE / RING DISK',
+      sector: 'SECTOR-06 // GOLD RING',
+      coreTemp: '11,700 K'
+    }
   },
   {
     id: 'uranus',
@@ -192,7 +242,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #010f14 0%, #04242e 50%, #010c10 100%)',
     starColorHex: 0x22d3ee,
     texture: '/images/planets/uranus.jpg',
-    fallbackImage: '/images/planets/uranus.jpg'
+    fallbackImage: '/images/planets/uranus.jpg',
+    telemetry: {
+      orbitalSpeed: '6.80 KM/S',
+      distance: '2.87B KM',
+      atmosphere: 'H₂ / HE / CH₄ (ICE)',
+      sector: 'SECTOR-07 // CYAN GLACIER',
+      coreTemp: '5,000 K'
+    }
   },
   {
     id: 'neptune',
@@ -214,7 +271,14 @@ export const planetServicesData: PlanetStage[] = [
     bgGradient: 'linear-gradient(135deg, #010d29 0%, #052668 50%, #021338 100%)',
     starColorHex: 0x60a5fa,
     texture: '/images/planets/neptune.jpg',
-    fallbackImage: '/images/planets/neptune.jpg'
+    fallbackImage: '/images/planets/neptune.jpg',
+    telemetry: {
+      orbitalSpeed: '5.43 KM/S',
+      distance: '4.50B KM',
+      atmosphere: 'H₂ / HE / CH₄ (COBALT)',
+      sector: 'SECTOR-08 // DEEP ABYSS',
+      coreTemp: '7,200 K'
+    }
   }
 ];
 
@@ -350,11 +414,21 @@ export const PlanetServicesExperience: React.FC = () => {
   const pointerStartYRef = useRef<number>(0);
   const wheelAccumulatorRef = useRef<number>(0);
 
+  // Mouse Parallax & Gimbal Tracking References
+  const mousePosRef = useRef<{ x: number; y: number; targetX: number; targetY: number }>({
+    x: 0,
+    y: 0,
+    targetX: 0,
+    targetY: 0,
+  });
+
   // Three.js Scene References
   const texturesRef = useRef<THREE.Texture[]>([]);
   const currentPlanetMeshRef = useRef<THREE.Mesh | null>(null);
   const nextPlanetMeshRef = useRef<THREE.Mesh | null>(null);
   const starfieldPointsRef = useRef<THREE.Points | null>(null);
+  const foregroundStarsRef = useRef<THREE.Points | null>(null);
+  const shockwaveMeshRef = useRef<THREE.Mesh | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
 
   const transitionAnimRef = useRef<{
@@ -409,11 +483,18 @@ export const PlanetServicesExperience: React.FC = () => {
 
     const fromIdx = activeScreenIndexRef.current;
     const direction = targetIndex > fromIdx ? 1 : -1;
-    const duration = prefersReducedMotion ? 250 : 1200; // Cinematic 1200ms transition
+    const duration = prefersReducedMotion ? 250 : 1250; // Ultra-smooth 1250ms cinematic transition
     wheelCooldownUntilRef.current = performance.now() + duration + 200;
 
     const fromPlanetIdx = Math.min(fromIdx, 7);
     const toPlanetIdx = Math.min(targetIndex, 7);
+
+    // Trigger Shockwave Pulse on arrival
+    if (shockwaveMeshRef.current && toPlanetIdx < 8) {
+      shockwaveMeshRef.current.scale.setScalar(0.8);
+      (shockwaveMeshRef.current.material as THREE.MeshBasicMaterial).opacity = 0.8;
+      shockwaveMeshRef.current.visible = true;
+    }
 
     // Setup 3D mesh textures & shader uniforms
     if (currentPlanetMeshRef.current && nextPlanetMeshRef.current && texturesRef.current.length > 0) {
@@ -458,7 +539,7 @@ export const PlanetServicesExperience: React.FC = () => {
       setActiveScreenIndex(targetIndex);
       activeScreenIndexRef.current = targetIndex;
       setCardFade(false);
-    }, duration * 0.42);
+    }, duration * 0.40);
 
     // Finalize transition smoothly
     setTimeout(() => {
@@ -480,10 +561,6 @@ export const PlanetServicesExperience: React.FC = () => {
           }
           if (nextPlanetMeshRef.current) {
             nextPlanetMeshRef.current.visible = false;
-          }
-          if (cameraRef.current) {
-            cameraRef.current.position.z = 6.0;
-            cameraRef.current.position.x = 0.0;
           }
         } finally {
           transitionAnimRef.current = null;
@@ -512,18 +589,23 @@ export const PlanetServicesExperience: React.FC = () => {
     }
   }, [startTransitionTo, totalScreensCount]);
 
-  // Input Listeners: Smooth Inertia Wheel, Touch, Pointer, Keyboard
+  // Input Listeners: Smooth Inertia Wheel, Touch, Pointer, Keyboard & Mouse Move Parallax
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mousePosRef.current.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mousePosRef.current.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       const now = performance.now();
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
 
       wheelAccumulatorRef.current += e.deltaY;
-      if (wheelAccumulatorRef.current > 50) {
+      if (wheelAccumulatorRef.current > 45) {
         wheelAccumulatorRef.current = 0;
         handleNext();
-      } else if (wheelAccumulatorRef.current < -50) {
+      } else if (wheelAccumulatorRef.current < -45) {
         wheelAccumulatorRef.current = 0;
         handlePrev();
       }
@@ -575,6 +657,7 @@ export const PlanetServicesExperience: React.FC = () => {
       }
     };
 
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
@@ -583,6 +666,7 @@ export const PlanetServicesExperience: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
@@ -592,7 +676,7 @@ export const PlanetServicesExperience: React.FC = () => {
     };
   }, [handleNext, handlePrev]);
 
-  // Three.js WebGL Scene with Cinematic Camera Dolly, Hyperspace Stars & Seamless Meshes
+  // Three.js WebGL Scene with 3D Mouse Parallax, Hyperspace Warp Lines, Shockwave & Seamless Meshes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -607,7 +691,7 @@ export const PlanetServicesExperience: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight, false);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, (canvas.clientWidth || 800) / (canvas.clientHeight || 600), 0.1, 150);
@@ -646,7 +730,22 @@ export const PlanetServicesExperience: React.FC = () => {
     nextPlanetMeshRef.current = nextPlanetMesh;
     scene.add(nextPlanetMesh);
 
-    // 3. Rich Dynamic Background Starfield (550 Luminous Stars)
+    // 3. Dynamic Stellar Shockwave Ring Mesh
+    const shockwaveGeo = new THREE.RingGeometry(1.4, 1.48, 64);
+    const shockwaveMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.0,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const shockwaveMesh = new THREE.Mesh(shockwaveGeo, shockwaveMat);
+    shockwaveMesh.visible = false;
+    shockwaveMeshRef.current = shockwaveMesh;
+    scene.add(shockwaveMesh);
+
+    // 4. Background Deep Starfield (550 Luminous Stars)
     const starCount = 550;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
@@ -654,7 +753,7 @@ export const PlanetServicesExperience: React.FC = () => {
     for (let i = 0; i < starCount; i++) {
       starPositions[i * 3] = (Math.random() - 0.5) * 36;
       starPositions[i * 3 + 1] = (Math.random() - 0.5) * 22;
-      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 25 - 2;
+      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 25 - 3;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     const starMat = new THREE.PointsMaterial({
@@ -670,7 +769,30 @@ export const PlanetServicesExperience: React.FC = () => {
     starfieldPointsRef.current = starfield;
     scene.add(starfield);
 
-    // 4. Dynamic Shooting Stars (Kayan Yıldızlar) System
+    // 5. Foreground Parallax Dust Stars (150 Floating Spangles)
+    const fgStarCount = 150;
+    const fgStarGeo = new THREE.BufferGeometry();
+    const fgStarPositions = new Float32Array(fgStarCount * 3);
+    for (let i = 0; i < fgStarCount; i++) {
+      fgStarPositions[i * 3] = (Math.random() - 0.5) * 16;
+      fgStarPositions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      fgStarPositions[i * 3 + 2] = (Math.random() - 0.5) * 4 + 2;
+    }
+    fgStarGeo.setAttribute('position', new THREE.BufferAttribute(fgStarPositions, 3));
+    const fgStarMat = new THREE.PointsMaterial({
+      size: 0.045,
+      map: createGlowParticleTexture(),
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      color: 0xffffff,
+    });
+    const fgStars = new THREE.Points(fgStarGeo, fgStarMat);
+    foregroundStarsRef.current = fgStars;
+    scene.add(fgStars);
+
+    // 6. Dynamic Shooting Stars (Kayan Yıldızlar) System
     const shootingStarsCount = 6;
     const shootingStars: ShootingStar[] = [];
 
@@ -707,7 +829,7 @@ export const PlanetServicesExperience: React.FC = () => {
       star.active = true;
       star.spawnTime = now;
       star.lifetime = 650 + Math.random() * 550;
-      star.length = 2.0 + Math.random() * 1.8;
+      star.length = 2.2 + Math.random() * 1.8;
 
       // Spawn from top-right or deep space background
       const startX = 2.0 + Math.random() * 10.0;
@@ -717,7 +839,7 @@ export const PlanetServicesExperience: React.FC = () => {
       star.headPos.set(startX, startY, startZ);
 
       // Trajectory: fast diagonal sweep downwards to the left
-      const speed = 0.022 + Math.random() * 0.018;
+      const speed = 0.024 + Math.random() * 0.018;
       star.velocity.set(-speed * 1.6, -speed * 0.9, speed * 0.3);
 
       const colorHex = planetServicesData[activeScreenIndexRef.current % 8]?.starColorHex || 0x60a5fa;
@@ -756,14 +878,25 @@ export const PlanetServicesExperience: React.FC = () => {
       const restOffsetX = isDesktop ? 1.5 : 0.0;
       const anim = transitionAnimRef.current;
 
-      // Ambient Planet Subtle Roll
-      currentPlanetMesh.rotation.x = 0;
-      currentPlanetMesh.rotation.y = 0;
+      // Smooth Mouse Parallax Lerp
+      const mouse = mousePosRef.current;
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+      // Ambient Planet Subtle Roll & Gimbal Mouse Tilt
+      const mouseTiltX = mouse.y * 0.12;
+      const mouseTiltY = mouse.x * 0.18;
+
+      currentPlanetMesh.rotation.x = mouseTiltX;
       currentPlanetMesh.rotation.z += dt * 0.02;
 
-      nextPlanetMesh.rotation.x = 0;
-      nextPlanetMesh.rotation.y = 0;
+      nextPlanetMesh.rotation.x = mouseTiltX;
       nextPlanetMesh.rotation.z += dt * 0.025;
+
+      // Foreground Dust Parallax
+      fgStars.position.x = mouse.x * 0.6;
+      fgStars.position.y = -mouse.y * 0.4;
+      fgStars.rotation.y = totalTime * 0.03;
 
       const curShaderMat = currentPlanetMesh.material as THREE.ShaderMaterial;
       const nextShaderMat = nextPlanetMesh.material as THREE.ShaderMaterial;
@@ -776,21 +909,34 @@ export const PlanetServicesExperience: React.FC = () => {
         const smoothT = 1.0 - Math.pow(1.0 - rawT, 3.5);
         const dollyIntensity = Math.sin(rawT * Math.PI);
 
-        // 3D Cinematic Camera Dolly & Depth Breath
-        camera.position.z = 6.0 + dollyIntensity * 0.55;
-        camera.position.x = -anim.direction * dollyIntensity * 0.25;
+        // 3D Cinematic Camera Dolly, Dutch Roll Angle & Depth Breath
+        camera.position.z = 6.0 + dollyIntensity * 0.65;
+        camera.position.x = (mouse.x * 0.25) - (anim.direction * dollyIntensity * 0.35);
+        camera.position.y = -mouse.y * 0.20;
+        camera.rotation.z = -anim.direction * dollyIntensity * 0.04; // Cinematic Dutch angle roll
 
-        // Hyperspace Starfield Acceleration during transition
-        starfield.rotation.y = totalTime * 0.015 + (anim.direction * dollyIntensity * 0.05);
-        starMat.size = 0.065 + dollyIntensity * 0.035;
+        // Hyperspace Warp Lines Acceleration during transition
+        starfield.rotation.y = totalTime * 0.015 + (anim.direction * dollyIntensity * 0.08);
+        starMat.size = 0.065 + dollyIntensity * 0.045;
+
+        // Shockwave Ring Animation
+        if (shockwaveMesh.visible) {
+          const shockProgress = Math.min(Math.max((rawT - 0.3) / 0.7, 0.0), 1.0);
+          shockwaveMesh.position.x = restOffsetX;
+          shockwaveMesh.position.y = 0.0;
+          shockwaveMesh.position.z = -0.1;
+          shockwaveMesh.scale.setScalar(1.0 + shockProgress * 2.8);
+          shockwaveMat.opacity = Math.max(0.0, (1.0 - shockProgress) * 0.65);
+          if (shockProgress >= 1.0) shockwaveMesh.visible = false;
+        }
 
         if (anim.direction === 1) {
-          // FORWARD: Exiting planet swoops left and deep into space
-          currentPlanetMesh.position.x = restOffsetX - smoothT * 2.8;
-          currentPlanetMesh.position.y = Math.sin(smoothT * Math.PI) * 0.4;
-          currentPlanetMesh.position.z = -smoothT * 2.5;
-          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.35);
-          currentPlanetMesh.rotation.y = -smoothT * 0.35;
+          // FORWARD: Exiting planet swoops left and deep into space with 3D roll
+          currentPlanetMesh.position.x = restOffsetX - smoothT * 3.2;
+          currentPlanetMesh.position.y = Math.sin(smoothT * Math.PI) * 0.45;
+          currentPlanetMesh.position.z = -smoothT * 2.8;
+          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.40);
+          currentPlanetMesh.rotation.y = mouseTiltY - smoothT * 0.45;
           if (curShaderMat.uniforms) {
             curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(smoothT, 1.2));
           }
@@ -798,11 +944,11 @@ export const PlanetServicesExperience: React.FC = () => {
           if (anim.toIndex < 8) {
             // Next planet sweeps gracefully from right horizon into focus
             nextPlanetMesh.visible = true;
-            nextPlanetMesh.position.x = (restOffsetX + 3.2) - smoothT * 3.2;
-            nextPlanetMesh.position.y = -(1.0 - smoothT) * 0.3;
-            nextPlanetMesh.position.z = -2.5 + smoothT * 2.5;
-            nextPlanetMesh.scale.setScalar(0.65 + smoothT * 0.35);
-            nextPlanetMesh.rotation.y = (1.0 - smoothT) * 0.35;
+            nextPlanetMesh.position.x = (restOffsetX + 3.6) - smoothT * 3.6;
+            nextPlanetMesh.position.y = -(1.0 - smoothT) * 0.35;
+            nextPlanetMesh.position.z = -2.8 + smoothT * 2.8;
+            nextPlanetMesh.scale.setScalar(0.60 + smoothT * 0.40);
+            nextPlanetMesh.rotation.y = mouseTiltY + (1.0 - smoothT) * 0.45;
             if (nextShaderMat.uniforms) {
               nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, Math.pow(smoothT, 0.8));
             }
@@ -811,11 +957,11 @@ export const PlanetServicesExperience: React.FC = () => {
           }
         } else {
           // BACKWARD: Exiting planet sweeps right and deep into space
-          currentPlanetMesh.position.x = restOffsetX + smoothT * 2.8;
-          currentPlanetMesh.position.y = -Math.sin(smoothT * Math.PI) * 0.4;
-          currentPlanetMesh.position.z = -smoothT * 2.5;
-          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.35);
-          currentPlanetMesh.rotation.y = smoothT * 0.35;
+          currentPlanetMesh.position.x = restOffsetX + smoothT * 3.2;
+          currentPlanetMesh.position.y = -Math.sin(smoothT * Math.PI) * 0.45;
+          currentPlanetMesh.position.z = -smoothT * 2.8;
+          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.40);
+          currentPlanetMesh.rotation.y = mouseTiltY + smoothT * 0.45;
           if (curShaderMat.uniforms) {
             curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(smoothT, 1.2));
           }
@@ -823,11 +969,11 @@ export const PlanetServicesExperience: React.FC = () => {
           if (anim.toIndex < 8) {
             // Prev planet sweeps gracefully from left horizon into focus
             nextPlanetMesh.visible = true;
-            nextPlanetMesh.position.x = (restOffsetX - 3.2) + smoothT * 3.2;
-            nextPlanetMesh.position.y = (1.0 - smoothT) * 0.3;
-            nextPlanetMesh.position.z = -2.5 + smoothT * 2.5;
-            nextPlanetMesh.scale.setScalar(0.65 + smoothT * 0.35);
-            nextPlanetMesh.rotation.y = -(1.0 - smoothT) * 0.35;
+            nextPlanetMesh.position.x = (restOffsetX - 3.6) + smoothT * 3.6;
+            nextPlanetMesh.position.y = (1.0 - smoothT) * 0.35;
+            nextPlanetMesh.position.z = -2.8 + smoothT * 2.8;
+            nextPlanetMesh.scale.setScalar(0.60 + smoothT * 0.40);
+            nextPlanetMesh.rotation.y = mouseTiltY - (1.0 - smoothT) * 0.45;
             if (nextShaderMat.uniforms) {
               nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, Math.pow(smoothT, 0.8));
             }
@@ -836,16 +982,19 @@ export const PlanetServicesExperience: React.FC = () => {
           }
         }
       } else {
-        // Resting State: Perfectly aligned at focal position
+        // Resting State: Perfectly aligned with subtle 3D parallax
         const isFaq = activeScreenIndexRef.current === 8;
         currentPlanetMesh.visible = !isFaq;
         currentPlanetMesh.position.x = restOffsetX;
         currentPlanetMesh.position.y = 0.0;
         currentPlanetMesh.position.z = 0.0;
         currentPlanetMesh.scale.setScalar(1.0);
-        currentPlanetMesh.rotation.y = 0.0;
+        currentPlanetMesh.rotation.y = mouseTiltY;
+        
         camera.position.z = 6.0;
-        camera.position.x = 0.0;
+        camera.position.x = mouse.x * 0.25;
+        camera.position.y = -mouse.y * 0.20;
+        camera.rotation.z = 0.0;
         starMat.size = 0.065;
 
         if (curShaderMat.uniforms) {
@@ -862,7 +1011,7 @@ export const PlanetServicesExperience: React.FC = () => {
       starfield.rotation.y = totalTime * 0.015;
 
       // Shooting Stars (Kayan Yıldızlar) Update Loop
-      if (now - lastMeteorSpawnTime > 1400) {
+      if (now - lastMeteorSpawnTime > 1300) {
         lastMeteorSpawnTime = now;
         const inactiveStar = shootingStars.find((s) => !s.active);
         if (inactiveStar) {
@@ -938,6 +1087,17 @@ export const PlanetServicesExperience: React.FC = () => {
         }}
       />
 
+      {/* Anamorphic Cinematic Lens Flare Streak (Center-Right behind planet) */}
+      {isPlanetScreen && (
+        <div
+          className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[480px] lg:w-[700px] h-[1.5px] pointer-events-none z-0 opacity-40 transition-opacity duration-1000 hidden md:block"
+          style={{
+            background: `linear-gradient(90deg, transparent 0%, ${activePlanetStage.accentColor}00 20%, #ffffff 50%, ${activePlanetStage.accentColor}00 80%, transparent 100%)`,
+            boxShadow: `0 0 16px 2px ${activePlanetStage.accentColor}`,
+          }}
+        />
+      )}
+
       {/* 3D WebGL Canvas Viewport (100% Transparent) */}
       <canvas
         ref={canvasRef}
@@ -947,7 +1107,7 @@ export const PlanetServicesExperience: React.FC = () => {
 
       {/* Top Experience Sub-Bar */}
       <header className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1 flex items-center justify-between shrink-0">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs font-semibold text-white shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/60 border border-white/15 backdrop-blur-md text-xs font-semibold text-white shadow-sm">
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-400" />
@@ -964,7 +1124,7 @@ export const PlanetServicesExperience: React.FC = () => {
         {/* Global Sequence Tracker */}
         <div
           data-testid="experience-progress-badge"
-          className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-full text-xs font-mono shadow-sm text-white"
+          className="flex items-center gap-1.5 bg-slate-950/60 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-full text-xs font-mono shadow-sm text-white"
         >
           <span className="text-xs font-black tracking-wider text-sky-300">
             0{activeScreenIndex + 1}
@@ -986,24 +1146,27 @@ export const PlanetServicesExperience: React.FC = () => {
             <article
               data-testid="active-service-card"
               key={activePlanetStage.id}
-              className={`lg:col-span-6 xl:col-span-5 bg-slate-900/80 backdrop-blur-2xl border border-white/15 p-5 sm:p-7 rounded-3xl shadow-2xl shadow-black/60 space-y-3.5 sm:space-y-4 transition-all duration-500 ease-out text-white ${
+              className={`lg:col-span-6 xl:col-span-5 bg-slate-950/75 backdrop-blur-3xl border border-white/20 p-5 sm:p-7 rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] space-y-3.5 sm:space-y-4 transition-all duration-500 ease-out text-white ${
                 cardFade ? 'opacity-0 translate-y-3 blur-md scale-[0.98]' : 'opacity-100 translate-y-0 blur-none scale-100'
               }`}
+              style={{
+                boxShadow: `0 25px 60px -15px rgba(0,0,0,0.9), 0 0 30px -10px ${activePlanetStage.accentColor}30`,
+              }}
             >
               {/* Category & Planet Badge */}
               <div className="flex items-center justify-between gap-4">
                 <div
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-lg font-bold text-xs border"
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-lg font-bold text-xs border shadow-xs"
                   style={{
                     backgroundColor: `${activePlanetStage.accentColor}25`,
-                    borderColor: `${activePlanetStage.accentColor}60`,
+                    borderColor: `${activePlanetStage.accentColor}70`,
                     color: '#ffffff',
                   }}
                 >
                   <IconComponent className="w-4 h-4 text-white" />
                   <span>{activePlanetStage.category}</span>
                 </div>
-                <span className="text-xs font-black tracking-widest uppercase text-slate-300 bg-white/10 px-3 py-1 rounded-full border border-white/10">
+                <span className="text-xs font-black tracking-widest uppercase text-slate-300 bg-white/10 px-3 py-1 rounded-full border border-white/15">
                   {activePlanetStage.planetName} SAHNESİ
                 </span>
               </div>
@@ -1029,7 +1192,7 @@ export const PlanetServicesExperience: React.FC = () => {
                 {activePlanetStage.benefits.map((benefit, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start gap-2.5 text-xs text-slate-200 font-semibold p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 shadow-xs backdrop-blur-md"
+                    className="flex items-start gap-2.5 text-xs text-slate-200 font-semibold p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 shadow-xs backdrop-blur-md hover:bg-white/10 transition-colors"
                   >
                     <CheckCircle2
                       className="w-4 h-4 shrink-0 mt-0.5"
@@ -1044,7 +1207,7 @@ export const PlanetServicesExperience: React.FC = () => {
               <div className="pt-2 sm:pt-3 flex items-center justify-between gap-4">
                 <a
                   href={activePlanetStage.href}
-                  className="btn-primary text-xs sm:text-sm py-3 px-6 inline-flex items-center gap-2 shadow-lg shadow-sky-600/30"
+                  className="btn-primary text-xs sm:text-sm py-3 px-6 inline-flex items-center gap-2 shadow-lg shadow-sky-600/40 hover:scale-[1.02] transition-transform"
                 >
                   <span>{activePlanetStage.ctaLabel}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1058,11 +1221,40 @@ export const PlanetServicesExperience: React.FC = () => {
             </article>
           )}
 
+          {/* Sci-Fi Telemetry HUD Overlay (Desktop right corner) */}
+          {isPlanetScreen && (
+            <div className="hidden xl:flex xl:col-span-2 xl:col-start-11 flex-col space-y-3 font-mono text-[11px] text-slate-400 bg-slate-950/60 p-4 rounded-2xl border border-white/10 backdrop-blur-xl pointer-events-none shadow-xl">
+              <div className="flex items-center justify-between border-b border-white/10 pb-2 text-sky-400 font-bold">
+                <span className="inline-flex items-center gap-1.5">
+                  <Radio className="w-3 h-3 animate-pulse text-sky-400" />
+                  ORBIT HUD
+                </span>
+                <span className="text-[10px] bg-sky-500/20 px-1.5 py-0.5 rounded text-sky-300">LIVE</span>
+              </div>
+              <div className="space-y-1 text-[10px]">
+                <div className="text-slate-500">VELOCITY:</div>
+                <div className="text-white font-bold">{activePlanetStage.telemetry.orbitalSpeed}</div>
+              </div>
+              <div className="space-y-1 text-[10px]">
+                <div className="text-slate-500">DISTANCE:</div>
+                <div className="text-slate-200">{activePlanetStage.telemetry.distance}</div>
+              </div>
+              <div className="space-y-1 text-[10px]">
+                <div className="text-slate-500">ATMOSPHERE:</div>
+                <div className="text-slate-300">{activePlanetStage.telemetry.atmosphere}</div>
+              </div>
+              <div className="space-y-1 text-[10px]">
+                <div className="text-slate-500">SECTOR:</div>
+                <div className="text-sky-300 font-semibold">{activePlanetStage.telemetry.sector}</div>
+              </div>
+            </div>
+          )}
+
           {/* SCREEN 09: FAQ ACCORDION */}
           {activeScreenIndex === 8 && (
             <article
               data-testid="faq-screen"
-              className="lg:col-span-8 xl:col-span-7 bg-slate-900/85 backdrop-blur-2xl border border-white/15 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white"
+              className="lg:col-span-8 xl:col-span-7 bg-slate-950/85 backdrop-blur-3xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
@@ -1110,7 +1302,7 @@ export const PlanetServicesExperience: React.FC = () => {
 
               {/* CTAs on FAQ Screen */}
               <div className="pt-2 flex flex-wrap items-center gap-3">
-                <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-5 shadow-md shadow-sky-600/30">
+                <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-5 shadow-md shadow-sky-600/40">
                   Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1" />
                 </a>
                 <a
@@ -1153,7 +1345,7 @@ export const PlanetServicesExperience: React.FC = () => {
 
       {/* Bottom Sticky Navigation Bar */}
       <footer className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-3 pt-1 shrink-0">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/85 backdrop-blur-xl border border-white/15 p-2.5 sm:p-3 rounded-2xl shadow-2xl shadow-black/60">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-950/80 backdrop-blur-2xl border border-white/15 p-2.5 sm:p-3 rounded-2xl shadow-2xl shadow-black/70">
           
           {/* Planet Pills Navigator */}
           <div
@@ -1226,7 +1418,7 @@ export const PlanetServicesExperience: React.FC = () => {
               onClick={handleNext}
               disabled={activeScreenIndex === totalScreensCount - 1 || isTransitioning}
               aria-label="Sonraki Gezegen"
-              className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-sky-600/30"
+              className="btn-primary text-xs py-2.5 px-5 inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-sky-600/40"
             >
               <span>
                 {activeScreenIndex < 7

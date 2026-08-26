@@ -84,28 +84,21 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     await page.waitForTimeout(600);
 
     // Next -> Mercury
-    await page.evaluate(() => {
-      const btn = document.querySelector('[data-testid="planet-next"]') as HTMLButtonElement;
-      btn?.click();
-    });
+    const nextBtn = page.locator('[data-testid="planet-next"]');
+    await nextBtn.click();
     await expect(homeExp).toHaveAttribute('data-active-index', '1', { timeout: 14000 });
     await expect(homeExp).toHaveAttribute('data-transitioning', 'false');
 
     // Prev -> Earth
-    await page.waitForTimeout(500);
-    await page.evaluate(() => {
-      const btn = document.querySelector('[data-testid="planet-prev"]') as HTMLButtonElement;
-      btn?.click();
-    });
+    await page.waitForTimeout(600);
+    const prevBtn = page.locator('[data-testid="planet-prev"]');
+    await prevBtn.click();
     await expect(homeExp).toHaveAttribute('data-active-index', '0', { timeout: 14000 });
     await expect(homeExp).toHaveAttribute('data-transitioning', 'false');
 
     // Next -> Mercury again
-    await page.waitForTimeout(500);
-    await page.evaluate(() => {
-      const btn = document.querySelector('[data-testid="planet-next"]') as HTMLButtonElement;
-      btn?.click();
-    });
+    await page.waitForTimeout(600);
+    await nextBtn.click();
     await expect(homeExp).toHaveAttribute('data-active-index', '1', { timeout: 14000 });
     await expect(homeExp).toHaveAttribute('data-transitioning', 'false');
   });
