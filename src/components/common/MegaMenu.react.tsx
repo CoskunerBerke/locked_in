@@ -120,11 +120,11 @@ export const MegaMenu: React.FC = () => {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="true"
-        className="mega-menu-trigger flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-slate-800 hover:text-sky-600 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 rounded-md"
+        className="mega-menu-trigger header-nav-link inline-flex items-center gap-1.5 text-[15px] font-semibold text-slate-800 hover:text-sky-600 transition-colors focus:outline-none cursor-pointer pb-1 border-b-2 border-transparent"
       >
         <span>Hizmetler</span>
         <ChevronDown
-          className={`mega-menu-chevron w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180 text-sky-600' : 'text-slate-500'}`}
+          className={`mega-menu-chevron w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180 text-sky-400' : 'text-current opacity-70'}`}
         />
       </button>
 

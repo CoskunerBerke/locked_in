@@ -196,6 +196,14 @@ export const MobileMenu: React.FC = () => {
                   Projeler
                 </a>
 
+                <a
+                  href="/hakkimizda/"
+                  onClick={() => setIsOpen(false)}
+                  className="block py-2.5 px-3 text-base font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Kurumsal
+                </a>
+
                 <button
                   type="button"
                   onClick={() => {
@@ -209,22 +217,6 @@ export const MobileMenu: React.FC = () => {
                     ★ 5.0 Onaylı
                   </span>
                 </button>
-
-                <a
-                  href="/akademi/"
-                  onClick={() => setIsOpen(false)}
-                  className="block py-2.5 px-3 text-base font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Akademi / Blog
-                </a>
-
-                <a
-                  href="/hakkimizda/"
-                  onClick={() => setIsOpen(false)}
-                  className="block py-2.5 px-3 text-base font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Kurumsal
-                </a>
 
                 <a
                   href="/iletisim/"

@@ -48,15 +48,15 @@ const isHomePage = activePage === '/';
       </a>
 
       <!-- Desktop Navigation Menu -->
-      <nav class="hidden md:flex items-center gap-6" aria-label="Ana Gezinme">
+      <nav class="hidden md:flex items-center gap-6 lg:gap-7 xl:gap-8" aria-label="Ana Gezinme">
         <a
           href="/"
-          class={`header-nav-link text-base font-bold transition-colors ${
+          class={`header-nav-link text-[15px] font-semibold transition-colors pb-1 border-b-2 inline-flex items-center ${
             isHomePage
-              ? 'active-link'
+              ? 'active-link border-sky-400 text-white'
               : activePage === '/'
-              ? 'text-sky-600 font-extrabold'
-              : 'text-slate-800 hover:text-sky-600'
+              ? 'active-link border-sky-600 text-sky-600'
+              : 'border-transparent text-slate-800 hover:text-sky-600'
           }`}
         >
           Ana Sayfa
@@ -67,54 +67,41 @@ const isHomePage = activePage === '/';
 
         <a
           href="/projeler/"
-          class={`header-nav-link text-base font-bold transition-colors ${
-            isHomePage
-              ? 'text-white/90 hover:text-white'
-              : activePage === '/projeler/'
-              ? 'text-sky-600 font-extrabold'
-              : 'text-slate-800 hover:text-sky-600'
+          class={`header-nav-link text-[15px] font-semibold transition-colors pb-1 border-b-2 inline-flex items-center ${
+            activePage === '/projeler/'
+              ? 'active-link border-sky-600 text-sky-600'
+              : isHomePage
+              ? 'border-transparent text-white/90 hover:text-white'
+              : 'border-transparent text-slate-800 hover:text-sky-600'
           }`}
         >
           Projeler
+        </a>
+
+        <a
+          href="/hakkimizda/"
+          class={`header-nav-link text-[15px] font-semibold transition-colors pb-1 border-b-2 inline-flex items-center ${
+            activePage === '/hakkimizda/'
+              ? 'active-link border-sky-600 text-sky-600'
+              : isHomePage
+              ? 'border-transparent text-white/90 hover:text-white'
+              : 'border-transparent text-slate-800 hover:text-sky-600'
+          }`}
+        >
+          Kurumsal
         </a>
 
         {/* Müşteri Yorumları Modal Trigger */}
         <ReviewsModal client:load />
 
         <a
-          href="/akademi/"
-          class={`header-nav-link text-base font-bold transition-colors ${
-            isHomePage
-              ? 'text-white/90 hover:text-white'
-              : activePage === '/akademi/'
-              ? 'text-sky-600 font-extrabold'
-              : 'text-slate-800 hover:text-sky-600'
-          }`}
-        >
-          Akademi
-        </a>
-
-        <a
-          href="/hakkimizda/"
-          class={`header-nav-link text-base font-bold transition-colors ${
-            isHomePage
-              ? 'text-white/90 hover:text-white'
-              : activePage === '/hakkimizda/'
-              ? 'text-sky-600 font-extrabold'
-              : 'text-slate-800 hover:text-sky-600'
-          }`}
-        >
-          Kurumsal
-        </a>
-
-        <a
           href="/iletisim/"
-          class={`header-nav-link text-base font-bold transition-colors ${
-            isHomePage
-              ? 'text-white/90 hover:text-white'
-              : activePage === '/iletisim/'
-              ? 'text-sky-600 font-extrabold'
-              : 'text-slate-800 hover:text-sky-600'
+          class={`header-nav-link text-[15px] font-semibold transition-colors pb-1 border-b-2 inline-flex items-center ${
+            activePage === '/iletisim/'
+              ? 'active-link border-sky-600 text-sky-600'
+              : isHomePage
+              ? 'border-transparent text-white/90 hover:text-white'
+              : 'border-transparent text-slate-800 hover:text-sky-600'
           }`}
         >
           İletişim
@@ -169,10 +156,9 @@ const isHomePage = activePage === '/';
 
   .header-planet-theme .header-nav-link.active-link {
     color: #ffffff;
-    font-weight: 800;
-    text-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
-    border-bottom: 2px solid #38bdf8;
-    padding-bottom: 2px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+    border-bottom-color: #38bdf8 !important;
   }
 
   .header-planet-theme .mega-menu-trigger {

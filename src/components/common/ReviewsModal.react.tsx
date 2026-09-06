@@ -219,12 +219,12 @@ export const ReviewsModal: React.FC = () => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="reviews-modal-trigger inline-flex items-center gap-1.5 text-base font-bold text-slate-800 hover:text-sky-600 transition-colors cursor-pointer"
+        className="reviews-modal-trigger header-nav-link inline-flex items-center gap-1.5 text-[15px] font-semibold text-slate-800 hover:text-sky-600 transition-colors cursor-pointer pb-1 border-b-2 border-transparent"
         aria-label="Müşteri Yorumlarını Aç"
       >
         <span>Yorumlar</span>
-        <span className="reviews-rating-badge flex items-center text-[11px] font-black bg-amber-50 text-amber-700 border border-amber-300/80 px-1.5 py-0.5 rounded-md shadow-xs">
-          <Star className="w-3 h-3 fill-amber-500 text-amber-500 mr-0.5" />
+        <span className="reviews-rating-badge inline-flex items-center text-[10.5px] font-bold bg-amber-50 text-amber-700 border border-amber-300 px-1.5 py-0.5 rounded-full shadow-xs leading-none">
+          <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500 mr-0.5 shrink-0" />
           5.0
         </span>
       </button>
