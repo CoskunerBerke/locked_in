@@ -297,6 +297,19 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     await page.waitForTimeout(800);
     await page.screenshot({ path: path.join(artifactsDir, 'planet_header_04_mars.png') });
 
+    // Advance to Jupiter (Screen 4)
+    await pressArrowDown(page);
+    await expect(page.locator('[data-testid="home-experience"]')).toHaveAttribute('data-active-index', '4', { timeout: 15000 });
+    await expect(header).toHaveAttribute('data-active-planet', 'jupiter');
+    await page.waitForTimeout(600);
+
+    // Advance to Saturn (Screen 5 - the exact screen from user image)
+    await pressArrowDown(page);
+    await expect(page.locator('[data-testid="home-experience"]')).toHaveAttribute('data-active-index', '5', { timeout: 15000 });
+    await expect(header).toHaveAttribute('data-active-planet', 'saturn');
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(artifactsDir, 'planet_header_06_saturn_seamless.png') });
+
     // Navigate to /iletisim/ (Standard corporate page should have normal white header)
     await page.goto('/iletisim/');
     const iletisimHeader = page.locator('#site-header');

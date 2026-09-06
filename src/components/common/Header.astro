@@ -23,14 +23,14 @@ const isHomePage = activePage === '/';
 <!-- Main Corporate Header -->
 <header
   id="site-header"
-  class={`sticky top-0 z-40 w-full transform-gpu translate-z-0 will-change-[background-color,border-color,box-shadow] ${
+  class={`sticky top-0 z-40 w-full transform-gpu translate-z-0 will-change-[background-color] ${
     isHomePage
-      ? 'header-planet-theme border-b'
+      ? 'header-planet-theme border-0 border-none'
       : 'bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-shadow duration-200'
   }`}
   style={
     isHomePage
-      ? 'background-color: #031e4f; background-image: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.2) 100%); border-bottom-color: rgba(56, 189, 248, 0.35); box-shadow: 0 4px 25px -5px rgba(2, 20, 53, 0.85), 0 1px 0 0 rgba(56, 189, 248, 0.15); transform: translateZ(0); will-change: background-color, border-color, box-shadow;'
+      ? 'background-color: #031e4f; border: none; border-bottom: none; box-shadow: none; outline: none; transform: translateZ(0); will-change: background-color;'
       : 'transform: translateZ(0); will-change: transform;'
   }
 >
@@ -139,11 +139,13 @@ const isHomePage = activePage === '/';
 <style is:global>
   /* Dynamic Planet Experience Header Styles */
   .header-planet-theme {
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    transition: background-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: background-color 700ms cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
   .header-planet-theme .site-logo-img {
