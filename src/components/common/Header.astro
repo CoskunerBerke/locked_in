@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { activePage } = Astro.props;
+const isHomePage = activePage === '/';
 ---
 
 <!-- Accessibility Skip-to-Content Link -->
@@ -22,8 +23,16 @@ const { activePage } = Astro.props;
 <!-- Main Corporate Header -->
 <header
   id="site-header"
-  class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-shadow duration-200 transform-gpu translate-z-0 will-change-[transform,opacity]"
-  style="transform: translateZ(0); will-change: transform;"
+  class={`sticky top-0 z-40 w-full transform-gpu translate-z-0 will-change-[background-color,border-color,box-shadow] ${
+    isHomePage
+      ? 'header-planet-theme border-b'
+      : 'bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-shadow duration-200'
+  }`}
+  style={
+    isHomePage
+      ? 'background-color: #031e4f; background-image: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.2) 100%); border-bottom-color: rgba(56, 189, 248, 0.35); box-shadow: 0 4px 25px -5px rgba(2, 20, 53, 0.85), 0 1px 0 0 rgba(56, 189, 248, 0.15); transform: translateZ(0); will-change: background-color, border-color, box-shadow;'
+      : 'transform: translateZ(0); will-change: transform;'
+  }
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20 sm:h-22 transition-none" id="header-inner">
@@ -32,7 +41,7 @@ const { activePage } = Astro.props;
         <img
           src={brandConfig.logoPath}
           alt={`${brandConfig.brandName} Logosu`}
-          class="h-11 sm:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105 object-contain"
+          class="h-11 sm:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105 object-contain site-logo-img"
           width="240"
           height="80"
         />
@@ -42,8 +51,12 @@ const { activePage } = Astro.props;
       <nav class="hidden md:flex items-center gap-6" aria-label="Ana Gezinme">
         <a
           href="/"
-          class={`text-base font-bold transition-colors hover:text-sky-600 ${
-            activePage === '/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
+          class={`header-nav-link text-base font-bold transition-colors ${
+            isHomePage
+              ? 'active-link'
+              : activePage === '/'
+              ? 'text-sky-600 font-extrabold'
+              : 'text-slate-800 hover:text-sky-600'
           }`}
         >
           Ana Sayfa
@@ -54,8 +67,12 @@ const { activePage } = Astro.props;
 
         <a
           href="/projeler/"
-          class={`text-base font-bold transition-colors hover:text-sky-600 ${
-            activePage === '/projeler/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
+          class={`header-nav-link text-base font-bold transition-colors ${
+            isHomePage
+              ? 'text-white/90 hover:text-white'
+              : activePage === '/projeler/'
+              ? 'text-sky-600 font-extrabold'
+              : 'text-slate-800 hover:text-sky-600'
           }`}
         >
           Projeler
@@ -66,8 +83,12 @@ const { activePage } = Astro.props;
 
         <a
           href="/akademi/"
-          class={`text-base font-bold transition-colors hover:text-sky-600 ${
-            activePage === '/akademi/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
+          class={`header-nav-link text-base font-bold transition-colors ${
+            isHomePage
+              ? 'text-white/90 hover:text-white'
+              : activePage === '/akademi/'
+              ? 'text-sky-600 font-extrabold'
+              : 'text-slate-800 hover:text-sky-600'
           }`}
         >
           Akademi
@@ -75,8 +96,12 @@ const { activePage } = Astro.props;
 
         <a
           href="/hakkimizda/"
-          class={`text-base font-bold transition-colors hover:text-sky-600 ${
-            activePage === '/hakkimizda/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
+          class={`header-nav-link text-base font-bold transition-colors ${
+            isHomePage
+              ? 'text-white/90 hover:text-white'
+              : activePage === '/hakkimizda/'
+              ? 'text-sky-600 font-extrabold'
+              : 'text-slate-800 hover:text-sky-600'
           }`}
         >
           Kurumsal
@@ -84,8 +109,12 @@ const { activePage } = Astro.props;
 
         <a
           href="/iletisim/"
-          class={`text-base font-bold transition-colors hover:text-sky-600 ${
-            activePage === '/iletisim/' ? 'text-sky-600 font-extrabold' : 'text-slate-800'
+          class={`header-nav-link text-base font-bold transition-colors ${
+            isHomePage
+              ? 'text-white/90 hover:text-white'
+              : activePage === '/iletisim/'
+              ? 'text-sky-600 font-extrabold'
+              : 'text-slate-800 hover:text-sky-600'
           }`}
         >
           İletişim
@@ -106,6 +135,82 @@ const { activePage } = Astro.props;
     </div>
   </div>
 </header>
+
+<style is:global>
+  /* Dynamic Planet Experience Header Styles */
+  .header-planet-theme {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: background-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .header-planet-theme .site-logo-img {
+    filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+    transition: filter 300ms ease, transform 300ms ease;
+  }
+
+  .header-planet-theme .site-logo-img:hover {
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+  }
+
+  .header-planet-theme .header-nav-link {
+    color: rgba(255, 255, 255, 0.88);
+    transition: color 200ms ease, text-shadow 200ms ease;
+  }
+
+  .header-planet-theme .header-nav-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  }
+
+  .header-planet-theme .header-nav-link.active-link {
+    color: #ffffff;
+    font-weight: 800;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    border-bottom: 2px solid #38bdf8;
+    padding-bottom: 2px;
+  }
+
+  .header-planet-theme .mega-menu-trigger {
+    color: rgba(255, 255, 255, 0.88) !important;
+    transition: color 200ms ease, text-shadow 200ms ease;
+  }
+
+  .header-planet-theme .mega-menu-trigger:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  }
+
+  .header-planet-theme .mega-menu-chevron {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .header-planet-theme .reviews-modal-trigger {
+    color: rgba(255, 255, 255, 0.88) !important;
+    transition: color 200ms ease, text-shadow 200ms ease;
+  }
+
+  .header-planet-theme .reviews-modal-trigger:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  }
+
+  .header-planet-theme .reviews-rating-badge {
+    background-color: rgba(245, 158, 11, 0.20) !important;
+    color: #fbbf24 !important;
+    border-color: rgba(245, 158, 11, 0.45) !important;
+  }
+
+  .header-planet-theme .mobile-menu-trigger {
+    color: #ffffff !important;
+  }
+
+  .header-planet-theme .mobile-menu-trigger:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+  }
+</style>
 
 <script>
   const header = document.getElementById('site-header');

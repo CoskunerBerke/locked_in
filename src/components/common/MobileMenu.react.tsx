@@ -77,7 +77,7 @@ export const MobileMenu: React.FC = () => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center p-3 rounded-lg text-slate-700 hover:text-sky-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500 min-w-[44px] min-h-[44px]"
+        className="mobile-menu-trigger inline-flex items-center justify-center p-3 rounded-lg text-slate-700 hover:text-sky-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500 min-w-[44px] min-h-[44px]"
         aria-controls="mobile-menu-drawer"
         aria-expanded={isOpen}
         aria-label={isOpen ? 'Menüyü kapat' : 'Menüyü aç'}

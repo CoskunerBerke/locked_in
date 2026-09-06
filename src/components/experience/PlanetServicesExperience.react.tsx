@@ -385,6 +385,75 @@ function createPlanetShader(
   });
 }
 
+// Dynamic Header Theme Settings for each Planet
+interface HeaderThemeConfig {
+  backgroundColor: string;
+  borderColor: string;
+  boxShadow: string;
+}
+
+const HEADER_PLANET_THEMES: Record<string, HeaderThemeConfig> = {
+  earth: {
+    backgroundColor: '#031e4f',
+    borderColor: 'rgba(56, 189, 248, 0.40)',
+    boxShadow: '0 4px 25px -5px rgba(2, 20, 53, 0.85), 0 1px 0 0 rgba(56, 189, 248, 0.15)',
+  },
+  mercury: {
+    backgroundColor: '#182234',
+    borderColor: 'rgba(148, 163, 184, 0.40)',
+    boxShadow: '0 4px 25px -5px rgba(16, 22, 34, 0.85), 0 1px 0 0 rgba(148, 163, 184, 0.15)',
+  },
+  venus: {
+    backgroundColor: '#3d2107',
+    borderColor: 'rgba(245, 158, 11, 0.45)',
+    boxShadow: '0 4px 25px -5px rgba(42, 22, 4, 0.85), 0 1px 0 0 rgba(245, 158, 11, 0.20)',
+  },
+  mars: {
+    backgroundColor: '#450c0c',
+    borderColor: 'rgba(239, 68, 68, 0.50)',
+    boxShadow: '0 4px 25px -5px rgba(46, 7, 7, 0.85), 0 1px 0 0 rgba(239, 68, 68, 0.20)',
+  },
+  jupiter: {
+    backgroundColor: '#3d1c07',
+    borderColor: 'rgba(249, 115, 22, 0.45)',
+    boxShadow: '0 4px 25px -5px rgba(40, 18, 4, 0.85), 0 1px 0 0 rgba(249, 115, 22, 0.20)',
+  },
+  saturn: {
+    backgroundColor: '#3b2e07',
+    borderColor: 'rgba(234, 179, 8, 0.45)',
+    boxShadow: '0 4px 25px -5px rgba(39, 31, 4, 0.85), 0 1px 0 0 rgba(234, 179, 8, 0.20)',
+  },
+  uranus: {
+    backgroundColor: '#043344',
+    borderColor: 'rgba(6, 182, 212, 0.45)',
+    boxShadow: '0 4px 25px -5px rgba(2, 34, 46, 0.85), 0 1px 0 0 rgba(6, 182, 212, 0.20)',
+  },
+  neptune: {
+    backgroundColor: '#06235e',
+    borderColor: 'rgba(59, 130, 246, 0.45)',
+    boxShadow: '0 4px 25px -5px rgba(3, 22, 62, 0.85), 0 1px 0 0 rgba(59, 130, 246, 0.20)',
+  },
+  faq: {
+    backgroundColor: '#070b14',
+    borderColor: 'rgba(56, 189, 248, 0.30)',
+    boxShadow: '0 4px 25px -5px rgba(4, 7, 13, 0.85), 0 1px 0 0 rgba(56, 189, 248, 0.12)',
+  },
+};
+
+const updateHeaderPlanetTheme = (screenIndex: number) => {
+  if (typeof document === 'undefined') return;
+  const header = document.getElementById('site-header');
+  if (!header) return;
+
+  const key = screenIndex <= 7 ? planetServicesData[screenIndex].id : 'faq';
+  const theme = HEADER_PLANET_THEMES[key] || HEADER_PLANET_THEMES.earth;
+
+  header.style.backgroundColor = theme.backgroundColor;
+  header.style.borderBottomColor = theme.borderColor;
+  header.style.boxShadow = theme.boxShadow;
+  header.setAttribute('data-active-planet', key);
+};
+
 // Shooting Star Class for dynamic meteor trails
 interface ShootingStar {
   line: THREE.Line;
@@ -455,6 +524,11 @@ export const PlanetServicesExperience: React.FC = () => {
     };
   }, []);
 
+  // Synchronize Site Header Theme with Active Planet Screen
+  useEffect(() => {
+    updateHeaderPlanetTheme(activeScreenIndex);
+  }, [activeScreenIndex]);
+
   const totalScreensCount = 9; // 8 Planets (0..7) + 1 FAQ (8)
   const isPlanetScreen = activeScreenIndex <= 7;
   const activePlanetStage = planetServicesData[Math.min(activeScreenIndex, 7)];
@@ -479,6 +553,9 @@ export const PlanetServicesExperience: React.FC = () => {
     isTransitioningRef.current = true;
     setIsTransitioning(true);
     setCardFade(true);
+
+    // Immediately start smooth color transition on the site header to match arriving destination
+    updateHeaderPlanetTheme(targetIndex);
 
     const fromIdx = activeScreenIndexRef.current;
     const direction = targetIndex > fromIdx ? 1 : -1;

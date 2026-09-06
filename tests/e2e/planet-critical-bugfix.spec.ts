@@ -262,4 +262,46 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
     await expect(page.locator('button:has-text("İleri (4.6s)")')).toBeVisible();
     await expect(page.locator('canvas')).toBeAttached();
   });
+
+  test('Test 10: Dynamic Header Planet Theming (Zero White Bar on Space Experience)', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+
+    const header = page.locator('#site-header');
+    await expect(header).toBeVisible();
+    await expect(header).toHaveClass(/header-planet-theme/);
+
+    // Earth (Screen 0)
+    await expect(header).toHaveAttribute('data-active-planet', 'earth');
+    await page.waitForTimeout(600);
+    await page.screenshot({ path: path.join(artifactsDir, 'planet_header_01_earth.png') });
+
+    // Advance to Mercury (Screen 1)
+    await pressArrowDown(page);
+    await expect(page.locator('[data-testid="home-experience"]')).toHaveAttribute('data-active-index', '1', { timeout: 15000 });
+    await expect(header).toHaveAttribute('data-active-planet', 'mercury');
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(artifactsDir, 'planet_header_02_mercury.png') });
+
+    // Advance to Venus (Screen 2)
+    await pressArrowDown(page);
+    await expect(page.locator('[data-testid="home-experience"]')).toHaveAttribute('data-active-index', '2', { timeout: 15000 });
+    await expect(header).toHaveAttribute('data-active-planet', 'venus');
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(artifactsDir, 'planet_header_03_venus.png') });
+
+    // Advance to Mars (Screen 3)
+    await pressArrowDown(page);
+    await expect(page.locator('[data-testid="home-experience"]')).toHaveAttribute('data-active-index', '3', { timeout: 15000 });
+    await expect(header).toHaveAttribute('data-active-planet', 'mars');
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(artifactsDir, 'planet_header_04_mars.png') });
+
+    // Navigate to /iletisim/ (Standard corporate page should have normal white header)
+    await page.goto('/iletisim/');
+    const iletisimHeader = page.locator('#site-header');
+    await expect(iletisimHeader).toBeVisible();
+    await expect(iletisimHeader).not.toHaveClass(/header-planet-theme/);
+    await page.screenshot({ path: path.join(artifactsDir, 'planet_header_05_iletisim_white.png') });
+  });
 });
