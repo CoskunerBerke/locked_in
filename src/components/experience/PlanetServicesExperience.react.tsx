@@ -601,7 +601,20 @@ export const PlanetServicesExperience: React.FC = () => {
       mousePosRef.current.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
     };
 
+    const isModalActive = () => {
+      if (typeof document === 'undefined') return false;
+      return (
+        document.body.dataset.modalOpen === 'true' ||
+        Boolean(document.querySelector('.reviews-modal-container'))
+      );
+    };
+
     const handleWheel = (e: WheelEvent) => {
+      // NEVER process wheel navigation or prevent default if a modal/dialog is open
+      if (isModalActive()) return;
+      const target = e.target as HTMLElement | null;
+      if (target?.closest('.reviews-modal-container, #mobile-menu-drawer')) return;
+
       e.preventDefault();
       const now = performance.now();
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
@@ -617,12 +630,14 @@ export const PlanetServicesExperience: React.FC = () => {
     };
 
     const handleTouchStart = (e: TouchEvent) => {
+      if (isModalActive()) return;
       if (e.touches.length > 0) {
         touchStartYRef.current = e.touches[0].clientY;
       }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      if (isModalActive()) return;
       const now = performance.now();
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
       if (e.changedTouches.length > 0 && touchStartYRef.current !== 0) {
@@ -636,10 +651,12 @@ export const PlanetServicesExperience: React.FC = () => {
     };
 
     const handlePointerDown = (e: PointerEvent) => {
+      if (isModalActive()) return;
       pointerStartYRef.current = e.clientY;
     };
 
     const handlePointerUp = (e: PointerEvent) => {
+      if (isModalActive()) return;
       const now = performance.now();
       if (isTransitioningRef.current || now < wheelCooldownUntilRef.current) return;
       if (pointerStartYRef.current !== 0) {
@@ -653,6 +670,7 @@ export const PlanetServicesExperience: React.FC = () => {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (isModalActive()) return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         handleNext();

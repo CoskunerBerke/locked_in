@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Star, X, MessageCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 import brandConfig from '../../config/brand';
@@ -66,8 +66,9 @@ export const customerReviewsList = [
   }
 ];
 
-// Expanded review list for seamless infinite river loop
+// Tripled review list for a seamless, endless downward river stream
 const riverReviews = [
+  ...customerReviewsList,
   ...customerReviewsList,
   ...customerReviewsList
 ];
@@ -75,6 +76,12 @@ const riverReviews = [
 export const ReviewsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const trackRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const oneThirdHeightRef = useRef(0);
+  const touchStartYRef = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -89,38 +96,125 @@ export const ReviewsModal: React.FC = () => {
     };
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.dataset.modalOpen = 'true';
       window.addEventListener('keydown', handleKeyDown);
     } else {
       document.body.style.overflow = '';
+      delete document.body.dataset.modalOpen;
     }
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      delete document.body.dataset.modalOpen;
     };
   }, [isOpen]);
+
+  // Continuous Downward River Stream (Hardware accelerated requestAnimationFrame loop)
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const track = trackRef.current;
+    if (!track) return;
+
+    let rafId: number;
+    let lastTime = performance.now();
+
+    const measureHeight = () => {
+      if (track) {
+        const height = track.scrollHeight / 3;
+        oneThirdHeightRef.current = height;
+        if (height > 0 && offsetRef.current === 0) {
+          offsetRef.current = -height;
+          track.style.transform = `translate3d(0, ${offsetRef.current}px, 0)`;
+        }
+      }
+    };
+
+    measureHeight();
+    const timer = setTimeout(measureHeight, 60);
+
+    const step = (now: number) => {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      const oneThird = oneThirdHeightRef.current || (track ? track.scrollHeight / 3 : 0);
+      if (oneThird > 0) {
+        // Active downward river flow speed (~46px per second)
+        offsetRef.current += 46 * dt;
+
+        // Loop seamlessly
+        if (offsetRef.current >= 0) {
+          offsetRef.current -= oneThird;
+        } else if (offsetRef.current < -oneThird * 2) {
+          offsetRef.current += oneThird;
+        }
+
+        if (track) {
+          track.style.transform = `translate3d(0, ${offsetRef.current}px, 0)`;
+        }
+      }
+
+      rafId = requestAnimationFrame(step);
+    };
+
+    rafId = requestAnimationFrame(step);
+
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(rafId);
+    };
+  }, [isOpen]);
+
+  // Interactive mouse wheel scrolling inside the river
+  const handleRiverWheel = useCallback((e: React.WheelEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const track = trackRef.current;
+    if (!track) return;
+    const oneThird = oneThirdHeightRef.current || track.scrollHeight / 3;
+    if (oneThird <= 0) return;
+
+    // Scrolling down pulls content up; scrolling up pushes content down
+    offsetRef.current -= e.deltaY * 0.75;
+    while (offsetRef.current >= 0) offsetRef.current -= oneThird;
+    while (offsetRef.current < -oneThird * 2) offsetRef.current += oneThird;
+    track.style.transform = `translate3d(0, ${offsetRef.current}px, 0)`;
+  }, []);
+
+  // Mobile touch scrolling inside the river
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    e.stopPropagation();
+    if (e.touches.length > 0) {
+      touchStartYRef.current = e.touches[0].clientY;
+    }
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    e.stopPropagation();
+    if (touchStartYRef.current !== null && e.touches.length > 0) {
+      const delta = e.touches[0].clientY - touchStartYRef.current;
+      touchStartYRef.current = e.touches[0].clientY;
+      const track = trackRef.current;
+      if (!track) return;
+      const oneThird = oneThirdHeightRef.current || track.scrollHeight / 3;
+      if (oneThird <= 0) return;
+
+      offsetRef.current += delta;
+      while (offsetRef.current >= 0) offsetRef.current -= oneThird;
+      while (offsetRef.current < -oneThird * 2) offsetRef.current += oneThird;
+      track.style.transform = `translate3d(0, ${offsetRef.current}px, 0)`;
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    e.stopPropagation();
+    touchStartYRef.current = null;
+  }, []);
 
   if (!mounted) return null;
 
   return (
     <>
-      <style>{`
-        @keyframes riverFlowDown {
-          0% {
-            transform: translateY(-50%);
-          }
-          100% {
-            transform: translateY(0%);
-          }
-        }
-        .river-marquee-track {
-          animation: riverFlowDown 32s linear infinite;
-          will-change: transform;
-        }
-        .river-marquee-track:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
-
       {/* Header Button Trigger */}
       <button
         type="button"
@@ -138,7 +232,12 @@ export const ReviewsModal: React.FC = () => {
       {/* Modal / Slide-over Drawer */}
       {isOpen &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 reviews-modal-container"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
             {/* Backdrop */}
             <div
               className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity animate-in fade-in duration-200"
@@ -151,6 +250,8 @@ export const ReviewsModal: React.FC = () => {
               aria-modal="true"
               aria-labelledby="reviews-title"
               className="relative z-10 w-full max-w-3xl bg-slate-950 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] text-slate-100 animate-in zoom-in-95 duration-200"
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-800/80 bg-slate-900/60 shrink-0">
@@ -184,12 +285,23 @@ export const ReviewsModal: React.FC = () => {
               </div>
 
               {/* Reviews Continuous River Stream */}
-              <div className="relative flex-1 min-h-[400px] max-h-[60vh] overflow-hidden bg-slate-950/90 select-none">
+              <div
+                ref={containerRef}
+                onWheel={handleRiverWheel}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                className="relative flex-1 min-h-[420px] max-h-[60vh] overflow-hidden bg-slate-950/90 select-none"
+              >
                 {/* Top Soft Vignette Mask */}
                 <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-slate-950 via-slate-950/90 to-transparent pointer-events-none z-10" />
 
                 {/* Auto-flowing Downward River Track */}
-                <div className="river-marquee-track flex flex-col gap-4 px-6 py-4">
+                <div
+                  ref={trackRef}
+                  className="river-marquee-track flex flex-col gap-4 px-6 py-4 will-change-transform"
+                  style={{ transform: 'translate3d(0, 0, 0)' }}
+                >
                   {riverReviews.map((review, idx) => (
                     <article
                       key={`${review.id}-${idx}`}
