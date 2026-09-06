@@ -15,7 +15,11 @@ import {
   HelpCircle,
   MessageCircle,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  Star,
+  ShieldCheck,
+  Clock,
+  Rocket
 } from 'lucide-react';
 import brandConfig from '../../config/brand';
 import { createGlowParticleTexture } from './shaders/planetShaders';
@@ -1248,7 +1252,13 @@ export const PlanetServicesExperience: React.FC = () => {
       </header>
 
       {/* Main Interactive Screen Viewport */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full flex-1 flex items-center px-4 sm:px-6 lg:px-8 py-1 min-h-0">
+      <div
+        className={`relative z-20 max-w-7xl mx-auto w-full flex-1 flex ${
+          activeScreenIndex === 8
+            ? 'items-start lg:items-center overflow-y-auto lg:overflow-visible py-3'
+            : 'items-center'
+        } px-4 sm:px-6 lg:px-8 py-1 min-h-0`}
+      >
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
           
           {/* SCREENS 01 to 08: PLANET SERVICE CARDS */}
@@ -1331,95 +1341,190 @@ export const PlanetServicesExperience: React.FC = () => {
             </article>
           )}
 
-          {/* SCREEN 09: FAQ ACCORDION */}
+          {/* SCREEN 09: 2-COLUMN CONVERSION & FAQ FINALE */}
           {activeScreenIndex === 8 && (
-            <article
+            <div
               data-testid="faq-screen"
-              className="lg:col-span-10 xl:col-span-9 bg-slate-950/85 backdrop-blur-3xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6 text-white"
+              className="col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-stretch w-full"
             >
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div>
-                  <span className="text-xs font-black uppercase tracking-widest text-sky-400">
-                    09. EKRAN • SIKÇA SORULAN SORULAR
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
-                    Aklınıza Takılan Soruların Yanıtları
-                  </h2>
-                </div>
-                <HelpCircle className="w-6 h-6 text-sky-400" />
-              </div>
-
-              {/* Accordion List */}
-              <div className="space-y-3">
-                {faqItemsData.map((item, idx) => {
-                  const isOpen = openFaqIndex === idx;
-                  return (
-                    <div
-                      key={idx}
-                      className="border border-white/10 rounded-2xl overflow-hidden bg-white/5 hover:bg-white/10 transition-all"
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                        className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-white cursor-pointer hover:bg-white/5 transition-colors"
-                        aria-expanded={isOpen}
-                      >
-                        <span>{item.q}</span>
-                        <ChevronDown
-                          className={`w-4 h-4 text-sky-400 shrink-0 transition-transform duration-200 ${
-                            isOpen ? 'rotate-180' : ''
-                          }`}
-                        />
-                      </button>
-                      {isOpen && (
-                        <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/10 pt-3">
-                          {item.a}
-                        </div>
-                      )}
+              {/* LEFT COLUMN: Projenizi Başlatalım & Güven Rozetleri (5 Kolon) */}
+              <article className="lg:col-span-5 bg-slate-950/80 backdrop-blur-3xl border border-white/20 p-5 sm:p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col justify-between space-y-4 sm:space-y-5 text-white">
+                {/* Header Badge & Title */}
+                <div className="space-y-2.5 sm:space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                      <Rocket className="w-3.5 h-3.5 text-sky-400" />
+                      <span>PROJENİZİ BAŞLATIN</span>
                     </div>
-                  );
-                })}
-              </div>
+                    <span className="text-xs font-black tracking-widest uppercase text-slate-300 bg-white/10 px-3 py-1 rounded-full border border-white/15">
+                      09 / 09 FİNAL
+                    </span>
+                  </div>
 
-              {/* CTAs on FAQ Screen: Always Side-by-side Row */}
-              <div className="pt-2 flex flex-wrap sm:flex-nowrap items-center gap-3">
-                <a href="/iletisim/" className="btn-primary text-xs sm:text-sm py-2.5 px-4 sm:px-5 shrink-0 shadow-md shadow-sky-600/40 whitespace-nowrap">
-                  Ücretsiz Ön Görüşme <ArrowRight className="w-4 h-4 ml-1 inline" />
-                </a>
-                <a
-                  href={`https://wa.me/${brandConfig.whatsappNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary text-xs sm:text-sm py-2.5 px-4 sm:px-5 shrink-0 bg-white/10 border border-white/15 text-white hover:bg-white/20 shadow-xs inline-flex items-center whitespace-nowrap"
-                >
-                  <MessageCircle className="w-4 h-4 mr-1.5 text-emerald-400" />
-                  WhatsApp'tan Görüş
-                </a>
-                <button
-                  type="button"
-                  data-testid="restart-experience"
-                  onClick={() => startTransitionTo(0)}
-                  className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs sm:text-sm font-bold text-white shrink-0 inline-flex items-center gap-1.5 cursor-pointer transition-all border border-white/15 whitespace-nowrap"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  Hizmetleri Yeniden İncele
-                </button>
-              </div>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-snug drop-shadow-md">
+                    Fikrinizi Dijitalde Güçlü Bir Markaya Dönüştürelim
+                  </h2>
 
-              {/* Legal Links Footer */}
-              <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-3">
-                <span>© {new Date().getFullYear()} Rent Yazılım. Tüm hakları saklıdır.</span>
-                <div className="flex items-center gap-3">
-                  <a href="/gizlilik-politikasi/" className="hover:text-sky-400">Gizlilik Politikası</a>
-                  <span>•</span>
-                  <a href="/kvkk-aydinlatma-metni/" className="hover:text-sky-400">KVKK</a>
-                  <span>•</span>
-                  <a href="/kullanim-kosullari/" className="hover:text-sky-400">Kullanım Koşulları</a>
-                  <span>•</span>
-                  <a href="/iletisim/" className="hover:text-sky-400">İletişim</a>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    Kurumsal web sitesi, teknik SEO, Google Haritalar ve yemek platformu süreçlerinizi anahtar teslim, güvenle yönetiyoruz.
+                  </p>
                 </div>
-              </div>
-            </article>
+
+                {/* 4 Trust Badges (2x2 Grid) */}
+                <div className="grid grid-cols-2 gap-2 sm:gap-2.5 py-1">
+                  <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex items-start gap-2.5">
+                    <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+                      <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-white">5.0 Puan</div>
+                      <div className="text-[11px] text-slate-400 font-medium">Google Müşteri Puanı</div>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex items-start gap-2.5">
+                    <div className="p-2 rounded-xl bg-sky-500/20 text-sky-400 shrink-0">
+                      <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-white">3-7 İş Günü</div>
+                      <div className="text-[11px] text-slate-400 font-medium">Hızlı ve Eksiksiz Teslim</div>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex items-start gap-2.5">
+                    <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+                      <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-white">%100 Destek</div>
+                      <div className="text-[11px] text-slate-400 font-medium">Güvenlik & Sürekli Bakım</div>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 sm:p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex items-start gap-2.5">
+                    <div className="p-2 rounded-xl bg-purple-500/20 text-purple-400 shrink-0">
+                      <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-white">Ankara & TR</div>
+                      <div className="text-[11px] text-slate-400 font-medium">Birebir Danışmanlık</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Conversion Actions */}
+                <div className="space-y-2.5 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <a
+                      href="/iletisim/"
+                      className="btn-primary text-xs sm:text-sm py-3 px-4 flex items-center justify-center gap-2 shadow-lg shadow-sky-600/40 hover:scale-[1.02] transition-transform font-bold text-center"
+                    >
+                      <span>Ücretsiz Ön Görüşme</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+
+                    <a
+                      href={`https://wa.me/${brandConfig.whatsappNumber}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-3 px-4 rounded-xl bg-emerald-600/25 hover:bg-emerald-600/35 border border-emerald-500/40 text-emerald-300 font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition-all hover:scale-[1.02] text-center"
+                    >
+                      <MessageCircle className="w-4 h-4 text-emerald-400" />
+                      <span>WhatsApp'tan Yazın</span>
+                    </a>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1">
+                    <button
+                      type="button"
+                      data-testid="restart-experience"
+                      onClick={() => startTransitionTo(0)}
+                      className="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer font-semibold"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5 text-sky-400" />
+                      <span>Hizmetleri Yeniden İncele</span>
+                    </button>
+
+                    <span className="text-[11px] text-slate-400 font-bold hidden sm:inline-flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-sky-400" />
+                      Rent Yazılım Standartları
+                    </span>
+                  </div>
+                </div>
+              </article>
+
+              {/* RIGHT COLUMN: Sıkça Sorulan Sorular Akordeonu (7 Kolon) */}
+              <article className="lg:col-span-7 bg-slate-950/80 backdrop-blur-3xl border border-white/20 p-5 sm:p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col justify-between space-y-3.5 text-white">
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div>
+                    <span className="text-xs font-black uppercase tracking-widest text-sky-400">
+                      SIKÇA SORULAN SORULAR
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-white tracking-tight mt-0.5">
+                      Aklınıza Takılan Soruların Yanıtları
+                    </h3>
+                  </div>
+                  <div className="p-2 rounded-xl bg-sky-500/10 border border-sky-400/20">
+                    <HelpCircle className="w-5 h-5 text-sky-400" />
+                  </div>
+                </div>
+
+                {/* Accordion List */}
+                <div className="space-y-2.5">
+                  {faqItemsData.map((item, idx) => {
+                    const isOpen = openFaqIndex === idx;
+                    return (
+                      <div
+                        key={idx}
+                        className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
+                          isOpen
+                            ? 'border-sky-400/50 bg-sky-950/20 shadow-lg shadow-sky-950/50'
+                            : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                          className="w-full text-left p-3 sm:p-3.5 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-white cursor-pointer transition-colors"
+                          aria-expanded={isOpen}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span className={`flex h-1.5 w-1.5 rounded-full shrink-0 ${isOpen ? 'bg-sky-400' : 'bg-slate-500'}`} />
+                            <span>{item.q}</span>
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 text-sky-400 shrink-0 transition-transform duration-200 ${
+                              isOpen ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        {isOpen && (
+                          <div className="px-4 pb-3 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-sky-400/20">
+                            {item.a}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Legal Links Footer */}
+                <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
+                  <span>© {new Date().getFullYear()} Rent Yazılım. Tüm hakları saklıdır.</span>
+                  <div className="flex items-center gap-2.5">
+                    <a href="/gizlilik-politikasi/" className="hover:text-sky-400 transition-colors">Gizlilik</a>
+                    <span>•</span>
+                    <a href="/kvkk-aydinlatma-metni/" className="hover:text-sky-400 transition-colors">KVKK</a>
+                    <span>•</span>
+                    <a href="/kullanim-kosullari/" className="hover:text-sky-400 transition-colors">Kullanım Koşulları</a>
+                    <span>•</span>
+                    <a href="/iletisim/" className="hover:text-sky-400 transition-colors">İletişim</a>
+                  </div>
+                </div>
+              </article>
+            </div>
           )}
         </div>
       </div>
