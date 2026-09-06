@@ -63,8 +63,8 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Web Sitesi Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
     accentColor: '#0284c7',
-    glowColor: 'rgba(2, 132, 199, 0.45)',
-    bgGradient: 'linear-gradient(135deg, #021226 0%, #06284f 50%, #02142b 100%)',
+    glowColor: 'rgba(56, 189, 248, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #031e4f 0%, #0a3d82 45%, #052661 100%)',
     starColorHex: 0x38bdf8,
     texture: '/images/planets/earth.jpg',
     fallbackImage: '/images/planets/earth.jpg',
@@ -92,9 +92,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Landing Page Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
     accentColor: '#38bdf8',
-    glowColor: 'rgba(148, 163, 184, 0.35)',
-    bgGradient: 'linear-gradient(135deg, #0d1117 0%, #1a2230 50%, #0e1218 100%)',
-    starColorHex: 0xe2e8f0,
+    glowColor: 'rgba(148, 163, 184, 0.55)',
+    bgGradient: 'linear-gradient(135deg, #182234 0%, #2b3952 50%, #1c273a 100%)',
+    starColorHex: 0xf1f5f9,
     texture: '/images/planets/mercury.jpg',
     fallbackImage: '/images/planets/mercury.jpg',
     telemetry: {
@@ -121,9 +121,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Site Yenileme Hizmetini İncele',
     href: '/hizmetler/web-sitesi-tasarimi/',
     accentColor: '#f59e0b',
-    glowColor: 'rgba(245, 158, 11, 0.45)',
-    bgGradient: 'linear-gradient(135deg, #1f1003 0%, #3d1b04 50%, #201104 100%)',
-    starColorHex: 0xfbbf24,
+    glowColor: 'rgba(245, 158, 11, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #3d2107 0%, #703c0c 50%, #422408 100%)',
+    starColorHex: 0xfde047,
     texture: '/images/planets/venus.jpg',
     fallbackImage: '/images/planets/venus.jpg',
     telemetry: {
@@ -150,9 +150,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'SEO Hizmetini İncele',
     href: '/hizmetler/seo/',
     accentColor: '#ef4444',
-    glowColor: 'rgba(239, 68, 68, 0.50)',
-    bgGradient: 'linear-gradient(135deg, #240606 0%, #4a0e0e 50%, #260707 100%)',
-    starColorHex: 0xf87171,
+    glowColor: 'rgba(239, 68, 68, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #450c0c 0%, #821c1c 50%, #4d0e0e 100%)',
+    starColorHex: 0xfca5a5,
     texture: '/images/planets/mars.jpg',
     fallbackImage: '/images/planets/mars.jpg',
     telemetry: {
@@ -179,9 +179,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Özel Yazılım Hizmetini İncele',
     href: '/hizmetler/mobil-uygulama/',
     accentColor: '#f97316',
-    glowColor: 'rgba(249, 115, 22, 0.45)',
-    bgGradient: 'linear-gradient(135deg, #1e1106 0%, #442208 50%, #221206 100%)',
-    starColorHex: 0xfb923c,
+    glowColor: 'rgba(249, 115, 22, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #3d1c07 0%, #75380e 50%, #422008 100%)',
+    starColorHex: 0xfdba74,
     texture: '/images/planets/jupiter.jpg',
     fallbackImage: '/images/planets/jupiter.jpg',
     telemetry: {
@@ -208,9 +208,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Harita Optimizasyonu Hizmetini İncele',
     href: '/hizmetler/google-maps/',
     accentColor: '#eab308',
-    glowColor: 'rgba(234, 179, 8, 0.35)',
-    bgGradient: 'linear-gradient(135deg, #100d05 0%, #241c08 50%, #0d0a04 100%)',
-    starColorHex: 0xfde047,
+    glowColor: 'rgba(234, 179, 8, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #3b2e07 0%, #6d550e 50%, #3e3108 100%)',
+    starColorHex: 0xfef08a,
     texture: '/images/planets/saturn.jpg',
     fallbackImage: '/images/planets/saturn.jpg',
     telemetry: {
@@ -237,9 +237,9 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Yemek Platformu Hizmetini İncele',
     href: '/hizmetler/yemeksepeti-trendyol-yemek/',
     accentColor: '#06b6d4',
-    glowColor: 'rgba(6, 182, 212, 0.40)',
-    bgGradient: 'linear-gradient(135deg, #010f14 0%, #04242e 50%, #010c10 100%)',
-    starColorHex: 0x22d3ee,
+    glowColor: 'rgba(6, 182, 212, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #043344 0%, #0c5b78 50%, #063d52 100%)',
+    starColorHex: 0x67e8f9,
     texture: '/images/planets/uranus.jpg',
     fallbackImage: '/images/planets/uranus.jpg',
     telemetry: {
@@ -266,8 +266,8 @@ export const planetServicesData: PlanetStage[] = [
     ctaLabel: 'Sosyal Medya Hizmetini İncele',
     href: '/hizmetler/instagram-reklamlari/',
     accentColor: '#2563eb',
-    glowColor: 'rgba(37, 99, 235, 0.55)',
-    bgGradient: 'linear-gradient(135deg, #010d29 0%, #052668 50%, #021338 100%)',
+    glowColor: 'rgba(59, 130, 246, 0.65)',
+    bgGradient: 'linear-gradient(135deg, #06235e 0%, #124497 50%, #092c73 100%)',
     starColorHex: 0x60a5fa,
     texture: '/images/planets/neptune.jpg',
     fallbackImage: '/images/planets/neptune.jpg',
@@ -427,7 +427,7 @@ export const PlanetServicesExperience: React.FC = () => {
   const nextPlanetMeshRef = useRef<THREE.Mesh | null>(null);
   const starfieldPointsRef = useRef<THREE.Points | null>(null);
   const foregroundStarsRef = useRef<THREE.Points | null>(null);
-  const shockwaveMeshRef = useRef<THREE.Mesh | null>(null);
+  const celestialBloomRef = useRef<THREE.Sprite | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
 
   const transitionAnimRef = useRef<{
@@ -482,17 +482,19 @@ export const PlanetServicesExperience: React.FC = () => {
 
     const fromIdx = activeScreenIndexRef.current;
     const direction = targetIndex > fromIdx ? 1 : -1;
-    const duration = prefersReducedMotion ? 250 : 1250; // Ultra-smooth 1250ms cinematic transition
+    const duration = prefersReducedMotion ? 250 : 1000; // Crisp, cinema-grade 1000ms deep space hyperjump
     wheelCooldownUntilRef.current = performance.now() + duration + 200;
 
     const fromPlanetIdx = Math.min(fromIdx, 7);
     const toPlanetIdx = Math.min(targetIndex, 7);
 
-    // Trigger Shockwave Pulse on arrival
-    if (shockwaveMeshRef.current && toPlanetIdx < 8) {
-      shockwaveMeshRef.current.scale.setScalar(0.8);
-      (shockwaveMeshRef.current.material as THREE.MeshBasicMaterial).opacity = 0.8;
-      shockwaveMeshRef.current.visible = true;
+    // Trigger Celestial Atmosphere Flare on arrival
+    if (celestialBloomRef.current && toPlanetIdx < 8) {
+      const toStage = planetServicesData[toPlanetIdx];
+      celestialBloomRef.current.material.color.setHex(toStage.starColorHex);
+      celestialBloomRef.current.scale.set(3.2, 3.2, 1.0);
+      celestialBloomRef.current.material.opacity = 0.0;
+      celestialBloomRef.current.visible = true;
     }
 
     // Setup 3D mesh textures & shader uniforms
@@ -533,12 +535,16 @@ export const PlanetServicesExperience: React.FC = () => {
       duration,
     };
 
-    // Swap text content at midpoint of cinematic glide
+    // Swap text content at midpoint while card is completely faded out
     setTimeout(() => {
       setActiveScreenIndex(targetIndex);
       activeScreenIndexRef.current = targetIndex;
+    }, duration * 0.45);
+
+    // Fade card back in as incoming planet locks into focal orbit
+    setTimeout(() => {
       setCardFade(false);
-    }, duration * 0.40);
+    }, duration * 0.65);
 
     // Finalize transition smoothly
     setTimeout(() => {
@@ -741,37 +747,56 @@ export const PlanetServicesExperience: React.FC = () => {
     nextPlanetMeshRef.current = nextPlanetMesh;
     scene.add(nextPlanetMesh);
 
-    // 3. Dynamic Stellar Shockwave Ring Mesh
-    const shockwaveGeo = new THREE.RingGeometry(1.4, 1.48, 64);
-    const shockwaveMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
+    // 3. Cinematic Celestial Atmosphere Flare & Starlight Corona Bloom
+    const createCelestialBloomTexture = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+        grad.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
+        grad.addColorStop(0.18, 'rgba(230, 245, 255, 0.75)');
+        grad.addColorStop(0.42, 'rgba(100, 180, 255, 0.28)');
+        grad.addColorStop(0.72, 'rgba(30, 100, 255, 0.08)');
+        grad.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 512, 512);
+      }
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    };
+
+    const bloomTex = createCelestialBloomTexture();
+    const bloomMat = new THREE.SpriteMaterial({
+      map: bloomTex,
       transparent: true,
       opacity: 0.0,
-      side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
-    const shockwaveMesh = new THREE.Mesh(shockwaveGeo, shockwaveMat);
-    shockwaveMesh.visible = false;
-    shockwaveMeshRef.current = shockwaveMesh;
-    scene.add(shockwaveMesh);
+    const celestialBloom = new THREE.Sprite(bloomMat);
+    celestialBloom.visible = false;
+    celestialBloomRef.current = celestialBloom;
+    scene.add(celestialBloom);
 
-    // 4. Background Deep Starfield (550 Luminous Stars)
-    const starCount = 550;
+    // 4. Background Deep Starfield (800 Luminous Stars)
+    const starCount = 800;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
 
     for (let i = 0; i < starCount; i++) {
-      starPositions[i * 3] = (Math.random() - 0.5) * 36;
-      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 22;
-      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 25 - 3;
+      starPositions[i * 3] = (Math.random() - 0.5) * 38;
+      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 24;
+      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 26 - 2;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     const starMat = new THREE.PointsMaterial({
-      size: 0.065,
+      size: 0.075,
       map: createGlowParticleTexture(),
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       color: planetServicesData[0].starColorHex,
@@ -780,21 +805,21 @@ export const PlanetServicesExperience: React.FC = () => {
     starfieldPointsRef.current = starfield;
     scene.add(starfield);
 
-    // 5. Foreground Parallax Dust Stars (150 Floating Spangles)
-    const fgStarCount = 150;
+    // 5. Foreground Parallax Dust Stars (200 Floating Spangles)
+    const fgStarCount = 200;
     const fgStarGeo = new THREE.BufferGeometry();
     const fgStarPositions = new Float32Array(fgStarCount * 3);
     for (let i = 0; i < fgStarCount; i++) {
-      fgStarPositions[i * 3] = (Math.random() - 0.5) * 16;
-      fgStarPositions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      fgStarPositions[i * 3] = (Math.random() - 0.5) * 18;
+      fgStarPositions[i * 3 + 1] = (Math.random() - 0.5) * 14;
       fgStarPositions[i * 3 + 2] = (Math.random() - 0.5) * 4 + 2;
     }
     fgStarGeo.setAttribute('position', new THREE.BufferAttribute(fgStarPositions, 3));
     const fgStarMat = new THREE.PointsMaterial({
-      size: 0.045,
+      size: 0.050,
       map: createGlowParticleTexture(),
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       color: 0xffffff,
@@ -804,7 +829,7 @@ export const PlanetServicesExperience: React.FC = () => {
     scene.add(fgStars);
 
     // 6. Dynamic Shooting Stars (Kayan Yıldızlar) System
-    const shootingStarsCount = 6;
+    const shootingStarsCount = 8;
     const shootingStars: ShootingStar[] = [];
 
     for (let i = 0; i < shootingStarsCount; i++) {
@@ -915,78 +940,88 @@ export const PlanetServicesExperience: React.FC = () => {
       if (anim) {
         const elapsed = now - anim.startTime;
         const rawT = Math.min(Math.max(elapsed / anim.duration, 0.0), 1.0);
-
-        // Hollywood / Cinema-Grade Quintic Ease Curve: cubic-bezier(0.22, 1, 0.36, 1)
-        const smoothT = 1.0 - Math.pow(1.0 - rawT, 3.5);
         const dollyIntensity = Math.sin(rawT * Math.PI);
 
-        // 3D Cinematic Camera Dolly, Dutch Roll Angle & Depth Breath
-        camera.position.z = 6.0 + dollyIntensity * 0.65;
-        camera.position.x = (mouse.x * 0.25) - (anim.direction * dollyIntensity * 0.35);
+        // 3D Cinematic Camera Depth Dolly & Hyperspace Surge
+        camera.position.z = 6.0 + dollyIntensity * 0.95;
+        camera.position.x = (mouse.x * 0.25) - (anim.direction * dollyIntensity * 0.30);
         camera.position.y = -mouse.y * 0.20;
-        camera.rotation.z = -anim.direction * dollyIntensity * 0.04; // Cinematic Dutch angle roll
+        camera.rotation.z = -anim.direction * dollyIntensity * 0.04;
 
-        // Hyperspace Warp Lines Acceleration during transition
+        // Hyperspace starfield acceleration & stretch
+        starfield.position.z = anim.direction * dollyIntensity * 5.0;
         starfield.rotation.y = totalTime * 0.015 + (anim.direction * dollyIntensity * 0.08);
-        starMat.size = 0.065 + dollyIntensity * 0.045;
+        starMat.size = 0.08 + dollyIntensity * 0.06;
 
-        // Shockwave Ring Animation
-        if (shockwaveMesh.visible) {
-          const shockProgress = Math.min(Math.max((rawT - 0.3) / 0.7, 0.0), 1.0);
-          shockwaveMesh.position.x = restOffsetX;
-          shockwaveMesh.position.y = 0.0;
-          shockwaveMesh.position.z = -0.1;
-          shockwaveMesh.scale.setScalar(1.0 + shockProgress * 2.8);
-          shockwaveMat.opacity = Math.max(0.0, (1.0 - shockProgress) * 0.65);
-          if (shockProgress >= 1.0) shockwaveMesh.visible = false;
+        // Celestial Bloom Flare Animation
+        const celestialBloom = celestialBloomRef.current;
+        if (celestialBloom && celestialBloom.visible) {
+          const bloomMat = celestialBloom.material as THREE.SpriteMaterial;
+          const bloomProgress = Math.min(Math.max((rawT - 0.30) / 0.60, 0.0), 1.0);
+          const bloomCurve = Math.sin(bloomProgress * Math.PI);
+          celestialBloom.position.set(restOffsetX, 0.0, -0.6);
+          celestialBloom.scale.setScalar(3.5 + bloomCurve * 3.2);
+          bloomMat.opacity = bloomCurve * 0.55;
+          if (rawT >= 0.95) {
+            celestialBloom.visible = false;
+            bloomMat.opacity = 0.0;
+          }
         }
 
         if (anim.direction === 1) {
-          // FORWARD: Exiting planet swoops left and deep into space with 3D roll
-          currentPlanetMesh.position.x = restOffsetX - smoothT * 3.2;
-          currentPlanetMesh.position.y = Math.sin(smoothT * Math.PI) * 0.45;
-          currentPlanetMesh.position.z = -smoothT * 2.8;
-          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.40);
-          currentPlanetMesh.rotation.y = mouseTiltY - smoothT * 0.45;
+          // FORWARD: Departing planet accelerates forward and sweeps past camera left
+          const departT = Math.pow(rawT, 1.8);
+          currentPlanetMesh.position.x = restOffsetX - Math.pow(rawT, 1.4) * 5.2;
+          currentPlanetMesh.position.y = Math.sin(rawT * Math.PI * 0.5) * 0.35;
+          currentPlanetMesh.position.z = departT * 4.5;
+          currentPlanetMesh.scale.setScalar(1.0 + departT * 0.7);
+          currentPlanetMesh.rotation.y = mouseTiltY - rawT * 0.8;
           if (curShaderMat.uniforms) {
-            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(smoothT, 1.2));
+            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(rawT, 1.4) * 1.5);
           }
 
           if (anim.toIndex < 8) {
-            // Next planet sweeps gracefully from right horizon into focus
+            // Arriving planet emerges from deep cosmic background into orbit
             nextPlanetMesh.visible = true;
-            nextPlanetMesh.position.x = (restOffsetX + 3.6) - smoothT * 3.6;
-            nextPlanetMesh.position.y = -(1.0 - smoothT) * 0.35;
-            nextPlanetMesh.position.z = -2.8 + smoothT * 2.8;
-            nextPlanetMesh.scale.setScalar(0.60 + smoothT * 0.40);
-            nextPlanetMesh.rotation.y = mouseTiltY + (1.0 - smoothT) * 0.45;
+            const arriveProgress = Math.min(Math.max((rawT - 0.20) / 0.80, 0.0), 1.0);
+            const arriveSmooth = arriveProgress * arriveProgress * arriveProgress * (arriveProgress * (arriveProgress * 6 - 15) + 10);
+
+            nextPlanetMesh.position.x = restOffsetX + (1.0 - arriveSmooth) * 3.5;
+            nextPlanetMesh.position.y = -(1.0 - arriveSmooth) * 0.35;
+            nextPlanetMesh.position.z = -18.0 * (1.0 - arriveSmooth);
+            nextPlanetMesh.scale.setScalar(0.12 + arriveSmooth * 0.88);
+            nextPlanetMesh.rotation.y = mouseTiltY + (1.0 - arriveSmooth) * 0.7;
             if (nextShaderMat.uniforms) {
-              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, Math.pow(smoothT, 0.8));
+              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, arriveProgress * 1.8);
             }
           } else {
             nextPlanetMesh.visible = false;
           }
         } else {
-          // BACKWARD: Exiting planet sweeps right and deep into space
-          currentPlanetMesh.position.x = restOffsetX + smoothT * 3.2;
-          currentPlanetMesh.position.y = -Math.sin(smoothT * Math.PI) * 0.45;
-          currentPlanetMesh.position.z = -smoothT * 2.8;
-          currentPlanetMesh.scale.setScalar(1.0 - smoothT * 0.40);
-          currentPlanetMesh.rotation.y = mouseTiltY + smoothT * 0.45;
+          // BACKWARD: Departing planet recedes deep into space
+          const departT = Math.pow(rawT, 1.8);
+          currentPlanetMesh.position.x = restOffsetX + Math.pow(rawT, 1.4) * 3.8;
+          currentPlanetMesh.position.y = -Math.sin(rawT * Math.PI * 0.5) * 0.35;
+          currentPlanetMesh.position.z = -departT * 18.0;
+          currentPlanetMesh.scale.setScalar(Math.max(0.08, 1.0 - departT * 0.92));
+          currentPlanetMesh.rotation.y = mouseTiltY + rawT * 0.8;
           if (curShaderMat.uniforms) {
-            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(smoothT, 1.2));
+            curShaderMat.uniforms.uOpacity.value = Math.max(0.0, 1.0 - Math.pow(rawT, 1.4) * 1.5);
           }
 
           if (anim.toIndex < 8) {
-            // Prev planet sweeps gracefully from left horizon into focus
+            // Arriving planet sweeps in from camera flank into orbit
             nextPlanetMesh.visible = true;
-            nextPlanetMesh.position.x = (restOffsetX - 3.6) + smoothT * 3.6;
-            nextPlanetMesh.position.y = (1.0 - smoothT) * 0.35;
-            nextPlanetMesh.position.z = -2.8 + smoothT * 2.8;
-            nextPlanetMesh.scale.setScalar(0.60 + smoothT * 0.40);
-            nextPlanetMesh.rotation.y = mouseTiltY - (1.0 - smoothT) * 0.45;
+            const arriveProgress = Math.min(Math.max((rawT - 0.20) / 0.80, 0.0), 1.0);
+            const arriveSmooth = arriveProgress * arriveProgress * arriveProgress * (arriveProgress * (arriveProgress * 6 - 15) + 10);
+
+            nextPlanetMesh.position.x = restOffsetX - (1.0 - arriveSmooth) * 3.8;
+            nextPlanetMesh.position.y = (1.0 - arriveSmooth) * 0.35;
+            nextPlanetMesh.position.z = 4.5 * (1.0 - arriveSmooth);
+            nextPlanetMesh.scale.setScalar(1.6 - arriveSmooth * 0.6);
+            nextPlanetMesh.rotation.y = mouseTiltY - (1.0 - arriveSmooth) * 0.7;
             if (nextShaderMat.uniforms) {
-              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, Math.pow(smoothT, 0.8));
+              nextShaderMat.uniforms.uOpacity.value = Math.min(1.0, arriveProgress * 1.8);
             }
           } else {
             nextPlanetMesh.visible = false;
@@ -1006,6 +1041,7 @@ export const PlanetServicesExperience: React.FC = () => {
         camera.position.x = mouse.x * 0.25;
         camera.position.y = -mouse.y * 0.20;
         camera.rotation.z = 0.0;
+        starfield.position.z = 0.0;
         starMat.size = 0.065;
 
         if (curShaderMat.uniforms) {
@@ -1016,13 +1052,17 @@ export const PlanetServicesExperience: React.FC = () => {
         if (nextShaderMat.uniforms) {
           nextShaderMat.uniforms.uOpacity.value = 0.0;
         }
+
+        if (celestialBloomRef.current) {
+          celestialBloomRef.current.visible = false;
+        }
       }
 
       // Gentle ambient drift for background starlight
       starfield.rotation.y = totalTime * 0.015;
 
       // Shooting Stars (Kayan Yıldızlar) Update Loop
-      if (now - lastMeteorSpawnTime > 1300) {
+      if (now - lastMeteorSpawnTime > 850) {
         lastMeteorSpawnTime = now;
         const inactiveStar = shootingStars.find((s) => !s.active);
         if (inactiveStar) {
@@ -1157,8 +1197,8 @@ export const PlanetServicesExperience: React.FC = () => {
             <article
               data-testid="active-service-card"
               key={activePlanetStage.id}
-              className={`lg:col-span-6 xl:col-span-5 bg-slate-950/75 backdrop-blur-3xl border border-white/20 p-5 sm:p-7 rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] space-y-3.5 sm:space-y-4 transition-all duration-500 ease-out text-white ${
-                cardFade ? 'opacity-0 translate-y-3 blur-md scale-[0.98]' : 'opacity-100 translate-y-0 blur-none scale-100'
+              className={`lg:col-span-6 xl:col-span-5 bg-slate-950/75 backdrop-blur-3xl border border-white/20 p-5 sm:p-7 rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] space-y-3.5 sm:space-y-4 transition-all duration-300 ease-out text-white ${
+                cardFade ? 'opacity-0 translate-y-3 blur-xs scale-[0.98]' : 'opacity-100 translate-y-0 blur-none scale-100'
               }`}
               style={{
                 boxShadow: `0 25px 60px -15px rgba(0,0,0,0.9), 0 0 30px -10px ${activePlanetStage.accentColor}30`,

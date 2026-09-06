@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Star, X, MessageCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 import brandConfig from '../../config/brand';
@@ -66,9 +66,8 @@ export const customerReviewsList = [
   }
 ];
 
-// Expanded review list for infinite river loop
-const infiniteRiverReviews = [
-  ...customerReviewsList,
+// Expanded review list for seamless infinite river loop
+const riverReviews = [
   ...customerReviewsList,
   ...customerReviewsList
 ];
@@ -76,8 +75,6 @@ const infiniteRiverReviews = [
 export const ReviewsModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -102,40 +99,28 @@ export const ReviewsModal: React.FC = () => {
     };
   }, [isOpen]);
 
-  // Continuous downward river stream effect
-  useEffect(() => {
-    if (!isOpen) return;
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    let animId: number;
-    let lastTime = performance.now();
-
-    const scrollRiver = (now: number) => {
-      const dt = (now - lastTime) / 1000;
-      lastTime = now;
-
-      if (!isPaused && container) {
-        // Continuous downward scroll speed (approx 38px/sec)
-        container.scrollTop += dt * 38;
-
-        // Loop smoothly when reaching near bottom
-        if (container.scrollTop >= container.scrollHeight / 2) {
-          container.scrollTop = 0;
-        }
-      }
-
-      animId = requestAnimationFrame(scrollRiver);
-    };
-
-    animId = requestAnimationFrame(scrollRiver);
-    return () => cancelAnimationFrame(animId);
-  }, [isOpen, isPaused]);
-
   if (!mounted) return null;
 
   return (
     <>
+      <style>{`
+        @keyframes riverFlowDown {
+          0% {
+            transform: translateY(-50%);
+          }
+          100% {
+            transform: translateY(0%);
+          }
+        }
+        .river-marquee-track {
+          animation: riverFlowDown 32s linear infinite;
+          will-change: transform;
+        }
+        .river-marquee-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+
       {/* Header Button Trigger */}
       <button
         type="button"
@@ -178,6 +163,10 @@ export const ReviewsModal: React.FC = () => {
                       <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                       5.0 / 5.0 Onaylı
                     </span>
+                    <span className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Nehir Akışı
+                    </span>
                   </div>
                   <h2 id="reviews-title" className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                     Gerçek Müşteri Geri Dönüşleri
@@ -195,23 +184,16 @@ export const ReviewsModal: React.FC = () => {
               </div>
 
               {/* Reviews Continuous River Stream */}
-              <div className="relative flex-1 min-h-[380px] max-h-[58vh] overflow-hidden bg-slate-950/90">
+              <div className="relative flex-1 min-h-[400px] max-h-[60vh] overflow-hidden bg-slate-950/90 select-none">
                 {/* Top Soft Vignette Mask */}
-                <div className="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-slate-950 to-transparent pointer-events-none z-10" />
+                <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-slate-950 via-slate-950/90 to-transparent pointer-events-none z-10" />
 
-                {/* Auto-flowing River Container */}
-                <div
-                  ref={scrollContainerRef}
-                  onMouseEnter={() => setIsPaused(true)}
-                  onMouseLeave={() => setIsPaused(false)}
-                  onTouchStart={() => setIsPaused(true)}
-                  onTouchEnd={() => setIsPaused(false)}
-                  className="h-full overflow-y-auto px-6 py-4 space-y-4 scrollbar-none"
-                >
-                  {infiniteRiverReviews.map((review, idx) => (
+                {/* Auto-flowing Downward River Track */}
+                <div className="river-marquee-track flex flex-col gap-4 px-6 py-4">
+                  {riverReviews.map((review, idx) => (
                     <article
                       key={`${review.id}-${idx}`}
-                      className="bg-slate-900/60 hover:bg-slate-900/90 p-5 rounded-2xl border border-slate-800/80 transition-all space-y-3 shadow-lg shadow-black/40"
+                      className="bg-slate-900/70 hover:bg-slate-900 border border-slate-800/90 hover:border-sky-500/40 p-5 rounded-2xl transition-all space-y-3 shadow-lg shadow-black/40 shrink-0 cursor-default"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -246,7 +228,7 @@ export const ReviewsModal: React.FC = () => {
                 </div>
 
                 {/* Bottom Soft Vignette Mask */}
-                <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-10" />
+                <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent pointer-events-none z-10" />
               </div>
 
               {/* Modal Footer CTA */}
