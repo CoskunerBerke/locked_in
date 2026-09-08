@@ -55,10 +55,10 @@ const articleSchema = {
   description={post.data.description}
   activePage="/akademi/"
 >
-  <Breadcrumb items={breadcrumbItems} title={post.data.title} />
-
-  <article class="py-16 bg-white border-b border-slate-200">
+  <article class="py-12 sm:py-16 bg-white border-b border-slate-200">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <Breadcrumb items={breadcrumbItems} title={post.data.title} />
+
       <!-- Article Header Meta -->
       <div class="space-y-4 border-b border-slate-200 pb-8">
         <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-medium">
