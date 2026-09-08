@@ -16,6 +16,7 @@ interface Props {
 }
 
 const { title, description, image, customSchema, activePage, hideFooter = false, robots } = Astro.props;
+const isHomePage = activePage === '/';
 ---
 
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ const { title, description, image, customSchema, activePage, hideFooter = false,
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
 
-  <body class="min-h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
+  <body class={`min-h-full flex flex-col ${isHomePage ? 'bg-slate-950 text-slate-100' : 'bg-white text-slate-900'} antialiased selection:bg-sky-500 selection:text-white`}>
     <Header activePage={activePage} />
 
     <main id="main-content" class="flex-1">

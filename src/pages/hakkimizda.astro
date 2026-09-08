@@ -1,13 +1,65 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Breadcrumb from '../components/common/Breadcrumb.astro';
-import WhyUs from '../components/sections/WhyUs.astro';
-import WorkProcess from '../components/sections/WorkProcess.astro';
 import FinalCTA from '../components/sections/FinalCTA.astro';
 import brandConfig from '../config/brand';
-import { Target, Eye } from 'lucide-react';
+import { ShieldCheck, Zap, Target, Headphones, Compass, Code, Layout as LayoutIcon, Rocket, CheckCircle2 } from 'lucide-react';
 
 const breadcrumbItems = [{ name: 'Kurumsal / Hakkımızda', href: '/hakkimizda/' }];
+
+const values = [
+  {
+    icon: ShieldCheck,
+    title: 'Dürüstlük ve Şeffaflık',
+    description: 'Tutamayacağımız boş vaatlerde bulunmaz; bütçe, süreç ve raporlamada müşterilerimizle daima %100 açık ve dürüst iletişim kurarız.',
+    badge: 'Temel İlkemiz',
+  },
+  {
+    icon: Zap,
+    title: 'Hız ve Yüksek Teknoloji',
+    description: 'Hantal ve yavaş eski WordPress şablonları yerine modern, saliseler içinde açılan Astro ve React altyapısıyla en yüksek Google hızını sunarız.',
+    badge: 'Modern Altyapı',
+  },
+  {
+    icon: Target,
+    title: 'Satış ve Dönüşüm Odaklılık',
+    description: 'Sadece göze hoş gelen sayfalar değil; telefon çaldıran, WhatsApp mesajı başlatan ve doğrudan ciro kazandıran akıllı kurgular inşa ederiz.',
+    badge: 'Somut Sonuç',
+  },
+  {
+    icon: Headphones,
+    title: 'Sürdürülebilir Destek',
+    description: 'İşi teslim edip kaybolmak yerine, projeniz yayına girdikten sonra da teknik sorularınız ve güncellemeleriniz için her zaman bir telefon uzağınızdayız.',
+    badge: 'Kesintisiz İletişim',
+  },
+];
+
+const steps = [
+  {
+    number: '01',
+    icon: Compass,
+    title: 'İhtiyaç & Hedef Analizi',
+    description: 'İşletmenizin hedeflerini, rakiplerinizi ve bütçenizi dinleyerek size özel net bir dijital yol haritası belirliyoruz.',
+  },
+  {
+    number: '02',
+    icon: LayoutIcon,
+    title: 'Özel Tasarım & UI/UX',
+    description: 'Markanızın kurumsal prestijini yansıtan, tüm mobil ve masaüstü ekranlara %100 uyumlu modern arayüzleri kurguluyoruz.',
+  },
+  {
+    number: '03',
+    icon: Code,
+    title: 'Hatasız Kodlama & Test',
+    description: 'Google Core Web Vitals ve güvenlik testlerinden tam not alan temiz, hızlı ve SEO dostu kod mimarisini inşa ediyoruz.',
+  },
+  {
+    number: '04',
+    icon: Rocket,
+    title: 'Canlı Yayın & Büyüme',
+    description: 'Sisteminizi eksiksiz yayına alıyor, yerel harita ve dijital stratejilerle müşteri kazanım sürecinizi başlatıyoruz.',
+  },
+];
 ---
 
 <Layout
@@ -15,47 +67,240 @@ const breadcrumbItems = [{ name: 'Kurumsal / Hakkımızda', href: '/hakkimizda/'
   description="Rent Yazılım; Ankara web tasarım, SEO hizmeti, Google Maps yerel harita optimizasyonu, mobil uygulama ve yemek platformu panel danışmanlığı sunan dijital ajanstır."
   activePage="/hakkimizda/"
 >
-  <Breadcrumb items={breadcrumbItems} title="Hakkımızda & Kurumsal Vizyonumuz" />
+  <!-- HERO SECTION (Light, Clean, High Contrast & Unified Layout) -->
+  <section class="relative py-12 sm:py-16 bg-slate-50/90 border-b border-slate-200/80 overflow-hidden">
+    <!-- Soft Sky Aura -->
+    <div class="absolute top-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-25 pointer-events-none bg-sky-500/15"></div>
 
-  <section class="py-16 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-      <div class="max-w-3xl">
-        <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3 py-1 rounded-full border border-sky-200">
-          Kurumsal Profil
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 leading-tight">
-          Dijitalde güçlü ve sürdürülebilir başarı sistemleri inşa ediyoruz.
-        </h1>
-        <p class="text-slate-600 text-base sm:text-lg mt-4 leading-relaxed">
-          {brandConfig.brandName}, işletmelerin dijital dünyadaki tüm ihtiyaçlarını tek merkezden yönetmek, karmaşık teknik süreçleri şeffaf çözümlere dönüştürmek amacıyla kurulmuş modern bir dijital hizmet ajansıdır.
-        </p>
-      </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <Breadcrumb items={breadcrumbItems} title="Hakkımızda & Kurumsal Vizyonumuz" />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="p-8 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-          <div class="p-3 rounded-xl bg-sky-500 text-white w-fit">
-            <Target className="w-6 h-6" />
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mt-2">
+        <!-- Left Hero Content (7 Columns) -->
+        <div class="lg:col-span-7 flex flex-col justify-center">
+          <div class="inline-flex items-center gap-2 mb-3">
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-bold border bg-sky-50 text-sky-700 border-sky-200 inline-flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
+              Rent Yazılım • Kurumsal Profil
+            </span>
           </div>
-          <h2 class="text-xl font-bold text-slate-900">Misyonumuz</h2>
-          <p class="text-slate-600 text-sm leading-relaxed">
-            İşletmelerin dijital varlıklarını en yüksek güvenlik, hız ve dönüşüm standartlarında inşa ederek markalarını hedef kitleleriyle etkili ve güvenilir bir şekilde buluşturmaktır.
+
+          <h1 class="text-3xl sm:text-4xl lg:text-[40px] font-extrabold text-slate-900 tracking-tight leading-[1.2] mb-4">
+            Dijitalde güçlü ve sürdürülebilir <span class="text-sky-600">başarı sistemleri</span> inşa ediyoruz.
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-6 max-w-2xl">
+            {brandConfig.brandName}; hazır şablonlar ve karmaşık teknik jargon yerine, işletmenizin doğrudan müşteri ve ciro kazanmasını sağlayan modern bir dijital çözüm ajansıdır. Web sitesinden yerel haritalara, SEO'dan hedefli reklamlara kadar tüm dijital varlıklarınızı tek merkezden profesyonelce yönetiyoruz.
           </p>
+
+          <!-- Trust Chips -->
+          <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-8">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              %100 Zamanında Teslimat
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              ⭐ 5.0 Müşteri Memnuniyeti
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              Resmî Sözleşmeli &amp; Şeffaf
+            </span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+            <a
+              href="#teklif-formu"
+              class="px-6 py-3.5 rounded-xl font-bold text-sm bg-sky-600 hover:bg-sky-700 text-white transition-all shadow-md shadow-sky-900/10 inline-flex items-center gap-2"
+            >
+              <span>Ücretsiz Ön Görüşme Yapın</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+
+            <a
+              href={`https://wa.me/${brandConfig.whatsappNumber}?text=Merhaba,%20kurumsal%20hizmetleriniz%20hakkında%20bilgi%20almak%20istiyorum.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-5 py-3.5 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-md shadow-emerald-900/10 inline-flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+              </svg>
+              <span>WhatsApp'tan Yazın</span>
+            </a>
+          </div>
         </div>
 
-        <div class="p-8 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-          <div class="p-3 rounded-xl bg-sky-500 text-white w-fit">
-            <Eye className="w-6 h-6" />
+        <!-- Right Hero Showcase Card (5 Columns) -->
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-xl shadow-slate-200/80 border border-slate-200/90 flex flex-col justify-between min-h-[350px]">
+            <div>
+              <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                  <div class="px-3 py-1.5 rounded-xl bg-sky-600 text-white font-bold text-xs shadow-xs flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span>Tescilli Dijital Ajans</span>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
+                    Ankara • Çankaya
+                  </span>
+                </div>
+                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                  Aktif Destek
+                </span>
+              </div>
+
+              <!-- Key Capabilities -->
+              <div class="mt-5 space-y-3.5">
+                <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div class="p-2 rounded-lg bg-sky-100 text-sky-700 shrink-0">
+                    <Code className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm">Modern Web ve Mobil Yazılım</h3>
+                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Astro ve React ile 99+ PageSpeed hızında, güvenli kurumsal siteler.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div class="p-2 rounded-lg bg-emerald-100 text-emerald-700 shrink-0">
+                    <Target className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm">Google Harita &amp; SEO Gücü</h3>
+                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Yerel aramalarda ilk sıralara taşıyan organik büyüme stratejisi.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div class="p-2 rounded-lg bg-purple-100 text-purple-700 shrink-0">
+                    <Zap className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm">Hedefli Reklam ve Panel Yönetimi</h3>
+                    <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Instagram ve yemek platformlarında bütçe verimliliği ve satış artışı.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Footnote -->
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-medium">Türkiye Geneli Hizmet</span>
+              <span class="font-bold text-sky-600">Tek Noktadan Çözüm</span>
+            </div>
           </div>
-          <h2 class="text-xl font-bold text-slate-900">Vizyonumuz</h2>
-          <p class="text-slate-600 text-sm leading-relaxed">
-            Gelişen web teknolojilerini, arama motoru standartlarını ve dijital reklam araçlarını en entegre biçimde kullanan lider ve güvenilir dijital çözüm ortağı olmaktır.
-          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <WhyUs />
-  <WorkProcess />
+  <!-- SECTION 2: VALUES & PHILOSOPHY (Clean White Background) -->
+  <section class="py-16 sm:py-20 bg-white border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+          Çalışma Felsefemiz
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">
+          Bizi Diğer Ajanslardan Ayıran <span class="text-sky-600">Temel Değerlerimiz</span>
+        </h2>
+        <p class="text-sm sm:text-base text-slate-500 mt-2">
+          Gereksiz teknik kalabalığı bir kenara bırakıp doğrudan işletmenizin büyümesine odaklanıyoruz.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {values.map((v) => {
+          const IconComponent = v.icon;
+          return (
+            <div class="p-6 sm:p-7 rounded-2xl bg-slate-50/80 border border-slate-200/90 hover:border-sky-300 hover:bg-white transition-all shadow-xs flex flex-col justify-between group">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="p-3 rounded-xl bg-sky-500 text-white w-fit shadow-xs group-hover:scale-105 transition-transform">
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                  <span class="text-[11px] font-bold text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shadow-xs">
+                    {v.badge}
+                  </span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">{v.title}</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">{v.description}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: WORK PROCESS (Clean Slate Background, 4 Clear Steps) -->
+  <section class="py-16 sm:py-20 bg-slate-50/80 border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-xs">
+          Şeffaf İlerleme Modeli
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">
+          Fikirden Yayına <span class="text-sky-600">4 Adımda</span> Kolay Süreç
+        </h2>
+        <p class="text-sm sm:text-base text-slate-500 mt-2">
+          Zaman kaybettirmeyen, net ve her aşaması önceden planlanmış profesyonel teslimat.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {steps.map((step) => {
+          const StepIcon = step.icon;
+          return (
+            <div class="p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-slate-300 transition-all shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-xl font-black text-sky-600 tracking-tight">{step.number}</span>
+                  <div class="p-2 rounded-lg bg-slate-100 text-slate-700">
+                    <StepIcon className="w-4 h-4" />
+                  </div>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 mb-2">{step.title}</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">{step.description}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: CORPORATE LEGAL TRANSPARENCY STRIP -->
+  <section class="py-12 bg-white border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200/90">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-slate-700">
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Firma Ünvanı</span>
+            <p class="text-xs font-bold text-slate-900">{brandConfig.legalCompanyName}</p>
+          </div>
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Merkez Ofis &amp; Kapsam</span>
+            <p class="text-xs font-semibold text-slate-800">{brandConfig.address} • {brandConfig.serviceArea}</p>
+          </div>
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Doğrudan İletişim</span>
+            <p class="text-xs font-semibold text-slate-800">{brandConfig.phone}</p>
+          </div>
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Resmî E-Posta</span>
+            <p class="text-xs font-semibold text-slate-800">{brandConfig.email}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA (Uniform Form Section) -->
   <FinalCTA />
 </Layout>

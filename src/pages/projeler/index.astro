@@ -14,10 +14,9 @@ const breadcrumbItems = [{ name: 'Projeler', href: '/projeler/' }];
   description={`${brandConfig.brandName} tarafından geliştirilen kurumsal web tasarımı, SEO altyapıları, harita ve dijital çözümler.`}
   activePage="/projeler/"
 >
-  <Breadcrumb items={breadcrumbItems} title="Gerçekleştirdiğimiz Projeler" />
-
-  <section class="py-16 bg-slate-50 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+  <section class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <Breadcrumb items={breadcrumbItems} title="Gerçekleştirdiğimiz Projeler" />
       <div class="max-w-3xl space-y-3">
         <h1 class="text-3xl font-black text-slate-900">Canlı Proje ve Referanslarımız</h1>
         <p class="text-slate-600 text-sm leading-relaxed">

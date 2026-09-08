@@ -16,11 +16,10 @@ const isEmailValid = brandConfig.email && !brandConfig.email.includes('Geçici')
   description="Rent Yazılım ile iletişime geçin. Ankara web tasarım, SEO, Google Maps harita optimizasyonu ve dijital reklam projeleriniz için ücretsiz teklif isteyin."
   activePage="/iletisim/"
 >
-  <Breadcrumb items={breadcrumbItems} title="Bizimle İletişime Geçin" />
-
-  <section class="py-16 bg-white border-b border-slate-200">
+  <section class="py-12 sm:py-16 bg-slate-50/80 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <Breadcrumb items={breadcrumbItems} title="Bizimle İletişime Geçin" />
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-4">
         <!-- Left Contact Info -->
         <div class="lg:col-span-5 space-y-8">
           <div class="space-y-3">
