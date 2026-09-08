@@ -351,10 +351,10 @@ function createPlanetShader(
         
         float mask = 1.0;
         if (!uIsRingPlanet) {
-          // Seamless soft edge feathering on spherical planets
-          mask = 1.0 - smoothstep(0.482, 0.496, dist);
+          // Seamless soft edge feathering on spherical planets (calibrated to planet limb, zero black gap)
+          mask = 1.0 - smoothstep(0.450, 0.468, dist);
         } else {
-          // Ring Planet (Saturn / Uranus):
+          // Ring Planet (Saturn):
           // Inside the planet sphere (dist < 0.27), sphere & shadows are 100% solid
           // Outside the planet sphere, rings are preserved by luminance while black space is discarded
           float lum = max(texColor.r, max(texColor.g, texColor.b));
@@ -374,10 +374,10 @@ function createPlanetShader(
           discard;
         }
 
-        // Soft atmospheric rim illumination for spherical planets
+        // Soft atmospheric rim illumination directly hugs the planet sphere limb
         float rim = 0.0;
         if (!uIsRingPlanet) {
-          rim = smoothstep(0.35, 0.485, dist) * (1.0 - smoothstep(0.485, 0.496, dist)) * 0.25;
+          rim = smoothstep(0.36, 0.456, dist) * (1.0 - smoothstep(0.456, 0.468, dist)) * 0.35;
         }
         vec3 finalColor = texColor.rgb + uAtmosphereColor * rim;
 
@@ -552,7 +552,7 @@ export const PlanetServicesExperience: React.FC = () => {
       const currMat = currentPlanetMeshRef.current.material as THREE.ShaderMaterial;
       if (currMat.uniforms) {
         currMat.uniforms.uTexture.value = fromTex;
-        currMat.uniforms.uIsRingPlanet.value = fromPlanetIdx === 5 || fromPlanetIdx === 6;
+        currMat.uniforms.uIsRingPlanet.value = fromPlanetIdx === 5;
         currMat.uniforms.uAtmosphereColor.value = new THREE.Color(fromStage.starColorHex);
         currMat.uniforms.uOpacity.value = 1.0;
       }
@@ -560,7 +560,7 @@ export const PlanetServicesExperience: React.FC = () => {
       const nextMat = nextPlanetMeshRef.current.material as THREE.ShaderMaterial;
       if (nextMat.uniforms) {
         nextMat.uniforms.uTexture.value = toTex;
-        nextMat.uniforms.uIsRingPlanet.value = toPlanetIdx === 5 || toPlanetIdx === 6;
+        nextMat.uniforms.uIsRingPlanet.value = toPlanetIdx === 5;
         nextMat.uniforms.uAtmosphereColor.value = new THREE.Color(toStage.starColorHex);
         nextMat.uniforms.uOpacity.value = 0.0;
       }
@@ -604,7 +604,7 @@ export const PlanetServicesExperience: React.FC = () => {
             const currMat = currentPlanetMeshRef.current.material as THREE.ShaderMaterial;
             if (currMat.uniforms) {
               currMat.uniforms.uTexture.value = finalTex;
-              currMat.uniforms.uIsRingPlanet.value = toPlanetIdx === 5 || toPlanetIdx === 6;
+              currMat.uniforms.uIsRingPlanet.value = toPlanetIdx === 5;
               currMat.uniforms.uAtmosphereColor.value = new THREE.Color(finalStage.starColorHex);
               currMat.uniforms.uOpacity.value = 1.0;
             }

@@ -156,6 +156,9 @@ test.describe('Rent Yazılım — Pure WebGL Fullscreen Planet Service Experienc
       if (expectedStages[i].id === 'saturn' && testInfo.project.name === 'chromium') {
         await page.screenshot({ path: path.join(artifactsDir, 'v3_06_saturn_scene.png') });
       }
+      if (expectedStages[i].id === 'uranus' && testInfo.project.name === 'chromium') {
+        await page.screenshot({ path: path.join(artifactsDir, 'v3_07_uranus_scene.png') });
+      }
       if (expectedStages[i].id === 'neptune' && testInfo.project.name === 'chromium') {
         await page.screenshot({ path: path.join(artifactsDir, 'v3_08_neptune_scene.png') });
       }
