@@ -1,0 +1,417 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../common/Breadcrumb.astro';
+import FinalCTA from '../sections/FinalCTA.astro';
+import brandConfig from '../../config/brand';
+
+export interface MetricItem {
+  value: string;
+  label: string;
+  subtext?: string;
+}
+
+export interface FeatureItem {
+  title: string;
+  description: string;
+  iconName?: string;
+}
+
+export interface RelatedServiceItem {
+  title: string;
+  url: string;
+  description?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  customSchema?: any;
+  breadcrumbs: Array<{ name: string; url: string }>;
+
+  serviceKey: 'yemeksepeti' | 'instagram' | 'google-maps' | 'mobil-uygulama' | 'seo' | 'web-tasarim';
+  categoryBadge: string;
+  heroTitle: string;
+  heroTitleHighlight?: string;
+  heroDescription: string;
+  ctaText?: string;
+
+  badgeClass: string;
+  primaryBtnClass: string;
+  heroGlowClass: string;
+
+  showcaseTitle: string;
+  showcaseSubtitle: string;
+  metrics: [MetricItem, MetricItem, MetricItem];
+
+  contentTitle?: string;
+  contentSubtitle?: string;
+  features: [FeatureItem, FeatureItem, FeatureItem, FeatureItem];
+
+  disclaimerTitle?: string;
+  disclaimerText: string;
+
+  relatedServices: RelatedServiceItem[];
+}
+
+const {
+  title,
+  description,
+  customSchema,
+  breadcrumbs,
+  serviceKey,
+  categoryBadge,
+  heroTitle,
+  heroTitleHighlight,
+  heroDescription,
+  ctaText = 'Hemen Teklif Alın',
+  badgeClass,
+  primaryBtnClass,
+  heroGlowClass,
+  showcaseTitle,
+  showcaseSubtitle,
+  metrics,
+  contentTitle = 'Hizmet Kapsamında Sunduğumuz Çözümler',
+  contentSubtitle = 'İşletmenizin operasyonel verimini ve cirosunu artıran uçtan uca profesyonel süreç.',
+  features,
+  disclaimerTitle = 'Marka Sahipliği ve Yasal Beyan:',
+  disclaimerText,
+  relatedServices,
+} = Astro.props;
+
+const formattedPhone = brandConfig.phone.replace(/[^0-9+]/g, '');
+---
+
+<Layout title={title} description={description} customSchema={customSchema}>
+  <!-- HERO SECTION (Uniform Height & Structured Grid) -->
+  <section class="relative py-12 sm:py-16 bg-slate-50/90 border-b border-slate-200/80 overflow-hidden">
+    <!-- Subtle Brand Glow Aura -->
+    <div class={`absolute top-0 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-30 pointer-events-none ${heroGlowClass}`}></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <Breadcrumb items={breadcrumbs} />
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mt-2">
+        <!-- Left Hero Content (7 Columns) -->
+        <div class="lg:col-span-7 flex flex-col justify-center">
+          <div class="inline-flex items-center gap-2 mb-3">
+            <span class={`px-3.5 py-1.5 rounded-full text-xs font-bold border ${badgeClass} inline-flex items-center gap-2`}>
+              <span class="w-2 h-2 rounded-full bg-current animate-pulse"></span>
+              {categoryBadge}
+            </span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-4">
+            {heroTitle}
+            {heroTitleHighlight && <span class="block text-sky-600">{heroTitleHighlight}</span>}
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl">
+            {heroDescription}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+            <a href="#teklif-formu" class={`px-6 py-3.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2 ${primaryBtnClass}`}>
+              <span>{ctaText}</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+
+            <a
+              href={`https://wa.me/${brandConfig.whatsappNumber}?text=Merhaba,%20${encodeURIComponent(heroTitle)}%20hizmetiniz%20hakkında%20bilgi%20almak%20istiyorum.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-5 py-3.5 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-md shadow-emerald-900/10 inline-flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+              </svg>
+              <span>WhatsApp'tan Yazın</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Hero Showcase Card (5 Columns - Uniform Authentic Brand Visuals) -->
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-xl shadow-slate-200/80 border border-slate-200/90 flex flex-col justify-between min-h-[350px]">
+            <!-- Showcase Header with Official Brand Logos -->
+            <div>
+              <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  {serviceKey === 'yemeksepeti' && (
+                    <div class="flex items-center gap-2">
+                      <!-- Yemeksepeti Logo Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EA004B] text-white shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span class="text-xs font-black tracking-tight">yemeksepeti</span>
+                      </div>
+                      <!-- Trendyol Yemek Logo Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#F27A1A] text-white shadow-sm">
+                        <span class="text-xs font-black tracking-tight">trendyol</span>
+                        <span class="text-[10px] bg-white/20 px-1 rounded font-bold">yemek</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {serviceKey === 'instagram' && (
+                    <div class="flex items-center gap-2">
+                      <!-- Instagram Gradient Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                        <span class="text-xs font-black tracking-tight">Instagram</span>
+                      </div>
+                      <!-- Meta Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0081FB] text-white shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M16.96 4c-1.77 0-3.41.87-4.96 2.37C10.45 4.87 8.81 4 7.04 4 3.16 4 0 7.21 0 11.17c0 4.14 3.32 8.83 7.04 8.83 2.01 0 3.73-.83 4.96-2.02 1.23 1.19 2.95 2.02 4.96 2.02 3.72 0 7.04-4.69 7.04-8.83C24 7.21 20.84 4 16.96 4zm-9.92 13.7c-2.45 0-4.73-3.64-4.73-6.53 0-2.6 1.99-4.57 4.73-4.57 1.5 0 2.91.82 4.22 2.45-1.59 2.5-3.07 6.09-4.22 8.65zm9.84 0c-1.15-2.56-2.63-6.15-4.22-8.65 1.31-1.63 2.72-2.45 4.22-2.45 2.74 0 4.73 1.97 4.73 4.57 0 2.89-2.28 6.53-4.73 6.53z"/>
+                        </svg>
+                        <span class="text-xs font-black tracking-tight">Meta</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {serviceKey === 'google-maps' && (
+                    <div class="flex items-center gap-2">
+                      <!-- Google Maps 4-Color Pin Badge -->
+                      <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 text-white shadow-sm">
+                        <svg class="w-5 h-5" viewBox="0 0 92 132" fill="none">
+                          <path d="M46 0C20.59 0 0 20.59 0 46C0 80.5 46 132 46 132C46 132 92 80.5 92 46C92 20.59 71.41 0 46 0Z" fill="#34A853"/>
+                          <path d="M46 0C32.73 0 20.72 5.67 12.3 14.73L46 54.74L79.7 14.73C71.28 5.67 59.27 0 46 0Z" fill="#EA4335"/>
+                          <path d="M12.3 14.73C4.66 22.95 0 33.93 0 46C0 57.57 4.14 68.61 11.08 79.52L46 54.74L12.3 14.73Z" fill="#FBBC05"/>
+                          <path d="M46 54.74L80.92 79.52C87.86 68.61 92 57.57 92 46C92 33.93 87.34 22.95 79.7 14.73L46 54.74Z" fill="#4285F4"/>
+                          <circle cx="46" cy="46" r="18" fill="white"/>
+                        </svg>
+                        <span class="text-xs font-bold tracking-tight">Google Maps</span>
+                      </div>
+                      <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        Doğrulanmış Profil
+                      </span>
+                    </div>
+                  )}
+
+                  {serviceKey === 'mobil-uygulama' && (
+                    <div class="flex items-center gap-2">
+                      <!-- Apple Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.71-.94 2.73 1 .08 2.03-.48 2.65-1.23z"/>
+                        </svg>
+                        <span class="text-xs font-bold tracking-tight">iOS</span>
+                      </div>
+                      <!-- Android Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#3DDC84] text-slate-900 shadow-sm">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4128 13.8533 8.125 12 8.125c-1.8535 0-3.5904.2878-5.1328.8247L4.8449 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+                        </svg>
+                        <span class="text-xs font-bold tracking-tight">Android</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {serviceKey === 'seo' && (
+                    <div class="flex items-center gap-2">
+                      <!-- Google Search & Lighthouse Score -->
+                      <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 text-white shadow-sm">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <span class="text-xs font-bold tracking-tight">Google Search</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span class="text-xs font-black">100/100</span>
+                        <span class="text-[10px] text-emerald-600 font-medium">Core Web Vitals</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {serviceKey === 'web-tasarim' && (
+                    <div class="flex items-center gap-2">
+                      <!-- Modern Browser & Speed Badge -->
+                      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-600 text-white shadow-sm">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-xs font-bold tracking-tight">Web &amp; Mobil</span>
+                      </div>
+                      <div class="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-sky-50 border border-sky-200 text-sky-700">
+                        <span class="text-xs font-black">99+</span>
+                        <span class="text-[10px] font-medium">Hız Skoru</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <!-- Live Status Badge -->
+                <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                  Aktif Destek
+                </span>
+              </div>
+
+              <!-- Showcase Middle Visual / Title -->
+              <div class="mt-5 mb-6">
+                <h3 class="text-lg font-bold text-slate-900 tracking-tight mb-1">
+                  {showcaseTitle}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                  {showcaseSubtitle}
+                </p>
+              </div>
+            </div>
+
+            <!-- Showcase Bottom Metrics (Always exactly 3 metrics for uniform height) -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-slate-100">
+              {metrics.map((metric) => (
+                <div class="p-2.5 sm:p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center flex flex-col justify-center">
+                  <div class="text-base sm:text-lg font-extrabold text-slate-900 leading-none mb-1">
+                    {metric.value}
+                  </div>
+                  <div class="text-[11px] font-bold text-slate-700 leading-tight">
+                    {metric.label}
+                  </div>
+                  {metric.subtext && (
+                    <div class="text-[9px] text-slate-400 mt-0.5 leading-tight">
+                      {metric.subtext}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT SECTION (12 Columns Equal Height & Alignment) -->
+  <section class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+        <!-- Left Content (8 Columns) -->
+        <div class="lg:col-span-8 space-y-8">
+          <div>
+            <div class="mb-6">
+              <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-2">
+                {contentTitle}
+              </h2>
+              <p class="text-sm sm:text-base text-slate-500">
+                {contentSubtitle}
+              </p>
+            </div>
+
+            <!-- Standard 4-Card 2x2 Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+              {features.map((feature, idx) => (
+                <div class="p-6 rounded-2xl bg-slate-50/80 border border-slate-200/90 hover:border-slate-300 hover:bg-white transition-all shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-700 shadow-sm">
+                        0{idx + 1}
+                      </span>
+                      <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-2 leading-snug">
+                      {feature.title}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Standardized Legal / Disclaimer Box -->
+          <div class="p-5 sm:p-6 rounded-2xl bg-slate-100/90 border border-slate-200 text-xs text-slate-600 leading-relaxed">
+            <div class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{disclaimerTitle}</span>
+            </div>
+            <p>{disclaimerText}</p>
+          </div>
+        </div>
+
+        <!-- Right Sticky Sidebar (4 Columns) -->
+        <div class="lg:col-span-4 space-y-6">
+          <!-- Card 1: Fast Conversion & Direct Contact Box -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-slate-900 text-white shadow-xl border border-slate-800 space-y-5 sticky top-24">
+            <div class="space-y-2">
+              <div class="flex items-center gap-1 text-amber-400 text-xs font-bold">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                <span class="text-white ml-1 font-semibold">5.0 Müşteri Memnuniyeti</span>
+              </div>
+              <h3 class="text-xl font-bold text-white tracking-tight">
+                Ücretsiz Ön Görüşme ve Danışmanlık
+              </h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                İşletmenizin ihtiyaçlarına özel yol haritası ve teklif için hemen bize ulaşın.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-2">
+              <a
+                href={`https://wa.me/${brandConfig.whatsappNumber}?text=Merhaba,%20${encodeURIComponent(heroTitle)}%20hakkında%20bilgi%20almak%20istiyorum.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full py-3.5 px-4 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-2 transition-all shadow-md"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+                </svg>
+                <span>WhatsApp'tan Hemen Yazın</span>
+              </a>
+
+              {brandConfig.phone && !brandConfig.phone.includes('Geçici') && (
+                <a
+                  href={`tel:${formattedPhone}`}
+                  class="w-full py-3 px-4 rounded-xl font-bold text-xs bg-white/10 hover:bg-white/20 text-white border border-white/15 flex items-center justify-center gap-2 transition-all"
+                >
+                  <svg class="w-3.5 h-3.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  <span>{brandConfig.phone}</span>
+                </a>
+              )}
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+              <span>Ortalama yanıt süresi</span>
+              <span class="font-bold text-emerald-400">⚡ 15 Dakika</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Related Services -->
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-4">
+            <h3 class="font-bold text-slate-900 text-base">İlgili Hizmetler</h3>
+            <ul class="space-y-3 text-sm">
+              {relatedServices.map((rel, i) => (
+                <li class={i > 0 ? 'pt-3 border-t border-slate-200/80' : ''}>
+                  <a href={rel.url} class="group block">
+                    <div class="font-semibold text-slate-800 group-hover:text-sky-600 transition-colors flex items-center justify-between">
+                      <span>{rel.title}</span>
+                      <span class="text-sky-500 group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                    {rel.description && (
+                      <p class="text-xs text-slate-500 mt-0.5 leading-snug">{rel.description}</p>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM FINAL CTA -->
+  <FinalCTA />
+</Layout>

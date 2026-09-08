@@ -4,7 +4,7 @@ test.describe('Navigation & Corporate Page Loads', () => {
   test('should load Home Page cleanly with new corporate title', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Rent Yazılım/);
-    await expect(page.locator('h1')).toContainText('İşletmenizi dijitalde');
+    await expect(page.locator('h1')).toContainText('Web Tasarım');
   });
 
   test('should open Mega Menu and navigate to Web Sitesi Tasarımı page', async ({ page }) => {

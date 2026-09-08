@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Contact Form Validation & Field Separation', () => {
   test('should show validation errors when submitting empty form', async ({ page }) => {
-    await page.goto('/#teklif-formu');
+    await page.goto('/iletisim/');
     const submitButton = page.locator('button[type="submit"]').first();
     await submitButton.scrollIntoViewIfNeeded();
     await submitButton.click();

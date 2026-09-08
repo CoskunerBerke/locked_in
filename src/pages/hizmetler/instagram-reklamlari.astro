@@ -1,7 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Breadcrumb from '../../components/common/Breadcrumb.astro';
-import FinalCTA from '../../components/sections/FinalCTA.astro';
+import ServicePageLayout from '../../components/templates/ServicePageLayout.astro';
 import { getServiceSchema } from '../../utils/jsonLd';
 import brandConfig from '../../config/brand';
 
@@ -13,66 +11,72 @@ const serviceSchema = getServiceSchema(
   pageDescription,
   `${brandConfig.siteUrl}/hizmetler/instagram-reklamlari/`
 );
+
+const breadcrumbs = [
+  { name: 'Hizmetler', url: '/#hizmetler' },
+  { name: 'Instagram Reklamları', url: '/hizmetler/instagram-reklamlari/' },
+];
+
+const metrics = [
+  { value: '%300+', label: 'ROAS Hedefi', subtext: 'Yüksek Dönüşüm' },
+  { value: 'Nokta Atışı', label: 'Hedef Kitle', subtext: 'Konum & İlgi Alanı' },
+  { value: 'Haftalık', label: 'Şeffaf Rapor', subtext: 'Düzenli Takip' },
+];
+
+const features = [
+  {
+    title: 'Hassas Hedef Kitle Analizi',
+    description: 'Demografik veriler, yerel bölge/ilçe yarıçapı, ilgi alanları ve satın alma davranışlarına göre nokta atışı kitle filtreleme.',
+  },
+  {
+    title: 'Kreatif & Metin Stratejisi',
+    description: 'Dönüşüm odaklı başlıklar, harekete geçirici mesajlar (CTA) ve dikkat çeken video/görsel reklam kurguları geliştirme.',
+  },
+  {
+    title: 'Bütçe & ROAS Optimizasyonu',
+    description: 'Reklam bütçenizin en verimli şekilde harcanması, tıklama ve dönüşüm başı maliyetlerin (CPA) düşürülmesi.',
+  },
+  {
+    title: 'A/B Testleri & Şeffaf Raporlama',
+    description: 'Farklı görsel ve hedef kitlelerin eşzamanlı test edilmesi, haftalık ve aylık şeffaf performans paneli sunumu.',
+  },
+];
+
+const relatedServices = [
+  {
+    title: 'Kurumsal Web Sitesi Tasarımı',
+    url: '/hizmetler/web-sitesi-tasarimi/',
+    description: 'Reklam trafiğinizi yüksek dönüşümlü bir web sitesine yönlendirin.',
+  },
+  {
+    title: 'Google Maps ve Yerel SEO',
+    url: '/hizmetler/google-maps/',
+    description: 'Yerel müşterilerinizi fiziksel konumunuza çekin.',
+  },
+];
 ---
 
-<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
-  <section class="py-12 bg-purple-50/50 border-b border-purple-200/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Instagram Reklamları', url: '/hizmetler/instagram-reklamlari/' }]} />
-
-      <div class="max-w-3xl">
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 border border-purple-300 text-purple-800 text-xs font-bold mb-3">
-          Sosyal Medya Reklamları
-        </span>
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-          Instagram ve Meta Reklam Yönetimi
-        </h1>
-        <p class="text-lg text-slate-600 leading-relaxed mb-8">
-          Doğru hedef kitleye doğru mesajla ulaşın. Reklam kurgularından görsel yönlendirmelere ve bütçe optimizasyonuna kadar sosyal medya reklamlarınızı yönetiyoruz.
-        </p>
-        <a href="#teklif-formu" class="btn-primary bg-purple-600 hover:bg-purple-700">
-          Reklam Danışmanlığı İsteyin
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div class="lg:col-span-8 space-y-12">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 mb-4">Reklam Stratejimiz</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
-                <h3 class="font-bold text-slate-900 mb-2">Hedef Kitle Analizi</h3>
-                <p class="text-xs text-slate-600">Demografik, konum, ilgi alanı ve davranış odaklı hassas hedefleme.</p>
-              </div>
-              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
-                <h3 class="font-bold text-slate-900 mb-2">Performans &amp; Raporlama</h3>
-                <p class="text-xs text-slate-600">Tıklama başı maliyet, dönüşüm oranı ve bütçe veriminin şeffaf raporlanması.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-500">
-            <strong>Yasal Not:</strong> <em>Instagram</em> ve <em>Meta</em> markaları Meta Platforms Inc. şirketine aittir. Reklam bütçeleri doğrudan Meta hesabınıza tanımlanır, ajansımız bağımsız strateji ve kampanya yönetim hizmeti sunar.
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 space-y-6">
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
-            <ul class="space-y-3 text-sm">
-              <li>
-                <a href="/hizmetler/web-sitesi-tasarimi/" class="text-sky-600 hover:underline font-semibold block">→ Landing Page Tasarımı</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <FinalCTA />
-</Layout>
+<ServicePageLayout
+  title={pageTitle}
+  description={pageDescription}
+  customSchema={serviceSchema}
+  breadcrumbs={breadcrumbs}
+  serviceKey="instagram"
+  categoryBadge="Sosyal Medya & Meta Reklamları"
+  heroTitle="Instagram ve Meta Reklamları"
+  heroTitleHighlight="Hedefli Kampanya Yönetimi"
+  heroDescription="Doğru hedef kitleye doğru mesajla ulaşın. Reklam kurgularından görsel yönlendirmelere ve bütçe optimizasyonuna kadar sosyal medya reklamlarınızı profesyonelce yönetiyoruz."
+  ctaText="Reklam Danışmanlığı İsteyin"
+  badgeClass="bg-pink-50 text-[#E1306C] border-pink-200"
+  primaryBtnClass="bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:opacity-95 text-white shadow-pink-900/20"
+  heroGlowClass="bg-pink-500/10"
+  showcaseTitle="Meta Reklam Yöneticisi Entegrasyonu"
+  showcaseSubtitle="Instagram ve Facebook akışlarında yüksek dönüşümlü hedefli reklam kampanyaları."
+  metrics={metrics as any}
+  contentTitle="Instagram Reklam Stratejimiz ve Süreçlerimiz"
+  contentSubtitle="Reklam bütçenizi boşa harcamadan, doğrudan satın alma potansiyeli yüksek kitleye ulaşıyoruz."
+  features={features as any}
+  disclaimerTitle="Yasal Not ve Marka Sahipliği:"
+  disclaimerText={`Instagram ve Meta markaları Meta Platforms Inc. şirketine aittir. Reklam bütçeleri doğrudan Meta hesabınıza tanımlanır; ${brandConfig.brandName} bağımsız kampanya stratejisi, hedefleme kurgusu ve reklam yönetim danışmanlığı sağlamaktadır.`}
+  relatedServices={relatedServices}
+/>

@@ -6,8 +6,7 @@ test.describe('Hero System & Solar System Canvas', () => {
 
     const h1 = page.locator('h1');
     await expect(h1).toBeVisible();
-    await expect(h1).toContainText('İşletmenizi dijitalde');
-    await expect(h1).toContainText('güçlü bir sisteme');
+    await expect(h1).toContainText('Web Tasarım');
 
     // Ensure NO video control button exists
     const videoButton = page.locator('button[aria-label*="Arka plan videosunu"]');

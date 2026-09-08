@@ -1,7 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Breadcrumb from '../../components/common/Breadcrumb.astro';
-import FinalCTA from '../../components/sections/FinalCTA.astro';
+import ServicePageLayout from '../../components/templates/ServicePageLayout.astro';
 import { getServiceSchema } from '../../utils/jsonLd';
 import brandConfig from '../../config/brand';
 
@@ -13,60 +11,72 @@ const serviceSchema = getServiceSchema(
   pageDescription,
   `${brandConfig.siteUrl}/hizmetler/mobil-uygulama/`
 );
+
+const breadcrumbs = [
+  { name: 'Hizmetler', url: '/#hizmetler' },
+  { name: 'Mobil Uygulama', url: '/hizmetler/mobil-uygulama/' },
+];
+
+const metrics = [
+  { value: 'iOS & Android', label: 'Çift Mağaza', subtext: 'Eşzamanlı Yayın' },
+  { value: '60 FPS', label: 'Akıcı Arayüz', subtext: 'Yüksek Performans' },
+  { value: 'Push Bildirim', label: 'Anlık İletişim', subtext: 'Müşteri Etkileşimi' },
+];
+
+const features = [
+  {
+    title: 'Çapraz Platform Mimari (React Native / Flutter)',
+    description: 'Tek bir modern ve temiz kod tabanı ile hem iOS hem Android cihazlarda sıfır performans kaybıyla eşzamanlı çalışma.',
+  },
+  {
+    title: 'Kullanıcı Dostu UX/UI Arayüz Tasarımı',
+    description: 'Kullanıcıların tek parmakla rahatça gezinebildiği, dokunma hissiyatı yüksek, şık ve markanıza özel mobil ekranlar.',
+  },
+  {
+    title: 'Push Bildirim & API / Veritabanı Entegrasyonu',
+    description: 'Kampanyalar için anlık bildirim sistemi, SMS, güvenli ödeme sistemleri ve mevcut web sitenizle senkronizasyon.',
+  },
+  {
+    title: 'App Store & Google Play Onay Süreci',
+    description: 'Geliştirici hesap açılışları, mağaza içi görsel hazırlıkları, gizlilik politikaları ve mağaza onay süreçlerinin takibi.',
+  },
+];
+
+const relatedServices = [
+  {
+    title: 'Kurumsal Web Sitesi Tasarımı',
+    url: '/hizmetler/web-sitesi-tasarimi/',
+    description: 'Mobil uygulamanızı tamamlayan modern bir web sitesi.',
+  },
+  {
+    title: 'Instagram ve Meta Reklamları',
+    url: '/hizmetler/instagram-reklamlari/',
+    description: 'Uygulama yükleme (App Install) reklamlarıyla kullanıcı kazanın.',
+  },
+];
 ---
 
-<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
-  <section class="py-12 bg-slate-50 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Mobil Uygulama', url: '/hizmetler/mobil-uygulama/' }]} />
-
-      <div class="max-w-3xl">
-        <span class="badge-primary mb-3">iOS &amp; Android Çözümleri</span>
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-          Mobil Uygulama Tasarımı ve Geliştirme
-        </h1>
-        <p class="text-lg text-slate-600 leading-relaxed mb-8">
-          Müşterilerinizin cebinde yer alın. Hem App Store hem de Google Play platformlarında sorunsuz çalışan yüksek performanslı mobil uygulamalar üretiyoruz.
-        </p>
-        <a href="#teklif-formu" class="btn-primary">
-          Mobil Projenizi Konuşalım
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div class="lg:col-span-8 space-y-12">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 mb-4">Neler Sunuyoruz?</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
-                <h3 class="font-bold text-slate-900 mb-2">Çapraz Platform Mimari</h3>
-                <p class="text-xs text-slate-600">iOS ve Android cihazlarda tek bir yüksek nitelikli kod altyapısı ile maliyet ve zaman tasarrufu.</p>
-              </div>
-              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
-                <h3 class="font-bold text-slate-900 mb-2">Kullanıcı Dostu UX/UI</h3>
-                <p class="text-xs text-slate-600">Dokunma hassasiyeti yüksek, sezgisel ve modern arayüz tasarımı.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 space-y-6">
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
-            <ul class="space-y-3 text-sm">
-              <li>
-                <a href="/hizmetler/web-sitesi-tasarimi/" class="text-sky-600 hover:underline font-semibold block">→ Web Sitesi Tasarımı</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <FinalCTA />
-</Layout>
+<ServicePageLayout
+  title={pageTitle}
+  description={pageDescription}
+  customSchema={serviceSchema}
+  breadcrumbs={breadcrumbs}
+  serviceKey="mobil-uygulama"
+  categoryBadge="iOS & Android Çözümleri"
+  heroTitle="Mobil Uygulama Geliştirme"
+  heroTitleHighlight="App Store & Google Play"
+  heroDescription="Müşterilerinizin cebinde yer alın. Hem iOS hem de Android platformlarında akıcı, yüksek performanslı ve modern kullanıcı deneyimi sunan mobil uygulamalar geliştiriyoruz."
+  ctaText="Mobil Projenizi Konuşalım"
+  badgeClass="bg-slate-100 text-slate-800 border-slate-300"
+  primaryBtnClass="bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/20"
+  heroGlowClass="bg-sky-500/10"
+  showcaseTitle="Çapraz Platform Mobil Mimari"
+  showcaseSubtitle="Apple App Store ve Google Play Store için tek kod altyapısıyla maksimum verim."
+  metrics={metrics as any}
+  contentTitle="Mobil Uygulama Kapsamında Sunduğumuz Çözümler"
+  contentSubtitle="Fikrinizi App Store ve Google Play'de yayınlanan güçlü bir ürüne dönüştürüyoruz."
+  features={features as any}
+  disclaimerTitle="Yasal Bilgilendirme ve Ekosistem Uyumu:"
+  disclaimerText={`Apple, App Store ve iOS markaları Apple Inc.; Android ve Google Play markaları Google LLC tescilli markalarıdır. ${brandConfig.brandName}, işletmelere bağımsız mobil yazılım geliştirme, mimari tasarım ve mağaza yayını danışmanlığı sağlamaktadır.`}
+  relatedServices={relatedServices}
+/>

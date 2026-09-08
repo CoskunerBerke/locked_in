@@ -1,7 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Breadcrumb from '../../components/common/Breadcrumb.astro';
-import FinalCTA from '../../components/sections/FinalCTA.astro';
+import ServicePageLayout from '../../components/templates/ServicePageLayout.astro';
 import { getServiceSchema } from '../../utils/jsonLd';
 import brandConfig from '../../config/brand';
 
@@ -13,66 +11,72 @@ const serviceSchema = getServiceSchema(
   pageDescription,
   `${brandConfig.siteUrl}/hizmetler/google-maps/`
 );
+
+const breadcrumbs = [
+  { name: 'Hizmetler', url: '/#hizmetler' },
+  { name: 'Google Maps', url: '/hizmetler/google-maps/' },
+];
+
+const metrics = [
+  { value: '%100', label: 'Eksiksiz Profil', subtext: 'Google Kriterleri' },
+  { value: '3 Kat', label: 'Yol Tarifi Artışı', subtext: 'Yerel Müşteriler' },
+  { value: '5.0 ★', label: 'İtibar Yönetimi', subtext: 'Pozitif İncelemeler' },
+];
+
+const features = [
+  {
+    title: 'Profil Doğrulama & İleri Kurulum',
+    description: 'İşletme adı, tam cadde adresi, sabit hat/mobil telefon, web sitesi ve açılış/kapanış saatlerinin doğrulanıp eksiksiz girilmesi.',
+  },
+  {
+    title: 'Doğru Kategori & Hizmet Listesi',
+    description: 'İşletmenizi Google yerel aramalarında en doğru temsil eden birincil/ikincil kategorilerin ve alt hizmet kalemlerinin seçilmesi.',
+  },
+  {
+    title: 'Fotoğraf, Menü & Ürün Vitrini',
+    description: 'Mekan içi, dış cephe, menü, ürün ve hizmet fotoğraflarının optimize edilerek profilde etkileşim yaratacak şekilde sunulması.',
+  },
+  {
+    title: 'Yorum Yönetimi & Yerel Sinyaller',
+    description: 'Gelen müşteri incelemelerine profesyonel yanıt stratejileri, yerel atıf (NAP) tutarlılığı ve harita sıralama sinyallerinin güçlendirilmesi.',
+  },
+];
+
+const relatedServices = [
+  {
+    title: 'Teknik ve Site İçi SEO',
+    url: '/hizmetler/seo/',
+    description: 'Google web aramalarında organik olarak üst sıralara çıkın.',
+  },
+  {
+    title: 'Kurumsal Web Sitesi Tasarımı',
+    url: '/hizmetler/web-sitesi-tasarimi/',
+    description: 'Haritanızdaki müşterileri modern bir web sitesiyle karşılayın.',
+  },
+];
 ---
 
-<Layout title={pageTitle} description={pageDescription} customSchema={serviceSchema}>
-  <section class="py-12 bg-emerald-50/50 border-b border-emerald-200/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <Breadcrumb items={[{ name: 'Hizmetler', url: '/#hizmetler' }, { name: 'Google Maps', url: '/hizmetler/google-maps/' }]} />
-
-      <div class="max-w-3xl">
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold mb-3">
-          Yerel Görünürlük
-        </span>
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-          Google Maps İşletme Optimizasyonu ve Konum Yönetimi
-        </h1>
-        <p class="text-lg text-slate-600 leading-relaxed mb-8">
-          Fiziksel konumunuzu arayan yerel müşterilerinize doğrudan ulaşın. Google İşletme Profilinizi eksiksiz yapılandırarak konum görünürlüğünüzü artırıyoruz.
-        </p>
-        <a href="#teklif-formu" class="btn-primary bg-emerald-600 hover:bg-emerald-700">
-          Harita Optimizasyon Teklifi Alın
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div class="lg:col-span-8 space-y-12">
-          <div>
-            <h2 class="text-2xl font-bold text-slate-900 mb-4">Harita Optimizasyonu Çalışmaları</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
-                <h3 class="font-bold text-slate-900 mb-2">Profil Doğrulama &amp; Düzenleme</h3>
-                <p class="text-xs text-slate-600">İşletme adı, adres, telefon, web sitesi ve çalışma saatlerinin doğrulanıp eksiksiz girilmesi.</p>
-              </div>
-              <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
-                <h3 class="font-bold text-slate-900 mb-2">Doğru Kategori Seçimi</h3>
-                <p class="text-xs text-slate-600">İşletmenizi en doğru temsil eden ana ve alt kategorilerin belirlenmesi.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-500">
-            <strong>Yasal Not:</strong> <em>Google</em> ve <em>Google Maps</em> markaları Google LLC şirketine aittir. {brandConfig.brandName}, işletmelere bağımsız harita profil optimizasyon hizmeti sunmaktadır.
-          </div>
-        </div>
-
-        <div class="lg:col-span-4 space-y-6">
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-            <h3 class="font-bold text-slate-900 text-lg">İlgili Hizmetler</h3>
-            <ul class="space-y-3 text-sm">
-              <li>
-                <a href="/hizmetler/seo/" class="text-sky-600 hover:underline font-semibold block">→ Teknik ve Site İçi SEO</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <FinalCTA />
-</Layout>
+<ServicePageLayout
+  title={pageTitle}
+  description={pageDescription}
+  customSchema={serviceSchema}
+  breadcrumbs={breadcrumbs}
+  serviceKey="google-maps"
+  categoryBadge="Yerel Görünürlük & Harita SEO"
+  heroTitle="Google Maps İşletme Optimizasyonu"
+  heroTitleHighlight="Yerel Konum & Harita Sıralaması"
+  heroDescription="Fiziksel konumunuzu ve hizmetlerinizi arayan yerel müşterilere doğrudan ulaşın. Google İşletme Profilinizi eksiksiz yapılandırarak harita görünürlüğünüzü ve müşteri aramalarınızı katlıyoruz."
+  ctaText="Harita Optimizasyon Teklifi Alın"
+  badgeClass="bg-blue-50 text-[#1A73E8] border-blue-200"
+  primaryBtnClass="bg-[#1A73E8] hover:bg-[#1557b0] text-white shadow-blue-900/20"
+  heroGlowClass="bg-blue-500/10"
+  showcaseTitle="Google İşletme Profili Doğrulaması"
+  showcaseSubtitle="Google Haritalar ve yerel arama paketinde ilk sıralara yükselin."
+  metrics={metrics as any}
+  contentTitle="Google Harita Optimizasyonunda Sunduğumuz Çözümler"
+  contentSubtitle="Bölgenizdeki potansiyel müşterilerin sizi ilk sırada görmesi için yerel SEO adımlarını uyguluyoruz."
+  features={features as any}
+  disclaimerTitle="Yasal Not ve Tescilli Marka Bildirimi:"
+  disclaimerText={`Google ve Google Maps markaları Google LLC şirketine aittir. ${brandConfig.brandName}, bağımsız bir dijital ajans olarak işletmelerin Google İşletme Profili optimizasyonu ve yerel görünürlük danışmanlığı süreçlerini yönetmektedir.`}
+  relatedServices={relatedServices}
+/>
