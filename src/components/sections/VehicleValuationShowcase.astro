@@ -1,0 +1,77 @@
+---
+/**
+ * ANA SAYFA — ARAC DEGERLEME VITRINI
+ *
+ * Kucuk bir bolum: ana sayfayi yeniden tasarlamaz, mevcut section sistemine
+ * (py-20 / max-w-7xl / rozet + baslik) uyar ve tek bir isi vardir — ziyaretciyi
+ * calisan demoya goturmek.
+ */
+import { ArrowRight, Car, LineChart, ShieldCheck } from 'lucide-react';
+import { FULL_CATALOG_FACTS } from '../../config/public-demo.config';
+
+const points = [
+  {
+    icon: LineChart,
+    title: 'Gerçek piyasa verisi',
+    desc: 'Fiyat, gerçek ilan kanıtından türetilir; tahmin veya sabit katsayı kullanılmaz.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Emin değilse söyler',
+    desc: 'Kanıt zayıfsa sistem uydurma bir rakam vermez, uzman değerlendirmesine yönlendirir.',
+  },
+  {
+    icon: Car,
+    title: 'Geniş araç kataloğu',
+    desc: `${FULL_CATALOG_FACTS.brands} marka ve ${FULL_CATALOG_FACTS.models} model, değişken derinlikli donanım hiyerarşisiyle.`,
+  },
+];
+---
+
+<section class="py-20 bg-slate-50 border-b border-slate-200" id="arac-degerleme-vitrin">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-sky-600 bg-sky-100/80 px-3 py-1 rounded-full border border-sky-200">
+          Ürün Demosu
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 leading-tight">
+          Araç Değerleme <span class="text-sky-600">Altyapısı</span>
+        </h2>
+        <p class="mt-4 text-base leading-relaxed text-slate-600 max-w-xl">
+          Gerçek piyasa verileriyle çalışan otomatik araç fiyatlandırma
+          sistemimizi deneyin. Aracı seçin, nakit alım ve konsinye sonuçlarını
+          anında görün.
+        </p>
+
+        <a
+          href="/arac-degerleme/"
+          class="mt-8 inline-flex items-center gap-2 rounded-xl bg-sky-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-600/20 transition-colors hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+        >
+          Canlı Demoyu Dene
+          <ArrowRight size={16} aria-hidden="true" />
+        </a>
+
+        <p class="mt-3 text-xs text-slate-500">
+          Demo, seçili araçlarla sınırlıdır. Tam sürüm için bizimle iletişime geçin.
+        </p>
+      </div>
+
+      <ul class="grid gap-4">
+        {
+          points.map((point) => (
+            <li class="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+                <point.icon size={20} aria-hidden="true" />
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">{point.title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-slate-600">{point.desc}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
