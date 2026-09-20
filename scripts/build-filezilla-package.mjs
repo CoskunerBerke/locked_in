@@ -53,7 +53,7 @@ if (!existsSync(join(DIST, ROUTE))) {
  * sey. O sayfalar canlida zaten var ve dokunulmayacak.
  */
 const ASSET_EXTENSION =
-  /\.(js|mjs|css|json|png|jpe?g|svg|webp|avif|gif|ico|woff2?|ttf|otf|eot|mp4|webm|txt|xml)$/i;
+  /\.(js|mjs|css|json|webmanifest|png|jpe?g|svg|webp|avif|gif|ico|woff2?|ttf|otf|eot|mp4|webm|txt|xml)$/i;
 
 /** `/_astro/x.js` -> `_astro/x.js`; disa donuk URL'ler ve rota baglantilari elenir. */
 function localPath(reference) {
