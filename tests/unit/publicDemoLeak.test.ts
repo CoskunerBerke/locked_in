@@ -143,4 +143,42 @@ describe('E) kisitli fiyat verisi public yuzeyde yok', () => {
     const named = walk(DIST_DIR).filter((f) => /demo-market\.json$/i.test(f));
     expect(named).toEqual([]);
   });
+
+  /**
+   * FTP'YE GIDEN SEY `dist/` DEGIL, MINIMAL PAKETTIR.
+   *
+   * Canli site elle yuklendigi ve `main` tabanli bu depodan DAHA YENI oldugu
+   * icin `dist/` bir butun olarak yuklenmez; yalnizca
+   * `filezilla-arac-degerleme/` yuklenir. Denetim, gercekten yuklenecek olan
+   * baytlari da gormeli — yoksa "dist temiz" demek yanlis guven verir.
+   */
+  it('minimal FileZilla paketi (yuklenecek baytlar) temiz', () => {
+    const pkg = join(REPO, 'filezilla-arac-degerleme');
+    if (!existsSync(pkg)) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[leak] filezilla-arac-degerleme/ yok; ' +
+          '"node scripts/build-filezilla-package.mjs" sonrasi tekrar calistirin.',
+      );
+      return;
+    }
+    const { files, findings } = scan(pkg);
+    expect(files.length, 'paket bos').toBeGreaterThan(0);
+    expect(findings).toEqual([]);
+    expect(walk(pkg).filter((f) => /demo-market\.json$/i.test(f))).toEqual([]);
+    expect(walk(pkg).filter((f) => f.endsWith('.map'))).toEqual([]);
+  });
+
+  /**
+   * Paket SADECE rotayi tasimali: baska bir sayfanin HTML'i girerse canlidaki
+   * daha yeni surumunun uzerine yazar.
+   */
+  it('minimal paket baska hicbir sayfanin HTML dosyasini icermez', () => {
+    const pkg = join(REPO, 'filezilla-arac-degerleme');
+    if (!existsSync(pkg)) return;
+    const html = walk(pkg)
+      .filter((f) => f.endsWith('.html'))
+      .map((f) => f.slice(pkg.length + 1).replace(/\\/g, '/'));
+    expect(html).toEqual(['arac-degerleme/index.html']);
+  });
 });

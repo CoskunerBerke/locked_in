@@ -30,3 +30,6 @@ pnpm-debug.log*
 .idea
 .DS_Store
 Thumbs.db
+
+# FileZilla deployment package (generated build artifact)
+/filezilla-arac-degerleme
