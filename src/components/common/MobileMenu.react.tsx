@@ -72,7 +72,7 @@ export const MobileMenu: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div className="md:hidden">
+    <div className="xl:hidden">
       {/* Menu Toggle Button */}
       <button
         type="button"
@@ -97,7 +97,7 @@ export const MobileMenu: React.FC = () => {
       {/* Render Backdrop & Drawer directly to document.body via Portal to prevent parent transform clipping */}
       {mounted &&
         createPortal(
-          <div className={`md:hidden ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+          <div className={`xl:hidden ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
             {/* Drawer Backdrop Overlay */}
             <div
               className={`fixed inset-0 z-[9998] bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ${
@@ -142,6 +142,14 @@ export const MobileMenu: React.FC = () => {
                   className="block py-2.5 px-3 text-base font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Ana Sayfa
+                </a>
+
+                <a
+                  href="/arac-degerleme/"
+                  onClick={() => setIsOpen(false)}
+                  className="block py-2.5 px-3 text-base font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Araç Değerleme
                 </a>
 
                 {/* Hizmetler Accordion */}

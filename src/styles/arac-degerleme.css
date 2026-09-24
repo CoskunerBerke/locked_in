@@ -1,0 +1,312 @@
+/*
+ * ARAC DEGERLEME — HAREKET VE ETKILESIM KATMANI
+ *
+ * Yalnizca /arac-degerleme sayfasini etkiler (`rv-` onekli siniflar) ve
+ * yalnizca o sayfadan import edilir; diger rotalarin CSS'ine yuk binmez.
+ *
+ * Tamami CSS: animasyon icin ek bagimlilik yoktur. Hareket yalnizca
+ * `transform` ve `opacity` uzerinden yapilir; genislik/yukseklik animasyonu
+ * yoktur, dolayisiyla yerlesim yeniden hesaplanmaz.
+ *
+ * Davranis, kabul edilmis NakitGaraj demosundan (7d11333) uyarlandi; renkler
+ * Rent Yazilim paletine (slate / sky) tasindi.
+ */
+
+@keyframes rv-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rv-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rv-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Ust secim degisince alt alan "yenilendi" sinyali verir. */
+@keyframes rv-refresh {
+  from {
+    opacity: 0.35;
+    transform: translate3d(0, -4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Secilen alan kisa bir accent halkasi birakir; zipmaz, buyumez. */
+@keyframes rv-pulse {
+  from {
+    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.3);
+  }
+  to {
+    box-shadow: 0 0 0 7px rgba(2, 132, 199, 0);
+  }
+}
+
+/* Fiyat bolumu sert belirmez: asagidan yukselir, olcegi 0.99'dan oturur. */
+@keyframes rv-result {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rv-modal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rv-rise {
+  animation: rv-rise 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rv-fade {
+  animation: rv-fade 260ms ease-out both;
+}
+.rv-pop {
+  animation: rv-pop 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rv-refresh {
+  animation: rv-refresh 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rv-result {
+  animation: rv-result 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/*
+ * GIRIS SIRASI. Ogeler ayni anda degil, okuma sirasiyla girer: rozet,
+ * baslik, aciklama, kart. Gecikmeler yalnizca opacity/transform'u erteler;
+ * icerik ilk karede hazirdir, kimse bekletilmez. Toplam ~460ms.
+ */
+.rv-delay-1 {
+  animation-delay: 60ms;
+}
+.rv-delay-2 {
+  animation-delay: 120ms;
+}
+.rv-delay-3 {
+  animation-delay: 180ms;
+}
+.rv-delay-4 {
+  animation-delay: 240ms;
+}
+
+/* Alanlar sirayla uyanir: zincir soldan saga akar. */
+.rv-fields > *:nth-child(2) {
+  animation-delay: 45ms;
+}
+.rv-fields > *:nth-child(3) {
+  animation-delay: 90ms;
+}
+.rv-fields > *:nth-child(4) {
+  animation-delay: 135ms;
+}
+.rv-fields > *:nth-child(5) {
+  animation-delay: 180ms;
+}
+.rv-fields > *:nth-child(n + 6) {
+  animation-delay: 225ms;
+}
+
+/* Kisa accent halkasi; iz birakmadan soner. */
+.rv-pulse > .rv-select,
+.rv-pulse > .rv-input {
+  animation: rv-pulse 620ms ease-out;
+}
+
+.rv-select,
+.rv-input {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.rv-select:hover:not(:disabled),
+.rv-input:hover:not(:disabled) {
+  border-color: rgba(2, 132, 199, 0.55);
+}
+
+/*
+ * DOLU ALAN BOS ALANDAN AYRILIR: yazi koyulasir, sol kenar accent alir.
+ * Zincirin neresinde olundugu bir bakista gorunur.
+ */
+.rv-select[data-filled='true'] {
+  font-weight: 600;
+  border-color: rgba(2, 132, 199, 0.4);
+  box-shadow: inset 2px 0 0 0 rgba(2, 132, 199, 0.75);
+}
+
+.rv-select:focus-visible,
+.rv-input:focus-visible {
+  border-color: #0284c7;
+  box-shadow:
+    0 0 0 3px rgba(2, 132, 199, 0.22),
+    0 4px 12px -8px rgba(15, 23, 42, 0.5);
+  outline: none;
+}
+
+/*
+ * DOLU ALANIN ODAK HALKASI AYRICA YAZILIR.
+ *
+ * `[data-filled]` ile `:focus-visible` ayni ozgullukte; sirf sonra geldigi
+ * icin dolu alanin golgesi odak halkasini EZER ve secim yapilmis bir alana
+ * Tab'la gelen klavye kullanicisi hicbir halka gormez. Iki gosterge burada
+ * birlikte yazilir.
+ */
+.rv-select[data-filled='true']:focus-visible {
+  border-color: #0284c7;
+  box-shadow:
+    inset 2px 0 0 0 rgba(2, 132, 199, 0.75),
+    0 0 0 3px rgba(2, 132, 199, 0.22),
+    0 4px 12px -8px rgba(15, 23, 42, 0.5);
+}
+
+/* Bekleyen alan geride durur ama okunakli kalir. */
+.rv-select:disabled,
+.rv-input:disabled {
+  color: #64748b;
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/*
+ * ILERLEME CIZGISI. Sihirbaza cevirmeden "neredeyim" sorusunu yanitlar.
+ * Ince ve yari saydam: tamamlandiginda koyu bir cizgi "uyari" gibi okunurdu.
+ */
+.rv-progress-track {
+  height: 2px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.rv-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(2, 132, 199, 0.4), rgba(2, 132, 199, 0.85));
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rv-confidence-track {
+  display: inline-block;
+  width: 56px;
+  height: 4px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.rv-confidence-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition:
+    width 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 260ms ease;
+}
+
+.rv-card {
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rv-card:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 12px 28px -18px rgba(15, 23, 42, 0.4);
+  }
+}
+
+/* Sayfa derinligi: cok soluk radyal accentler. Blur/glassmorphism YOK. */
+.rv-page {
+  background-image:
+    radial-gradient(58rem 32rem at 12% -6%, rgba(2, 132, 199, 0.07), transparent 60%),
+    radial-gradient(44rem 28rem at 92% 2%, rgba(15, 23, 42, 0.04), transparent 62%);
+  background-repeat: no-repeat;
+}
+
+.rv-modal-backdrop {
+  background: rgba(15, 23, 42, 0.55);
+  animation: rv-fade 180ms ease-out both;
+}
+
+.rv-modal-panel {
+  animation: rv-modal-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/*
+ * ERISILEBILIRLIK: kullanici hareketi azaltmayi sectiyse animasyon YOK.
+ * Sayac da bu tercihi okur (`useCountUp.ts`) ve degeri aninda yazar.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .rv-rise,
+  .rv-fade,
+  .rv-pop,
+  .rv-refresh,
+  .rv-result,
+  .rv-modal-backdrop,
+  .rv-modal-panel,
+  .rv-pulse > .rv-select,
+  .rv-pulse > .rv-input {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Gecikmeler de kalkar: yoksa animasyonu kapatilmis oge, kendisi icin
+     ayrilmis gecikme boyunca bos yere bekletilmis gibi gorunurdu. */
+  .rv-delay-1,
+  .rv-delay-2,
+  .rv-delay-3,
+  .rv-delay-4,
+  .rv-fields > * {
+    animation-delay: 0ms !important;
+  }
+
+  .rv-card,
+  .rv-select,
+  .rv-input,
+  .rv-confidence-fill,
+  .rv-progress-fill {
+    transition: none !important;
+  }
+
+  .rv-card:hover {
+    transform: none !important;
+  }
+}
