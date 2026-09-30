@@ -10,8 +10,6 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-React_Three_Fiber-000000?logo=threedotjs&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-0055FF?logo=framer&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-3-6E9F18?logo=vitest&logoColor=white)
 ![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
@@ -22,18 +20,19 @@ Designed and developed by Berke Coşkuner for Rent Yazılım.
 
 ## Overview
 
-A fast, static marketing site for an agency that offers web design, SEO, Google Maps (Business Profile) optimisation, mobile apps, Instagram ads and Yemeksepeti / Trendyol Yemek panel consulting. It is built with Astro (static output) and React islands, with lazy-loaded 3D visuals and a WhatsApp-based contact form (no backend, no database).
+A fast, static marketing site for an agency that offers web design, SEO, Google Maps (Business Profile) optimisation, mobile apps, Instagram ads and Yemeksepeti / Trendyol Yemek panel consulting. It is built with Astro (static output) and React islands, with a lightweight canvas animation in the hero and a WhatsApp-based contact form (no backend, no database).
 
 ## Features
 
-- **Home page** — hero with background video, service navigation, about overview, detailed services, portfolio showcase, work process, "why us", FAQ and final call-to-action
+- **Home page** — hero with an interactive "solar system" animation in which each planet is a service, about overview, detailed services, portfolio showcase, work process, "why us", FAQ and final call-to-action
+- **Navigation** — header with a mega menu and a mobile menu (React islands), breadcrumbs on inner pages, and an About page (`/hakkimizda`)
 - **Service pages** (`/hizmetler/*`) — web design, SEO, Google Maps, mobile apps, Instagram ads, Yemeksepeti / Trendyol Yemek
 - **Projects page** (`/projeler`) — portfolio of delivered websites with screenshots and live links
 - **Akademi blog** (`/akademi`) — Markdown articles managed with Astro content collections (typed schema)
 - **Contact** — WhatsApp form; input is sanitised and turned into a pre-filled WhatsApp message
 - **Legal pages** — privacy policy, terms of use, KVKK notice, custom 404
 - **SEO** — meta tags component, Schema.org JSON-LD, automatic sitemap, `robots.txt`, and an indexing on/off switch via env variable
-- **3D & motion** — React Three Fiber scenes (lazy loaded, with a static fallback) and Framer Motion animations
+- **Animation** — the hero animation is drawn on an HTML canvas with `requestAnimationFrame` (no WebGL needed)
 - **Security** — strict headers (CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy) in `public/.htaccess`; see `docs/SECURITY-REPORT.md`
 - **Quality** — Vitest unit tests, Playwright E2E tests, ESLint + Prettier, `astro check`; CI, CodeQL and Dependabot on GitHub
 
@@ -44,7 +43,7 @@ A fast, static marketing site for an agency that offers web design, SEO, Google 
 | Framework | Astro 5 (`output: 'static'`), React 19 islands |
 | Language | TypeScript (strict) |
 | Styling | Tailwind CSS 3, clsx, tailwind-merge |
-| 3D / animation | three, @react-three/fiber, @react-three/drei, framer-motion |
+| Animation | HTML canvas (hero) |
 | Icons | lucide-react |
 | Testing | Vitest, Playwright |
 | Tooling | ESLint, Prettier, GitHub Actions |
@@ -53,7 +52,7 @@ A fast, static marketing site for an agency that offers web design, SEO, Google 
 
 ```
 locked_in/
-├── public/                 # logo, favicons, hero video, project screenshots, .htaccess, robots.txt
+├── public/                 # logo, favicons, planet textures, project screenshots, .htaccess, robots.txt
 ├── src/
 │   ├── components/         # common (header, footer, SEO), hero, sections, form, 3d
 │   ├── config/brand.ts     # single place for brand name, contact info, colours, site URL
@@ -114,11 +113,12 @@ Berke Coşkuner tarafından Rent Yazılım için tasarlanıp geliştirilmiştir.
 
 ### Genel bakış
 
-Web tasarım, SEO, Google Maps (İşletme Profili) optimizasyonu, mobil uygulama, Instagram reklamları ve Yemeksepeti / Trendyol Yemek panel danışmanlığı hizmetlerini tanıtan hızlı, statik bir site. Astro (statik çıktı) ve React Islands ile geliştirildi; 3D görseller gecikmeli (lazy) yüklenir, iletişim formu WhatsApp üzerinden çalışır (sunucu ve veritabanı yoktur).
+Web tasarım, SEO, Google Maps (İşletme Profili) optimizasyonu, mobil uygulama, Instagram reklamları ve Yemeksepeti / Trendyol Yemek panel danışmanlığı hizmetlerini tanıtan hızlı, statik bir site. Astro (statik çıktı) ve React Islands ile geliştirildi; ana sayfadaki animasyon hafif bir canvas ile çizilir, iletişim formu WhatsApp üzerinden çalışır (sunucu ve veritabanı yoktur).
 
 ### Özellikler
 
-- **Ana sayfa** — video arka planlı hero, hizmetler, hakkımızda özeti, portfolyo, çalışma süreci, neden biz, SSS ve çağrı alanı
+- **Ana sayfa** — her gezegenin bir hizmeti temsil ettiği etkileşimli "güneş sistemi" animasyonlu hero, hakkımızda özeti, detaylı hizmetler, portfolyo, çalışma süreci, neden biz, SSS ve çağrı alanı
+- **Gezinme** — mega menü ve mobil menü, iç sayfalarda breadcrumb, Hakkımızda sayfası (`/hakkimizda`)
 - **Hizmet sayfaları** (`/hizmetler/*`) — web sitesi tasarımı, SEO, Google Maps, mobil uygulama, Instagram reklamları, Yemeksepeti / Trendyol Yemek
 - **Projeler** (`/projeler`) — teslim edilen sitelerin ekran görüntüleri ve canlı bağlantıları
 - **Akademi** (`/akademi`) — Astro content collections ile yönetilen Markdown blog yazıları
