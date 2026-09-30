@@ -16,7 +16,7 @@
 
 **Live:** [rentyazilim.com](https://rentyazilim.com)
 
-Designed and developed by Berke Coşkuner for Rent Yazılım.
+Rent Yazılım was founded by [Berke Coşkuner](https://github.com/CoskunerBerke), who also designed and developed this site.
 
 ## Overview
 
@@ -109,7 +109,7 @@ The build output in `dist/` is fully static. It can be served from Vercel or fro
 
 **Canlı:** [rentyazilim.com](https://rentyazilim.com)
 
-Berke Coşkuner tarafından Rent Yazılım için tasarlanıp geliştirilmiştir.
+Rent Yazılım, [Berke Coşkuner](https://github.com/CoskunerBerke) tarafından kurulmuştur; bu site de onun tarafından tasarlanıp geliştirilmiştir.
 
 ### Genel bakış
 
